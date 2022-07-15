@@ -1,9 +1,9 @@
 import { render, screen } from '@testing-library/react'
-import App from './App'
+import JSHistory from './JS-history/js-history'
 import React from 'react'
 
 test('renders learn react link', () => {
-  render(<App />)
+  render(<JSHistory />)
   const linkElement = screen.getByText(/learn react/i)
   expect(linkElement).toBeInTheDocument()
 })
