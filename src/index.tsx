@@ -1,5 +1,5 @@
 import './index.css'
-import JSHistory from './JS-history/js-history'
+import JsHistory from './JS-history/JsHistory'
 import React from 'react'
 import ReactDOM from 'react-dom/client'
 import reportWebVitals from './reportWebVitals'
@@ -8,7 +8,7 @@ const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement)
 
 root.render(
   <React.StrictMode>
-    <JSHistory />
+    <JsHistory />
   </React.StrictMode>
 )
 

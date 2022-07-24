@@ -2,7 +2,7 @@ import './style.css'
 import history from './pictures/History-of-JavaScript.png'
 import logo from './pictures/javascript-logo.png'
 
-export function JSHistory() {
+export function JsHistory() {
   return (
     <div>
       <meta charSet='UTF-8' />
@@ -146,10 +146,10 @@ export function JSHistory() {
         </div>
         <div className='footer'>
           All rights reserved
-          <a href='mailto: 3la.jah0da@gmail.com'>3la.jah0da</a>
+          <a href='mailto: 3la.jah0da@gmail.com'> 3la.jah0da</a>
         </div>
       </div>
     </div>
   )
 }
-export default JSHistory
+export default JsHistory
