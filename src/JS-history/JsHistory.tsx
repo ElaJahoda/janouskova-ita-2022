@@ -1,5 +1,5 @@
 import './style.css'
-import history from './pictures/History-of-JavaScript.png'
+import history from './pictures/history-of-JavaScript.png'
 import logo from './pictures/javascript-logo.png'
 
 export function JsHistory() {
