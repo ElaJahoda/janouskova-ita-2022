@@ -1,20 +1,15 @@
-import './style.css'
 import history from './pictures/history-of-JavaScript.png'
 import logo from './pictures/javascript-logo.png'
+import styled from '@emotion/styled'
 
 export function JsHistory() {
   return (
     <div>
-      <meta charSet='UTF-8' />
-      <meta name='viewport' content='width=device-width, initial-scale=1.0' />
-      <meta name='description' content='Easy web page about the history of JavaScript' />
-      <title>The History of JavaScript</title>
-      <link rel='stylesheet' type='text/css' href='style.css' />
-      <div className='kontejner'>
-        <div className='header'>
-          <img src={logo} alt='js-logo' />
-        </div>
-        <div className='main'>
+      <Body>
+        <Header>
+          <ImgH src={logo} alt='js-logo' />
+        </Header>
+        <Main>
           <h1>The History of JavaScript</h1>
           <h2 id='one'>Creation at Netscape</h2>
           <p>
@@ -134,22 +129,123 @@ export function JsHistory() {
             Plus, with the rise of single-page applications and other JavaScript-heavy websites,
             several transpilers have been created to aid the development process.
           </p>
-          <img src={history} alt='js-history' />
+          <ImgM src={history} alt='js-history' />
           <a href='https://en.wikipedia.org/wiki/JavaScript#History'>Source</a>
-        </div>
-        <div className='sidenav'>
-          <a href='#one'>Creation at Netscape</a>
-          <a href='#two'>Adoption by Microsoft</a>
-          <a href='#three'>The rise of JScript</a>
-          <a href='#four'>Growth and standardization</a>
-          <a href='#five'>Reaching maturity</a>
-        </div>
-        <div className='footer'>
+        </Main>
+        <SideNav>
+          <A href='#one'>Creation at Netscape</A>
+          <A href='#two'>Adoption by Microsoft</A>
+          <A href='#three'>The rise of JScript</A>
+          <A href='#four'>Growth and standardization</A>
+          <A href='#five'>Reaching maturity</A>
+        </SideNav>
+        <Footer>
           All rights reserved
           <a href='mailto: 3la.jah0da@gmail.com'> 3la.jah0da</a>
-        </div>
-      </div>
+        </Footer>
+      </Body>
     </div>
   )
 }
+const Body = styled.div`
+  box-sizing: border-box;
+  display: flex;
+  flex-flow: row wrap;
+  text-align: center;
+  flex: 1 100%;
+  margin: auto;
+  background-color: #ecd540;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-size: 20px;
+`
+const Header = styled.div`
+  background: grey;
+  width: 100%;
+  border-radius: 0px 0px 0px 10px;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  margin: 0px 0px 7px 7px;
+  z-index: 2;
+`
+const ImgH = styled.img`
+  width: 10%;
+  height: auto;
+`
+const Main = styled.div`
+  text-align: justify;
+  background: white;
+  padding: 1% 5% 5% 5%;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  overflow: auto;
+  z-index: 1;
+  @media (min-width: 600px) {
+    order: 2;
+    margin: -25px 10px -10px 10px;
+  }
+  @media (min-width: 800px) {
+    flex: 4 0px;
+    margin: -7px 10px 0px 2px;
+    order: 2;
+  }
+`
+
+const ImgM = styled.img`
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  @media (min-width: 600px) {
+    width: 100%;
+    height: auto;
+  }
+`
+
+const SideNav = styled.div`
+  background: #ecd540;
+  display: flex;
+  flex-direction: column;
+  height: 250px;
+  @media (min-width: 600px) {
+    flex: 1 0 0;
+    order: 1;
+    position: inherit;
+  }
+  @media (min-width: 800px) {
+    order: 1;
+    position: sticky;
+    position: -webkit-sticky;
+    top: 0px;
+  }
+`
+
+const A = styled.a`
+  background-color: grey;
+  color: gold;
+  text-align: center;
+  text-decoration: none;
+  font-weight: 400;
+  border: 2px black;
+  border-radius: 5px;
+  margin: 2px 7px 2px 7px;
+  padding: 3px 3px 7px 3px;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  &:hover,
+  &:focus {
+    background: rgb(100, 100, 100);
+  }
+  &:active {
+    color: orange;
+  }
+`
+const Footer = styled.div`
+  background: grey;
+  border-radius: 10px 0px 0px 0px;
+  margin: 0px 0px 0px 7px;
+  width: 100%;
+  z-index: 1;
+  @media (min-width: 600px) {
+    order: 3;
+  }
+  @media (min-width: 800px) {
+    order: 3;
+  }
+`
 export default JsHistory
