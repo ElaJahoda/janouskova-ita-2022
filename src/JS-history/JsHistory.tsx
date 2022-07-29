@@ -139,10 +139,6 @@ export function JsHistory() {
           <A href='#four'>Growth and standardization</A>
           <A href='#five'>Reaching maturity</A>
         </SideNav>
-        <Footer>
-          All rights reserved
-          <a href='mailto: 3la.jah0da@gmail.com'> 3la.jah0da</a>
-        </Footer>
       </Body>
     </div>
   )
@@ -235,17 +231,3 @@ const A = styled.a`
     color: orange;
   }
 `
-const Footer = styled.div`
-  background: grey;
-  border-radius: 10px 0px 0px 0px;
-  margin: 0px 0px 0px 7px;
-  width: 100%;
-  z-index: 1;
-  @media (min-width: 600px) {
-    order: 3;
-  }
-  @media (min-width: 800px) {
-    order: 3;
-  }
-`
-export default JsHistory
