@@ -1,5 +1,6 @@
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import App from './App'
+import Counter from './Counter/Counter'
 import Home from './HomePage'
 import JsHistory from './JS-history/JsHistory'
 import React from 'react'
@@ -14,6 +15,7 @@ root.render(
         <Route path='/' element={<App />}>
           <Route path='/' element={<Home />} />
           <Route path='jshistory' element={<JsHistory />} />
+          <Route path='counter' element={<Counter />} />
         </Route>
       </Routes>
     </BrowserRouter>

@@ -34,6 +34,16 @@ export default function App() {
           JsHistory
         </NavLink>{' '}
         |{' '}
+        <NavLink
+          style={({ isActive }) => {
+            return {
+              color: isActive ? 'red' : '',
+            }
+          }}
+          to='/counter'
+        >
+          Counter
+        </NavLink>
       </nav>
       <Outlet />
     </div>
