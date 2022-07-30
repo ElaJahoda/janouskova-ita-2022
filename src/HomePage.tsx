@@ -1,22 +1,23 @@
+import { theme } from './Theme'
 import React from 'react'
 import styled from '@emotion/styled'
 
-export function Home() {
+export const Home = () => {
   return (
-    <P>
+    <Div_Styled>
       <h1>Welcome</h1>
       <p>Welcome to my React portfolio.</p>
-    </P>
+    </Div_Styled>
   )
 }
-const P = styled.div`
-  box-sizing: border-box;
-  background-color: #ecd540;
-  width: 100%;
-  height: 82vh;
-  text-align: center;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  font-size: 20px;
+export const Div_Styled = styled.div`
+  box-sizing: ${theme.boxSizing};
+  background-color: ${theme.primaryColor};
+  width: ${theme.widthFull};
+  height: ${theme.minHeight};
+  text-align: ${theme.textAlign};
+  font-family: ${theme.fontFamily};
+  font-size: ${theme.fontSize};
 
-  margin: -26px 0px 0px 0px;
+  margin: ${theme.marginMinus};
 `

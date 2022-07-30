@@ -1,33 +1,46 @@
+import { Div_Styled } from '../HomePage'
 import React, { useState } from 'react'
 import styled from '@emotion/styled'
 
-export function Counter() {
-  const [count, setCount] = useState(0)
+type Props = {}
+type State = {
+  counter: number
+}
+export class Counter extends React.Component<Props, State> {
+  constructor(props: Props) {
+    super(props)
+    this.state = {
+      counter: 0,
+    }
+  }
+  render() {
+    return (
+      <Div_Styled>
+        <h1>Counter App</h1>
 
-  function decrementCount() {
-    setCount(prevCount => prevCount - 1)
+        <button onClick={() => this.setState({ counter: this.state.counter - 1 })}> - </button>
+        <span> {this.state.counter} </span>
+        <button onClick={() => this.setState({ counter: this.state.counter + 1 })}> + </button>
+      </Div_Styled>
+    )
   }
-  function incrementCount() {
-    setCount(prevCount => prevCount + 1)
-  }
-  return (
-    <P>
-      <h1>Counter App</h1>
-      <button onClick={decrementCount}> - </button>
-      <span> {count} </span>
-      <button onClick={incrementCount}> + </button>
-    </P>
-  )
 }
 
-const P = styled.div`
-  box-sizing: border-box;
-  background-color: #ecd540;
-  width: 100%;
-  height: 82vh;
-  text-align: center;
-  margin: -26px 0px 0px 0px;
+// export const Counter = () => {
+//   const [count, setCount] = useState(0)
 
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  font-size: 20px;
-`
+//   const decrementCount = () => {
+//     setCount(prevCount => prevCount - 1)
+//   }
+//   const incrementCount = () => {
+//     setCount(prevCount => prevCount + 1)
+//   }
+//   return (
+//     <P>
+//       <h1>Counter App</h1>
+//       <button onClick={decrementCount}> - </button>
+//       <span> {count} </span>
+//       <button onClick={incrementCount}> + </button>
+//     </P>
+//   )
+// }
