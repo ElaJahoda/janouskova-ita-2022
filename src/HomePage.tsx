@@ -1,4 +1,4 @@
-import { theme } from './Theme'
+import { theme } from './theme'
 import React from 'react'
 import styled from '@emotion/styled'
 
@@ -11,13 +11,11 @@ export const Home = () => {
   )
 }
 export const Div_Styled = styled.div`
-  box-sizing: ${theme.boxSizing};
   background-color: ${theme.primaryColor};
-  width: ${theme.widthFull};
-  height: ${theme.minHeight};
+  height: 82.9vh;
   text-align: ${theme.textAlign};
   font-family: ${theme.fontFamily};
   font-size: ${theme.fontSize};
 
-  margin: ${theme.marginMinus};
+  margin: -26px 0px 0px 0px;
 `

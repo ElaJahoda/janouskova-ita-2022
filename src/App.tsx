@@ -1,5 +1,5 @@
 import { NavLink, Outlet } from 'react-router-dom'
-import { theme } from './Theme'
+import { theme } from './theme'
 import { urls } from './urls'
 import React from 'react'
 import styled from '@emotion/styled'
@@ -17,21 +17,29 @@ export const App = () => {
         }}
       >
         <LinkStyled
-          color='#40adec'
-          backgroundColor='#ecd540'
+          style={{
+            color: theme.quaternaryColor,
+            backgroundColor: theme.primaryColor,
+          }}
           text='Home'
           urls={urls.homePageUrl}
-          border='solid 1px #ecd540'
         />
         |
         <LinkStyled
-          color='#ecd540'
-          backgroundColor='white'
+          style={{
+            color: theme.primaryColor,
+          }}
           text='JsHistory'
           urls={urls.jsHistoryUrl}
         />
         |
-        <LinkStyled color='#ecd540' backgroundColor='white' text='Counter' urls={urls.counterUrl} />
+        <LinkStyled
+          style={{
+            color: theme.primaryColor,
+          }}
+          text='Counter'
+          urls={urls.counterUrl}
+        />
       </nav>
       <Outlet />
       <Footer>
@@ -41,34 +49,16 @@ export const App = () => {
     </Div_styled>
   )
 }
-const Footer = styled.div`
-  background: ${theme.secondaryColor};
-  margin: ${theme.marginZero};
-  width: ${theme.widthFull};
-  z-index: 1;
-`
-const Div_styled = styled.div`
-  text-align: ${theme.textAlign};
-  font-family: ${theme.fontFamily};
-  font-size: ${theme.fontSize};
-`
 
-const LinkStyled = (props: {
-  color: string
-  text: string
-  backgroundColor: string
-  urls: string
-  border?: string
-}) => {
+const LinkStyled = (props: { style: React.CSSProperties; text: string; urls: string }) => {
   return (
     <NavLink
       style={({ isActive }) => ({
-        color: isActive ? props.color : '#000',
-        backgroundColor: props.backgroundColor,
         textDecoration: 'none',
-        border: props.border,
         borderRadius: '5px',
         padding: '1px 6px',
+        ...props.style,
+        color: isActive ? props.style.color : '#000',
       })}
       to={props.urls}
     >
@@ -76,3 +66,14 @@ const LinkStyled = (props: {
     </NavLink>
   )
 }
+
+const Footer = styled.div`
+  background: ${theme.secondaryColor};
+  margin: 0px;
+  z-index: 1;
+`
+const Div_styled = styled.div`
+  text-align: ${theme.textAlign};
+  font-family: ${theme.fontFamily};
+  font-size: ${theme.fontSize};
+`

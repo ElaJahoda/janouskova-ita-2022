@@ -1,4 +1,4 @@
-import { theme } from './../Theme'
+import { theme } from '../theme'
 import { urls } from './../urls'
 import history from './pictures/history-of-JavaScript.png'
 import logo from './pictures/javascript-logo.png'
@@ -146,7 +146,6 @@ export const JsHistory = () => {
   )
 }
 const Div_Body = styled.div`
-  box-sizing: ${theme.boxSizing};
   display: flex;
   flex-flow: row wrap;
   text-align: ${theme.textAlign};
@@ -157,7 +156,7 @@ const Div_Body = styled.div`
 `
 const Div_Header = styled.div`
   background: ${theme.secondaryColor};
-  width: ${theme.widthFull};
+  width: 100%;
   border-radius: 0px 0px 0px 10px;
   box-shadow: ${theme.boxShadow};
   margin: 0px 0px 7px 7px;
@@ -190,7 +189,7 @@ const Img_History = styled.img`
   margin-left: auto;
   margin-right: auto;
   @media ${theme.mediaSmaller} {
-    width: ${theme.widthFull};
+    width: 100%;
     height: auto;
   }
 `
