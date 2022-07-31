@@ -23,8 +23,7 @@ export class Counter extends React.Component<Props, State> {
             this.setState(prevstate => ({ counter: prevstate.counter - 1 }))
           }}
         >
-          {' '}
-          -{' '}
+          -
         </button>
         <span> {this.state.counter} </span>
         <button
@@ -32,30 +31,9 @@ export class Counter extends React.Component<Props, State> {
             this.setState(prevstate => ({ counter: prevstate.counter + 1 }))
           }}
         >
-          {' '}
-          +{' '}
+          +
         </button>
       </Div_Styled>
     )
   }
 }
-
-// Counter - version with Hook:
-// export const Counter = () => {
-//   const [count, setCount] = useState(0)
-
-//   const decrementCount = () => {
-//     setCount(prevCount => prevCount - 1)
-//   }
-//   const incrementCount = () => {
-//     setCount(prevCount => prevCount + 1)
-//   }
-//   return (
-//     <P>
-//       <h1>Counter App</h1>
-//       <button onClick={decrementCount}> - </button>
-//       <span> {count} </span>
-//       <button onClick={incrementCount}> + </button>
-//     </P>
-//   )
-// }
