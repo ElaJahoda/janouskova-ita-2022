@@ -1,20 +1,17 @@
-import './style.css'
+import { theme } from '../theme'
+import { urls } from './../urls'
 import history from './pictures/history-of-JavaScript.png'
 import logo from './pictures/javascript-logo.png'
+import styled from '@emotion/styled'
 
-export function JsHistory() {
+export const JsHistory = () => {
   return (
     <div>
-      <meta charSet='UTF-8' />
-      <meta name='viewport' content='width=device-width, initial-scale=1.0' />
-      <meta name='description' content='Easy web page about the history of JavaScript' />
-      <title>The History of JavaScript</title>
-      <link rel='stylesheet' type='text/css' href='style.css' />
-      <div className='kontejner'>
-        <div className='header'>
-          <img src={logo} alt='js-logo' />
-        </div>
-        <div className='main'>
+      <Div_Body>
+        <Div_Header>
+          <Img_Logo src={logo} alt='js-logo' />
+        </Div_Header>
+        <Div_Main>
           <h1>The History of JavaScript</h1>
           <h2 id='one'>Creation at Netscape</h2>
           <p>
@@ -123,7 +120,7 @@ export function JsHistory() {
             manager in the world.
           </p>
           <p>
-            The ECMAScript draft specification is currently maintained openly on GitHub, and
+            The ECMAScript draft specification is currently Div_maintained openly on GitHub, and
             editions are produced via regular annual snapshots. Potential revisions to the language
             are vetted through a comprehensive proposal process. Now, instead of edition numbers,
             developers check the status of upcoming features individually.
@@ -134,22 +131,102 @@ export function JsHistory() {
             Plus, with the rise of single-page applications and other JavaScript-heavy websites,
             several transpilers have been created to aid the development process.
           </p>
-          <img src={history} alt='js-history' />
+          <Img_History src={history} alt='js-history' />
           <a href='https://en.wikipedia.org/wiki/JavaScript#History'>Source</a>
-        </div>
-        <div className='sidenav'>
-          <a href='#one'>Creation at Netscape</a>
-          <a href='#two'>Adoption by Microsoft</a>
-          <a href='#three'>The rise of JScript</a>
-          <a href='#four'>Growth and standardization</a>
-          <a href='#five'>Reaching maturity</a>
-        </div>
-        <div className='footer'>
-          All rights reserved
-          <a href='mailto: 3la.jah0da@gmail.com'> 3la.jah0da</a>
-        </div>
-      </div>
+        </Div_Main>
+        <Div_SideNav>
+          <A_link href={urls.jsOneUrl}>Creation at Netscape</A_link>
+          <A_link href={urls.jsTwoUrl}>Adoption by Microsoft</A_link>
+          <A_link href={urls.jsThreeUrl}>The rise of JScript</A_link>
+          <A_link href={urls.jsFourUrl}>Growth and standardization</A_link>
+          <A_link href={urls.jsFiveUrl}>Reaching maturity</A_link>
+        </Div_SideNav>
+      </Div_Body>
     </div>
   )
 }
-export default JsHistory
+const Div_Body = styled.div`
+  display: flex;
+  flex-flow: row wrap;
+  text-align: ${theme.textAlign};
+  flex: 1 100%;
+  background-color: ${theme.primaryColor};
+  font-family: ${theme.fontFamily};
+  font-size: 20px;
+`
+const Div_Header = styled.div`
+  background: ${theme.secondaryColor};
+  width: 100%;
+  border-radius: 0px 0px 0px 10px;
+  box-shadow: ${theme.boxShadow};
+  margin: 0px 0px 7px 7px;
+  z-index: 2;
+`
+const Img_Logo = styled.img`
+  width: 10%;
+  height: auto;
+`
+const Div_Main = styled.div`
+  text-align: justify;
+  background: white;
+  padding: 1% 5% 5% 5%;
+  box-shadow: ${theme.boxShadow};
+  overflow: auto;
+  z-index: 1;
+  @media ${theme.mediaSmaller} {
+    order: 2;
+    margin: -25px 10px -10px 10px;
+  }
+  @media ${theme.mediaBigger} {
+    flex: 4 0px;
+    margin: -7px 10px 0px 2px;
+    order: 2;
+  }
+`
+
+const Img_History = styled.img`
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  @media ${theme.mediaSmaller} {
+    width: 100%;
+    height: auto;
+  }
+`
+
+const Div_SideNav = styled.div`
+  background: ${theme.primaryColor};
+  display: flex;
+  flex-direction: column;
+  height: 250px;
+  @media ${theme.mediaSmaller} {
+    flex: 1 0 0;
+    order: 1;
+    position: inherit;
+  }
+  @media ${theme.mediaBigger} {
+    order: 1;
+    position: sticky;
+    position: -webkit-sticky;
+    top: 0px;
+  }
+`
+
+const A_link = styled.a`
+  background-color: ${theme.secondaryColor};
+  color: gold;
+  text-align: ${theme.textAlign};
+  text-decoration: none;
+  font-weight: 400;
+  border: 2px black;
+  border-radius: 5px;
+  margin: 2px 7px 2px 7px;
+  padding: 3px 3px 7px 3px;
+  box-shadow: ${theme.boxShadow};
+  &:focus {
+    background: ${theme.tertiaryColor};
+  }
+  &:active {
+    color: ${theme.quaternaryColor};
+  }
+`
