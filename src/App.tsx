@@ -1,7 +1,7 @@
 import { NavLink, Outlet } from 'react-router-dom'
 import { theme } from './theme'
 import { urls } from './urls'
-import React from 'react'
+import React, { Children } from 'react'
 import styled from '@emotion/styled'
 
 export const App = () => {
@@ -21,25 +21,28 @@ export const App = () => {
             color: theme.quaternaryColor,
             backgroundColor: theme.primaryColor,
           }}
-          text='Home'
           urls={urls.homePageUrl}
-        />
+        >
+          Home
+        </LinkStyled>
         |
         <LinkStyled
           style={{
             color: theme.primaryColor,
           }}
-          text='JsHistory'
           urls={urls.jsHistoryUrl}
-        />
+        >
+          JsHistory
+        </LinkStyled>
         |
         <LinkStyled
           style={{
             color: theme.primaryColor,
           }}
-          text='Counter'
           urls={urls.counterUrl}
-        />
+        >
+          Counter
+        </LinkStyled>
       </nav>
       <Outlet />
       <Footer>
@@ -50,7 +53,11 @@ export const App = () => {
   )
 }
 
-const LinkStyled = (props: { style: React.CSSProperties; text: string; urls: string }) => {
+const LinkStyled = (props: {
+  style: React.CSSProperties
+  children: React.ReactNode
+  urls: string
+}) => {
   return (
     <NavLink
       style={({ isActive }) => ({
@@ -62,7 +69,7 @@ const LinkStyled = (props: { style: React.CSSProperties; text: string; urls: str
       })}
       to={props.urls}
     >
-      {props.text}
+      {props.children}
     </NavLink>
   )
 }
