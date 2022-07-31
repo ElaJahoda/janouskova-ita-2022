@@ -20,7 +20,7 @@ export const App = () => {
           color='#40adec'
           backgroundColor='#ecd540'
           text='Home'
-          pathname='/'
+          urls={urls.homePageUrl}
           border='solid 1px #ecd540'
         />
         |
@@ -28,10 +28,10 @@ export const App = () => {
           color='#ecd540'
           backgroundColor='white'
           text='JsHistory'
-          pathname='/jshistory'
+          urls={urls.jsHistoryUrl}
         />
         |
-        <LinkStyled color='#ecd540' backgroundColor='white' text='Counter' pathname='/counter' />
+        <LinkStyled color='#ecd540' backgroundColor='white' text='Counter' urls={urls.counterUrl} />
       </nav>
       <Outlet />
       <Footer>
@@ -57,7 +57,7 @@ const LinkStyled = (props: {
   color: string
   text: string
   backgroundColor: string
-  pathname: string
+  urls: string
   border?: string
 }) => {
   return (
@@ -70,7 +70,7 @@ const LinkStyled = (props: {
         borderRadius: '5px',
         padding: '1px 6px',
       })}
-      to={{ pathname: props.pathname }}
+      to={props.urls}
     >
       {props.text}
     </NavLink>
