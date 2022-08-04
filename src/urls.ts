@@ -1,5 +1,5 @@
 export const urls = {
-  homePageUrl: '/',
+  homePageUrl: '/janouskova-ita-2022',
   jsHistoryUrl: '/jshistory',
   counterUrl: '/counter',
   jsOneUrl: '/jshistory#one',
