@@ -1,12 +1,12 @@
 {
   "files": {
-    "main.js": "/janouskova-ita-2022/static/js/main.14655ce7.js",
+    "main.js": "/janouskova-ita-2022/static/js/main.e592eab8.js",
     "static/media/history-of-JavaScript.png": "/janouskova-ita-2022/static/media/history-of-JavaScript.3d885449d6956775e1a8.png",
     "static/media/javascript-logo.png": "/janouskova-ita-2022/static/media/javascript-logo.ae3d52657d8e8169976c.png",
     "index.html": "/janouskova-ita-2022/index.html",
-    "main.14655ce7.js.map": "/janouskova-ita-2022/static/js/main.14655ce7.js.map"
+    "main.e592eab8.js.map": "/janouskova-ita-2022/static/js/main.e592eab8.js.map"
   },
   "entrypoints": [
-    "static/js/main.14655ce7.js"
+    "static/js/main.e592eab8.js"
   ]
 }
