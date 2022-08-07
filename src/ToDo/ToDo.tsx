@@ -31,32 +31,22 @@ export const useLocalStorage = <T,>(key: string, initialValue: T) => {
       const valueToStore = value instanceof Function ? value(storedValue) : value
       setStoredValue(valueToStore)
       window.localStorage.setItem(key, JSON.stringify(valueToStore))
-    } catch {
-      console.error
-    }
+    } catch {}
   }
   return [storedValue, setValue] as const
 }
 
 export const ToDo = () => {
-  const [todoList, _setTodoList] = useLocalStorage<Task[]>(localStorageId.tasks, [] as Task[])
+  const [todoList, setTodoList] = useLocalStorage<Task[]>(localStorageId.tasks, [] as Task[])
   const [task, setTask] = useState('')
-  const [error, setError] = useState<boolean>(false)
-
-  const setTodoList = (items: Task[]) => {
-    _setTodoList(items)
-  }
+  const [error, setError] = useState(false)
 
   const addTask = () => {
     if (task.trim() === '') {
-      const newError = true
-      setError(newError)
+      setError(true)
       return
     }
-    const newTask = { taskName: task, id: uniqueId(), complete: false }
-
-    setTodoList([newTask, ...todoList])
-
+    setTodoList([{ taskName: task, id: uniqueId(), complete: false }, ...todoList])
     setTask('')
     setError(false)
   }
@@ -83,16 +73,12 @@ export const ToDo = () => {
       <Div_TodoApp>
         <Div_header>
           <Input_styled
-            type='text'
-            placeholder={
-              error ? 'Error: Nothing added. Please, add task item...' : 'What need to be done?'
-            }
             error={error}
             onChange={e => {
               setTask(e.target.value)
             }}
             value={task}
-          />
+          ></Input_styled>
           <Button_styled onClick={addTask}>Add</Button_styled>
         </Div_header>
         <table>
@@ -142,15 +128,38 @@ export const ToDo = () => {
   )
 }
 
-const Input_styled = styled.input<{ error?: boolean }>`
-  margin: auto;
-  border: none;
-  width: 80%;
-  &:focus {
-    outline: none;
-  }
-  placeholder: ${props => (props.error ? 'abc' : 'def')};
-`
+const Input_styled = (props: {
+  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void
+  children?: React.ReactNode
+  error: boolean
+  value: string
+}) => {
+  return (
+    <label
+      style={{
+        margin: 'auto',
+        width: '80%',
+        color: 'red',
+        fontSize: '12px',
+      }}
+    >
+      <input
+        style={{
+          outline: 'none',
+          margin: 'inherit',
+          border: 'none',
+          width: 'inherit',
+          paddingTop: '5px',
+        }}
+        onChange={props.onChange}
+        value={props.value}
+        type='text'
+        placeholder='What need to be done?'
+      ></input>
+      <p>{props.error ? 'Error: Nothing added. Please, add task item...' : ''}</p>
+    </label>
+  )
+}
 
 const Div_TodoApp = styled.div`
   box-sizing: border-box;
@@ -192,4 +201,5 @@ const Button_styled = styled.button`
   background-color: ${theme.primaryColor};
   border: solid 0.5px ${theme.primaryColor};
   border-radius: 5px;
+  height: 30px;
 `
