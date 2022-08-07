@@ -12,53 +12,39 @@ type Task = {
 }
 
 const localStorageId = {
-  tasks: ' tasks:list',
+  tasks: 'tasks:list',
 }
 
-const getTaskLocalStorage = (): Task[] => {
-  const localStorageTasks = localStorage.getItem(localStorageId.tasks)
-  if (localStorageTasks) {
-    return JSON.parse(localStorageTasks)
-  }
-  return []
-}
-
-function useLocalStorage<T>(key: string, initialValue: T) {
+export const useLocalStorage = <T,>(key: string, initialValue: T) => {
   const [storedValue, setStoredValue] = useState<T>(() => {
-    if (typeof window === 'undefined') {
-      return initialValue
-    }
     try {
       const item = window.localStorage.getItem(key)
       return item ? JSON.parse(item) : initialValue
-    } catch (error) {
-      console.log(error)
+    } catch {
+      console.error
       return initialValue
     }
   })
+
   const setValue = (value: T | ((val: T) => T)) => {
     try {
       const valueToStore = value instanceof Function ? value(storedValue) : value
       setStoredValue(valueToStore)
-      if (typeof window !== 'undefined') {
-        window.localStorage.setItem(key, JSON.stringify(valueToStore))
-      }
-    } catch (error) {
-      console.log(error)
+      window.localStorage.setItem(key, JSON.stringify(valueToStore))
+    } catch {
+      console.error
     }
   }
   return [storedValue, setValue] as const
 }
 
 export const ToDo = () => {
-  const [todoList, _setTodoList] = useState(getTaskLocalStorage())
+  const [todoList, _setTodoList] = useLocalStorage<Task[]>(localStorageId.tasks, [] as Task[])
   const [task, setTask] = useState('')
-  const [name, setName] = useLocalStorage<string | Task[]>(localStorageId.tasks, task)
   const [error, setError] = useState<boolean>(false)
 
   const setTodoList = (items: Task[]) => {
     _setTodoList(items)
-    setName(items)
   }
 
   const addTask = () => {
@@ -70,7 +56,6 @@ export const ToDo = () => {
     const newTask = { taskName: task, id: uniqueId(), complete: false }
 
     setTodoList([newTask, ...todoList])
-    console.log(localStorageId.tasks)
 
     setTask('')
     setError(false)
@@ -80,17 +65,17 @@ export const ToDo = () => {
     setTodoList(todoList.filter(task => task.taskName !== taskNameToDelete))
   }
 
-  const AllCheckboxChecked = (event: ChangeEvent<HTMLInputElement>) => {
+  const allCheckboxChecked = (event: ChangeEvent<HTMLInputElement>) => {
     let checked = event.target.checked
     setTodoList(
-      todoList.map(data => {
-        data.complete = checked
-        return data
-      })
+      todoList.map(todo => ({
+        ...todo,
+        complete: checked,
+      }))
     )
   }
 
-  const getToDosLeft = todoList.filter(todo => !todo.complete).length
+  const incompletedTodosCount = todoList.filter(todo => !todo.complete).length
 
   return (
     <Div_Styled>
@@ -114,7 +99,7 @@ export const ToDo = () => {
           <thead>
             <tr>
               <th>
-                <input type='checkbox' onChange={AllCheckboxChecked} />
+                <input type='checkbox' onChange={allCheckboxChecked} />
               </th>
               <th>List of items:</th>
               <th></th>
@@ -129,18 +114,10 @@ export const ToDo = () => {
                       onChange={event => {
                         let checked = event.target.checked
                         setTodoList(
-                          todoList.map(data => {
-                            console.log(data)
-                            const data1 = { ...data }
-                            if (task.id === data1.id) {
-                              data1.complete = checked
-
-                              console.log(data.complete === data1.complete)
-                              console.log(task.id === data1.id)
-                            }
-                            console.log(data.complete === data1.complete)
-                            return data1
-                          })
+                          todoList.map(todo => ({
+                            ...todo,
+                            complete: task.id === todo.id ? checked : todo.complete,
+                          }))
                         )
                       }}
                       value={task.taskName}
@@ -148,7 +125,7 @@ export const ToDo = () => {
                       checked={task.complete}
                     />
                   </Td_styled>
-                  <Td_styled width='100%' border='solid 1px #d3d3d3'>
+                  <Td_styled width='100%' border={`{'solid 1px ${theme.secondaryColor}'}`}>
                     <Span_styled checked={task.complete}>{task.taskName}</Span_styled>
                   </Td_styled>
                   <Td_styled width='10%'>
@@ -159,7 +136,7 @@ export const ToDo = () => {
             })}
           </tbody>
         </table>
-        <Div_Counter>{getToDosLeft} items left</Div_Counter>
+        <Div_Counter>{incompletedTodosCount} items left</Div_Counter>
       </Div_TodoApp>
     </Div_Styled>
   )
