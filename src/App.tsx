@@ -43,6 +43,15 @@ export const App = () => {
         >
           Counter
         </LinkStyled>
+        |
+        <LinkStyled
+          style={{
+            color: theme.primaryColor,
+          }}
+          urls={urls.toDoUrl}
+        >
+          ToDo
+        </LinkStyled>
       </nav>
       <Outlet />
       <Footer>

@@ -1,10 +1,11 @@
 export const urls = {
-  homePageUrl: '/janouskova-ita-2022',
+  homePageUrl: '/',
   jsHistoryUrl: '/jshistory',
   counterUrl: '/counter',
-  jsOneUrl: '/jshistory#one',
-  jsTwoUrl: '/jshistory#two',
-  jsThreeUrl: '/jshistory#three',
-  jsFourUrl: '/jshistory#four',
-  jsFiveUrl: '/jshistory#five',
+  toDoUrl: '/todo',
+  jsOneUrl: '/jshistory/#one',
+  jsTwoUrl: '/jshistory/#two',
+  jsThreeUrl: '/jshistory/#three',
+  jsFourUrl: '/jshistory/#four',
+  jsFiveUrl: '/jshistory/#five',
 }
