@@ -3,6 +3,7 @@ export const urls = {
   jsHistoryUrl: '/jshistory',
   counterUrl: '/counter',
   toDoUrl: '/todo',
+  hackertyper: '/hackertyper',
   jsOneUrl: '/jshistory/#one',
   jsTwoUrl: '/jshistory/#two',
   jsThreeUrl: '/jshistory/#three',

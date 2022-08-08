@@ -1,6 +1,7 @@
 import { App } from './App'
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import { Counter } from './Counter/Counter'
+import { HackerTyper } from './HackerTyper/HackerTyper'
 import { Home } from './HomePage'
 import { JsHistory } from './JS-history/JsHistory'
 import { ToDo } from './ToDo/ToDo'
@@ -19,6 +20,7 @@ root.render(
           <Route path={urls.jsHistoryUrl} element={<JsHistory />} />
           <Route path={urls.counterUrl} element={<Counter />} />
           <Route path={urls.toDoUrl} element={<ToDo />} />
+          <Route path={urls.hackertyper} element={<HackerTyper />} />
         </Route>
       </Routes>
     </BrowserRouter>
