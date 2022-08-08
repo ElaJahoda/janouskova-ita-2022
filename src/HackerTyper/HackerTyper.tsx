@@ -7,21 +7,19 @@ import React from 'react'
 import styled from '@emotion/styled'
 
 export const HackerTyper = () => {
-  const [count, setCount] = useState(0)
+  const [positionNumber, setPositionNumber] = useState(0)
   const [popup, setPopup] = useState(false)
 
   const handleKeyPress = (e: React.KeyboardEvent) => {
-    const key = e.key
-    if (key === 'Enter') {
+    if (e.key === 'Enter') {
       handlePopup()
     }
   }
   const handlePopup = () => {
     setPopup(true)
-    const timer = setTimeout(() => {
+    setTimeout(() => {
       setPopup(false)
     }, 1500)
-    return () => clearTimeout(timer)
   }
 
   return (
@@ -30,8 +28,14 @@ export const HackerTyper = () => {
       <form>
         <Textarea_Container
           onKeyPress={handleKeyPress}
-          value={count === 0 ? 'Click and start... then press Enter!' : codeSample.slice(0, count)}
-          onChange={() => setCount(count > codeSample.length ? 0 : count + 4)}
+          value={
+            positionNumber === 0
+              ? 'Click and start... then press Enter!'
+              : codeSample.slice(0, positionNumber)
+          }
+          onChange={() =>
+            setPositionNumber(positionNumber > codeSample.length ? 0 : positionNumber + 4)
+          }
           spellCheck={false}
         />
         <PopUp unhacked={popup}></PopUp>
