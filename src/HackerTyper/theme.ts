@@ -1,4 +1,4 @@
-export const themeHT = {
+export const themeHackerTyper = {
   primaryColor: 'red',
   secondaryColor: '#f7f1f185',
   tertiaryColor: 'black',
