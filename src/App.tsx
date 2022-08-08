@@ -52,6 +52,15 @@ export const App = () => {
         >
           ToDo
         </LinkStyled>
+        |
+        <LinkStyled
+          style={{
+            color: theme.primaryColor,
+          }}
+          urls={urls.hackertyper}
+        >
+          HackerTyper
+        </LinkStyled>
       </nav>
       <Outlet />
       <Footer>
