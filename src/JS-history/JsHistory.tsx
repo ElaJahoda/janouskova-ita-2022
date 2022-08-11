@@ -1,3 +1,4 @@
+import { Helmet } from 'react-helmet'
 import { theme } from '../theme'
 import { urls } from './../urls'
 import history from './pictures/history-of-JavaScript.png'
@@ -7,6 +8,10 @@ import styled from '@emotion/styled'
 export const JsHistory = () => {
   return (
     <div>
+      <Helmet>
+        <title>Eva Janouskova - JS History</title>
+        <meta name='description' content='Web page about History of JavaScript' />
+      </Helmet>
       <Div_Body>
         <Div_Header>
           <Img_Logo src={logo} alt='js-logo' />
@@ -160,14 +165,12 @@ const Div_Header = styled.div`
   border-radius: 0px 0px 0px 10px;
   box-shadow: ${theme.boxShadow};
   margin: 0px 0px 7px 7px;
-  z-index: 2;
 `
 const Img_Logo = styled.img`
   width: 10%;
   height: auto;
 `
 const Div_Main = styled.div`
-  text-align: justify;
   background: white;
   padding: 1% 5% 5% 5%;
   box-shadow: ${theme.boxShadow};
@@ -176,11 +179,13 @@ const Div_Main = styled.div`
   @media ${theme.mediaSmaller} {
     order: 2;
     margin: -25px 10px -10px 10px;
+    text-align: center;
   }
   @media ${theme.mediaBigger} {
     flex: 4 0px;
     margin: -7px 10px 0px 2px;
     order: 2;
+    text-align: justify;
   }
 `
 

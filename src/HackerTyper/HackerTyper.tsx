@@ -1,8 +1,9 @@
 import { Div_Styled } from '../HomePage'
+import { Helmet } from 'react-helmet'
 import { codeSample } from './codeSample'
 import { theme } from '../theme'
 import { themeHackerTyper } from './theme'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import React from 'react'
 import styled from '@emotion/styled'
 
@@ -24,6 +25,10 @@ export const HackerTyper = () => {
 
   return (
     <Div_Styled>
+      <Helmet>
+        <title>Eva Janouskova - Hacker Typer App</title>
+        <meta name='description' content='Web page about History of JavaScript' />
+      </Helmet>
       <h1>Hacker typer</h1>
       <form>
         <Textarea_Container

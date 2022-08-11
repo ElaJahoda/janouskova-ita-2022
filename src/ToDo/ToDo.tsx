@@ -1,4 +1,5 @@
 import { Div_Styled } from '../HomePage'
+import { Helmet } from 'react-helmet'
 import { theme } from '../theme'
 import { themeTodo } from './theme'
 import { uniqueId } from '../util'
@@ -69,6 +70,10 @@ export const ToDo = () => {
 
   return (
     <Div_Styled>
+      <Helmet>
+        <title>Eva Janouskova - Todo App</title>
+        <meta name='description' content='Todo App' />
+      </Helmet>
       <h1>Todo App</h1>
       <Div_TodoApp>
         <Div_header>

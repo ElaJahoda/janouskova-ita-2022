@@ -7,6 +7,7 @@ export const theme = {
   quaternaryColor: '#40adec',
   fontFamily: 'Segoe UI, Tahoma, Geneva, Verdana, sans-serif',
   fontSize: '20px',
-  mediaSmaller: '(min-width: 600px)',
+  mediaSmaller: '(min-width: 400px)',
   mediaBigger: '(min-width: 800px)',
+  mediaMax: '(max-width: 768px)',
 }

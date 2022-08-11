@@ -1,3 +1,4 @@
+import { Helmet } from 'react-helmet'
 import { theme } from './theme'
 import React from 'react'
 import styled from '@emotion/styled'
@@ -5,6 +6,10 @@ import styled from '@emotion/styled'
 export const Home = () => {
   return (
     <Div_Styled>
+      <Helmet>
+        <title>Eva Janouskova - Home</title>
+        <meta name='description' content='Home page of React portfolio' />
+      </Helmet>
       <h1>Welcome</h1>
       <p>Welcome to my React portfolio.</p>
     </Div_Styled>
@@ -12,7 +17,7 @@ export const Home = () => {
 }
 export const Div_Styled = styled.div`
   background-color: ${theme.primaryColor};
-  height: 82.9vh;
+  height: 91vh;
   text-align: ${theme.textAlign};
   font-family: ${theme.fontFamily};
   font-size: ${theme.fontSize};
