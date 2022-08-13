@@ -19,7 +19,7 @@ const localStorageId = {
   tasks: 'tasks:list',
 }
 
-const UseLogicState = () => {
+const useLogicState = () => {
   const [todoList, setTodoList] = useLocalStorage<Task[]>(localStorageId.tasks, [] as Task[])
   const [task, setTask] = useState('')
   const [error, setError] = useState(false)
@@ -34,6 +34,7 @@ const UseLogicState = () => {
       return todoList
     }
   }
+  const filterValue = getFilteredTodoList()
 
   const addTask = () => {
     if (task.trim() === '') {
@@ -59,15 +60,15 @@ const UseLogicState = () => {
     setTask,
     error,
     setError,
-    getFilteredTodoList,
     addTask,
     deleteTask,
     incompletedTodosCount,
+    filterValue,
   }
 }
 
 export const { ContextProvider: TodoContextProvider, Context: TodoContext } =
-  genericHookContextBuilder(UseLogicState)
+  genericHookContextBuilder(useLogicState)
 
 export const ToDo = () => {
   return (
@@ -97,16 +98,14 @@ const TodoListBoard = () => {
           <Div_header>
             <Input_styled
               error={logic.error}
-              onChange={e => {
-                logic.setTask(e.target.value)
-              }}
+              onChange={e => logic.setTask(e.target.value)}
               value={logic.task}
             ></Input_styled>
             <Button type='submit'>Add</Button>
           </Div_header>
           <table>
             <tbody>
-              {logic.getFilteredTodoList().map(task => {
+              {logic.filterValue.map(task => {
                 return (
                   <tr key={task.id}>
                     <Td_styled width='5%'>
@@ -125,7 +124,7 @@ const TodoListBoard = () => {
                         checked={task.complete}
                       />
                     </Td_styled>
-                    <Td_styled width='100%' border={`{'solid 1px ${theme.secondaryColor}'}`}>
+                    <Td_styled width='100%'>
                       <Span_styled checked={task.complete}>{task.taskName}</Span_styled>
                     </Td_styled>
                     <Td_styled width='10%'>
@@ -212,12 +211,11 @@ const Div_TodoApp = styled.div`
   }
 `
 
-const Td_styled = styled.td<{ width?: string; border?: string }>`
+const Td_styled = styled.td<{ width?: string }>`
   width: ${props => props.width};
   padding: 5px;
   font-family: inherit;
   font-size: inherit;
-  border-bottom: ${props => props.border};
 `
 
 const Span_Counter = styled.span`

@@ -16,18 +16,10 @@ export const App = () => {
       <Div_Nav>
         <Bars onClick={handleToggle}>{toggle ? <FaChevronUp /> : <FaChevronDown />}</Bars>
         <NavMenu prop={toggle}>
-          <LinkStyled
-            style={{
-              color: theme.quaternaryColor,
-              backgroundColor: theme.primaryColor,
-              borderColor: theme.quaternaryColor,
-            }}
-            urls={urls.homePageUrl}
-            onClick={handleToggle}
-          >
+          <LinkStyledHover primary='primary' urls={urls.homePageUrl} onClick={handleToggle}>
             Home
-          </LinkStyled>
-          <LinkStyled
+          </LinkStyledHover>
+          <LinkStyledHover
             style={{
               borderColor: theme.primaryColor,
             }}
@@ -35,8 +27,8 @@ export const App = () => {
             onClick={handleToggle}
           >
             JsHistory
-          </LinkStyled>
-          <LinkStyled
+          </LinkStyledHover>
+          <LinkStyledHover
             style={{
               borderColor: theme.primaryColor,
             }}
@@ -44,8 +36,8 @@ export const App = () => {
             onClick={handleToggle}
           >
             Counter
-          </LinkStyled>
-          <LinkStyled
+          </LinkStyledHover>
+          <LinkStyledHover
             style={{
               borderColor: theme.primaryColor,
             }}
@@ -53,8 +45,8 @@ export const App = () => {
             onClick={handleToggle}
           >
             ToDo
-          </LinkStyled>
-          <LinkStyled
+          </LinkStyledHover>
+          <LinkStyledHover
             style={{
               borderColor: theme.primaryColor,
             }}
@@ -62,7 +54,7 @@ export const App = () => {
             onClick={handleToggle}
           >
             HackerTyper
-          </LinkStyled>
+          </LinkStyledHover>
         </NavMenu>
       </Div_Nav>
     </Div_styled>
@@ -76,13 +68,6 @@ const NavMenu = styled.div<Prop>`
   box-sizing: border-box;
   display: flex;
   align-items: center;
-
-  a {
-    text-decoration: none;
-    color: grey;
-    &:hover {
-      color: black;
-    }
   }
 
   @media screen and ${theme.mediaMax} {
@@ -122,9 +107,10 @@ const Bars = styled.div`
   }
 `
 const LinkStyled = (props: {
-  style: React.CSSProperties
+  style?: React.CSSProperties
   children: React.ReactNode
   urls: string
+  primary?: string
   onClick: MouseEventHandler<HTMLAnchorElement>
 }) => {
   return (
@@ -140,7 +126,10 @@ const LinkStyled = (props: {
         padding: '1px 6px',
         border: 'solid 1px transparent',
         ...props.style,
-        borderColor: isActive ? props.style.borderColor : 'transparent',
+        backgroundColor: props.primary ? theme.primaryColor : 'transparent',
+        color: props.primary ? theme.quaternaryColor : 'grey',
+        borderColor:
+          isActive || (isActive && props.primary) ? theme.quaternaryColor : 'transparent',
       })}
       to={props.urls}
       onClick={props.onClick}
@@ -149,6 +138,12 @@ const LinkStyled = (props: {
     </NavLink>
   )
 }
+
+const LinkStyledHover = styled(LinkStyled)`
+  &:hover {
+    color: black;
+  }
+`
 
 const Div_styled = styled.div`
   text-align: ${theme.textAlign};

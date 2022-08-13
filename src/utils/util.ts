@@ -1,9 +1,7 @@
 import { useState } from 'react'
 
-export const uniqueId = (): number => {
-  const number = Math.floor(Math.random() * 10000)
-  return number
-}
+export const uniqueId = () => Math.floor(Math.random() * 10_000)
+
 export const useLocalStorage = <T>(key: string, initialValue: T) => {
   const [storedValue, setStoredValue] = useState<T>(() => {
     try {
