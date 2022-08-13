@@ -1,13 +1,20 @@
+import { Div_Styled } from '../HomePage'
 import { Helmet } from 'react-helmet'
 import { theme } from '../theme'
 import { urls } from './../urls'
+import { useState } from 'react'
 import history from './pictures/history-of-JavaScript.png'
 import logo from './pictures/javascript-logo.png'
 import styled from '@emotion/styled'
 
 export const JsHistory = () => {
+  const [toggle, setToggle] = useState(false)
+
+  const handleToggle = () => {
+    setToggle(!toggle)
+  }
   return (
-    <div>
+    <Div_Styled>
       <Helmet>
         <title>Eva Janouskova - JS History</title>
         <meta name='description' content='Web page about History of JavaScript' />
@@ -140,14 +147,16 @@ export const JsHistory = () => {
           <a href='https://en.wikipedia.org/wiki/JavaScript#History'>Source</a>
         </Div_Main>
         <Div_SideNav>
-          <A_link href={urls.jsOneUrl}>Creation at Netscape</A_link>
+          <A_link href={urls.jsOneUrl} onClick={handleToggle}>
+            Creation at Netscape
+          </A_link>
           <A_link href={urls.jsTwoUrl}>Adoption by Microsoft</A_link>
           <A_link href={urls.jsThreeUrl}>The rise of JScript</A_link>
           <A_link href={urls.jsFourUrl}>Growth and standardization</A_link>
           <A_link href={urls.jsFiveUrl}>Reaching maturity</A_link>
         </Div_SideNav>
       </Div_Body>
-    </div>
+    </Div_Styled>
   )
 }
 const Div_Body = styled.div`
@@ -155,19 +164,16 @@ const Div_Body = styled.div`
   flex-flow: row wrap;
   text-align: ${theme.textAlign};
   flex: 1 100%;
-  background-color: ${theme.primaryColor};
+  background-color: white;
   font-family: ${theme.fontFamily};
   font-size: 20px;
 `
 const Div_Header = styled.div`
-  background: ${theme.secondaryColor};
   width: 100%;
-  border-radius: 0px 0px 0px 10px;
-  box-shadow: ${theme.boxShadow};
-  margin: 0px 0px 7px 7px;
+  margin-top: 10px;
 `
 const Img_Logo = styled.img`
-  width: 10%;
+  width: 8%;
   height: auto;
 `
 const Div_Main = styled.div`
@@ -183,7 +189,7 @@ const Div_Main = styled.div`
   }
   @media ${theme.mediaBigger} {
     flex: 4 0px;
-    margin: -7px 10px 0px 2px;
+    margin: 0px 245px 0px 2px;
     order: 2;
     text-align: justify;
   }
@@ -200,10 +206,11 @@ const Img_History = styled.img`
 `
 
 const Div_SideNav = styled.div`
-  background: ${theme.primaryColor};
+  background: white;
   display: flex;
   flex-direction: column;
   height: 250px;
+
   @media ${theme.mediaSmaller} {
     flex: 1 0 0;
     order: 1;
@@ -218,20 +225,18 @@ const Div_SideNav = styled.div`
 `
 
 const A_link = styled.a`
-  background-color: ${theme.secondaryColor};
-  color: gold;
+  color: grey;
   text-align: ${theme.textAlign};
   text-decoration: none;
   font-weight: 400;
-  border: 2px black;
-  border-radius: 5px;
+  border-bottom: dotted 2px ${theme.quaternaryColor};
   margin: 2px 7px 2px 7px;
   padding: 3px 3px 7px 3px;
-  box-shadow: ${theme.boxShadow};
-  &:focus {
-    background: ${theme.tertiaryColor};
+  &:hover {
+    transform: scale(1.1);
+    color: black;
   }
   &:active {
-    color: ${theme.quaternaryColor};
+    color: ${theme.primaryColor};
   }
 `

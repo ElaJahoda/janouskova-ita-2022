@@ -1,5 +1,7 @@
+import { Button } from '../components/Button'
 import { Div_Styled } from '../HomePage'
 import { Helmet } from 'react-helmet'
+import { theme } from '../theme'
 import React, { useState } from 'react'
 import styled from '@emotion/styled'
 
@@ -22,23 +24,33 @@ export class Counter extends React.Component<Props, State> {
           <meta name='description' content='Counter App' />
         </Helmet>
         <h1>Counter App</h1>
-
-        <button
-          onClick={() => {
-            this.setState(prevstate => ({ counter: prevstate.counter - 1 }))
-          }}
-        >
-          -
-        </button>
-        <span> {this.state.counter} </span>
-        <button
-          onClick={() => {
-            this.setState(prevstate => ({ counter: prevstate.counter + 1 }))
-          }}
-        >
-          +
-        </button>
+        <Div_Container>
+          <Button
+            style={{ width: '35px' }}
+            onClick={() => {
+              this.setState(prevstate => ({ counter: prevstate.counter - 1 }))
+            }}
+          >
+            -
+          </Button>
+          <span> {this.state.counter} </span>
+          <Button
+            style={{ width: '35px' }}
+            onClick={() => {
+              this.setState(prevstate => ({ counter: prevstate.counter + 1 }))
+            }}
+          >
+            +
+          </Button>
+        </Div_Container>
       </Div_Styled>
     )
   }
 }
+
+const Div_Container = styled.div`
+  font-size: 35px;
+  @media screen and ${theme.mediaMax} {
+    widht: 95%;
+  }
+`

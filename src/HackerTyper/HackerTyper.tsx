@@ -70,6 +70,9 @@ const Textarea_Container = styled.textarea`
   color: ${themeHackerTyper.quarterlyColor};
   box-shadow: ${theme.boxShadow};
   over-flow: scroll;
+  @media screen and ${theme.mediaMax} {
+    width: 94%;
+  }
 `
 const Div_StyledPopUpBackdrop = styled.div`
   position: fixed;
