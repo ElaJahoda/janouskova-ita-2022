@@ -17,7 +17,6 @@ export const JsHistory = () => {
     <Div_Styled>
       <Helmet>
         <title>Eva Janouskova - JS History</title>
-        <meta name='description' content='Web page about History of JavaScript' />
       </Helmet>
       <Div_Body>
         <Div_Header>

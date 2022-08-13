@@ -16,26 +16,21 @@ export const App = () => {
       <Div_Nav>
         <Bars onClick={handleToggle}>{toggle ? <FaChevronUp /> : <FaChevronDown />}</Bars>
         <NavMenu prop={toggle}>
-          <LinkStyled
-            className={LinkStyledHover}
-            primary='primary'
-            to={urls.homePageUrl}
-            onClick={handleToggle}
-          >
+          <LinkStyledHover primary='primary' to={urls.homePageUrl} onClick={handleToggle}>
             Home
-          </LinkStyled>
-          <LinkStyled className={LinkStyledHover} to={urls.jsHistoryUrl} onClick={handleToggle}>
+          </LinkStyledHover>
+          <LinkStyledHover to={urls.jsHistoryUrl} onClick={handleToggle}>
             JsHistory
-          </LinkStyled>
-          <LinkStyled className={LinkStyledHover} to={urls.counterUrl} onClick={handleToggle}>
+          </LinkStyledHover>
+          <LinkStyledHover to={urls.counterUrl} onClick={handleToggle}>
             Counter
-          </LinkStyled>
-          <LinkStyled className={LinkStyledHover} to={urls.toDoUrl} onClick={handleToggle}>
+          </LinkStyledHover>
+          <LinkStyledHover to={urls.toDoUrl} onClick={handleToggle}>
             ToDo
-          </LinkStyled>
-          <LinkStyled className={LinkStyledHover} to={urls.hackertyper} onClick={handleToggle}>
+          </LinkStyledHover>
+          <LinkStyledHover to={urls.hackertyper} onClick={handleToggle}>
             HackerTyper
-          </LinkStyled>
+          </LinkStyledHover>
         </NavMenu>
       </Div_Nav>
     </Div_styled>
@@ -93,7 +88,7 @@ const LinkStyled = (props: {
   to: string
   primary?: string
   onClick: MouseEventHandler<HTMLAnchorElement>
-  className?: any
+  className?: string
 }) => {
   return (
     <NavLink
@@ -110,7 +105,7 @@ const LinkStyled = (props: {
         border: 'solid 1px transparent',
         ...props.style,
         backgroundColor: props.primary ? theme.primaryColor : 'transparent',
-        color: props.primary ? theme.quaternaryColor : 'grey',
+        color: props.primary ? theme.quaternaryColor : theme.secondaryColor,
         borderColor:
           isActive || (isActive && props.primary) ? theme.quaternaryColor : 'transparent',
       })}
@@ -124,7 +119,7 @@ const LinkStyled = (props: {
 
 const LinkStyledHover = styled(LinkStyled)`
   &:hover {
-    color: black;
+    color: ${theme.basicColor};
   }
 `
 

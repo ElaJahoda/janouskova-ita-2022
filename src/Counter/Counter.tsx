@@ -21,12 +21,10 @@ export class Counter extends React.Component<Props, State> {
       <Div_Styled>
         <Helmet>
           <title>Eva Janouskova - Counter App</title>
-          <meta name='description' content='Counter App' />
         </Helmet>
         <h1>Counter App</h1>
         <Div_Container>
           <Button
-            style={{ width: '35px' }}
             onClick={() => {
               this.setState(prevstate => ({ counter: prevstate.counter - 1 }))
             }}
@@ -35,7 +33,6 @@ export class Counter extends React.Component<Props, State> {
           </Button>
           <span> {this.state.counter} </span>
           <Button
-            style={{ width: '35px' }}
             onClick={() => {
               this.setState(prevstate => ({ counter: prevstate.counter + 1 }))
             }}

@@ -27,7 +27,6 @@ export const HackerTyper = () => {
     <Div_Styled>
       <Helmet>
         <title>Eva Janouskova - Hacker Typer App</title>
-        <meta name='description' content='Web page about History of JavaScript' />
       </Helmet>
       <h1>Hacker typer</h1>
       <form>

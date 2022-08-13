@@ -15,12 +15,8 @@ type Task = {
   complete: boolean
 }
 
-const localStorageId = {
-  tasks: 'tasks:list',
-}
-
 const useLogicState = () => {
-  const [todoList, setTodoList] = useLocalStorage<Task[]>(localStorageId.tasks, [] as Task[])
+  const [todoList, setTodoList] = useLocalStorage<Task[]>('tasks:list', [] as Task[])
   const [task, setTask] = useState('')
   const [error, setError] = useState(false)
   const [filter, setFilter] = useLocalStorage<'All' | 'Complete' | 'Active'>('filterdTasks', 'All')
@@ -84,7 +80,6 @@ const TodoListBoard = () => {
     <Div_Styled>
       <Helmet>
         <title>Eva Janouskova - Todo App</title>
-        <meta name='description' content='Todo App' />
       </Helmet>
       <h1>Todo App</h1>
 
