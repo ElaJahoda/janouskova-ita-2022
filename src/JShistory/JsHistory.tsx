@@ -1,6 +1,7 @@
 import { Div_Styled } from '../HomePage'
 import { Helmet } from 'react-helmet'
 import { theme } from '../theme'
+import { url } from 'inspector'
 import { urls } from './../urls'
 import { useState } from 'react'
 import history from './pictures/history-of-JavaScript.png'
@@ -24,7 +25,7 @@ export const JsHistory = () => {
         </Div_Header>
         <Div_Main>
           <h1>The History of JavaScript</h1>
-          <h2 id='one'>Creation at Netscape</h2>
+          <h2 id={urls.jsCreationAtNetscapeUrl}>Creation at Netscape</h2>
           <p>
             The first web browser with a graphical user interface, Mosaic, was released in 1993.
             Accessible to non-technical people, it played a prominent role in the rapid growth of
@@ -47,7 +48,7 @@ export const JsHistory = () => {
             LiveScript when first shipped as part of a Navigator beta in September 1995, the name
             was changed to JavaScript for the official release in December.
           </p>
-          <h2 id='two'>Adoption by Microsoft</h2>
+          <h2 id={urls.jsAdoptionByMicrosoftUrl}>Adoption by Microsoft</h2>
           <p>
             Microsoft debuted Internet Explorer in 1995, leading to a browser war with Netscape. On
             the JavaScript front, Microsoft reverse-engineered the Navigator interpreter to create
@@ -60,7 +61,7 @@ export const JsHistory = () => {
             work well in both browsers, leading to widespread use of &quot;best viewed in
             Netscape&quot; and &quot;best viewed in Internet Explorer &quot;logos for several years.
           </p>
-          <h2 id='three'>The rise of JScript</h2>
+          <h2 id={urls.jsTheRiseOfJScriptUrl}>The rise of JScript</h2>
           <p>
             In November 1996, Netscape submitted JavaScript to Ecma International, as the starting
             point for a standard specification that all browser vendors could conform to. This led
@@ -80,7 +81,7 @@ export const JsHistory = () => {
             in its JScript language, but eventually it stopped collaborating on Ecma work. Thus
             ECMAScript 4 was mothballed.
           </p>
-          <h2 id='four'>Growth and standardization</h2>
+          <h2 id={urls.jsGrowthAndStandardizationUrl}>Growth and standardization</h2>
           <p>
             During the period of Internet Explorer dominance in the early 2000s, client-side
             scripting was stagnant. This started to change in 2004, when the successor of Netscape,
@@ -117,7 +118,7 @@ export const JsHistory = () => {
             to the eventual agreement in early 2009 to combine all relevant work and drive the
             language forward. The result was the ECMAScript 5 standard, released in December 2009.
           </p>
-          <h2 id='five'>Reaching maturity</h2>
+          <h2 id={urls.jsReachingMaturityUrl}>Reaching maturity</h2>
           <p>
             Ambitious work on the language continued for several years, culminating in an extensive
             collection of additions and refinements being formalized with the publication of
@@ -146,13 +147,13 @@ export const JsHistory = () => {
           <a href='https://en.wikipedia.org/wiki/JavaScript#History'>Source</a>
         </Div_Main>
         <Div_SideNav>
-          <A_link href={urls.jsOneUrl} onClick={handleToggle}>
+          <A_link href={urls.jsCreationAtNetscapeUrlAll} onClick={handleToggle}>
             Creation at Netscape
           </A_link>
-          <A_link href={urls.jsTwoUrl}>Adoption by Microsoft</A_link>
-          <A_link href={urls.jsThreeUrl}>The rise of JScript</A_link>
-          <A_link href={urls.jsFourUrl}>Growth and standardization</A_link>
-          <A_link href={urls.jsFiveUrl}>Reaching maturity</A_link>
+          <A_link href={urls.jsAdoptionByMicrosoftUrlAll}>Adoption by Microsoft</A_link>
+          <A_link href={urls.jsTheRiseOfJScriptUrlAll}>The rise of JScript</A_link>
+          <A_link href={urls.jsGrowthAndStandardizationUrlAll}>Growth and standardization</A_link>
+          <A_link href={urls.jsReachingMaturityUrlAll}>Reaching maturity</A_link>
         </Div_SideNav>
       </Div_Body>
     </Div_Styled>
