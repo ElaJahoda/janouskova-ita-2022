@@ -16,45 +16,26 @@ export const App = () => {
       <Div_Nav>
         <Bars onClick={handleToggle}>{toggle ? <FaChevronUp /> : <FaChevronDown />}</Bars>
         <NavMenu prop={toggle}>
-          <LinkStyledHover primary='primary' urls={urls.homePageUrl} onClick={handleToggle}>
+          <LinkStyled
+            className={LinkStyledHover}
+            primary='primary'
+            to={urls.homePageUrl}
+            onClick={handleToggle}
+          >
             Home
-          </LinkStyledHover>
-          <LinkStyledHover
-            style={{
-              borderColor: theme.primaryColor,
-            }}
-            urls={urls.jsHistoryUrl}
-            onClick={handleToggle}
-          >
+          </LinkStyled>
+          <LinkStyled className={LinkStyledHover} to={urls.jsHistoryUrl} onClick={handleToggle}>
             JsHistory
-          </LinkStyledHover>
-          <LinkStyledHover
-            style={{
-              borderColor: theme.primaryColor,
-            }}
-            urls={urls.counterUrl}
-            onClick={handleToggle}
-          >
+          </LinkStyled>
+          <LinkStyled className={LinkStyledHover} to={urls.counterUrl} onClick={handleToggle}>
             Counter
-          </LinkStyledHover>
-          <LinkStyledHover
-            style={{
-              borderColor: theme.primaryColor,
-            }}
-            urls={urls.toDoUrl}
-            onClick={handleToggle}
-          >
+          </LinkStyled>
+          <LinkStyled className={LinkStyledHover} to={urls.toDoUrl} onClick={handleToggle}>
             ToDo
-          </LinkStyledHover>
-          <LinkStyledHover
-            style={{
-              borderColor: theme.primaryColor,
-            }}
-            urls={urls.hackertyper}
-            onClick={handleToggle}
-          >
+          </LinkStyled>
+          <LinkStyled className={LinkStyledHover} to={urls.hackertyper} onClick={handleToggle}>
             HackerTyper
-          </LinkStyledHover>
+          </LinkStyled>
         </NavMenu>
       </Div_Nav>
     </Div_styled>
@@ -109,12 +90,14 @@ const Bars = styled.div`
 const LinkStyled = (props: {
   style?: React.CSSProperties
   children: React.ReactNode
-  urls: string
+  to: string
   primary?: string
   onClick: MouseEventHandler<HTMLAnchorElement>
+  className?: any
 }) => {
   return (
     <NavLink
+      className={props.className}
       style={({ isActive }) => ({
         textDecoration: 'none',
         borderRadius: '5px',
@@ -131,7 +114,7 @@ const LinkStyled = (props: {
         borderColor:
           isActive || (isActive && props.primary) ? theme.quaternaryColor : 'transparent',
       })}
-      to={props.urls}
+      to={props.to}
       onClick={props.onClick}
     >
       {props.children}
