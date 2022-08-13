@@ -30,6 +30,9 @@ export const App = () => {
           <LinkStyledHover to={urls.hackertyper} onClick={handleToggle}>
             HackerTyper
           </LinkStyledHover>
+          <LinkStyledHover to={urls.mortgagecalculator} onClick={handleToggle}>
+            MortgageCalculator
+          </LinkStyledHover>
         </NavMenu>
       </Div_Nav>
     </Div_styled>
@@ -59,7 +62,6 @@ const NavMenu = styled.div<Prop>`
   }
 `
 const Div_Nav = styled.div`
-  border-bottom: solid 2px ${theme.primaryColor};
   padding-bottom: 1rem;
   text-decoration: none;
   height: 85px;
@@ -116,10 +118,7 @@ const LinkStyled = (props: {
 }
 
 const LinkStyledHover = styled(LinkStyled)`
-  margin: 5rem;
-  padding: 5rem;
-  color: ${props => (props.primary ? 'yellow' : 'blue')},
-  color :link {
+  :link {
     color: ${theme.secondaryColor};
   }
   :visited {

@@ -4,6 +4,7 @@ export const urls = {
   counterUrl: '/counter',
   toDoUrl: '/todo',
   hackertyper: '/hackertyper',
+  mortgagecalculator: '/mortgagecalculator',
   jsOneUrl: '/jshistory/#one',
   jsTwoUrl: '/jshistory/#two',
   jsThreeUrl: '/jshistory/#three',
