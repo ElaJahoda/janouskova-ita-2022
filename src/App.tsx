@@ -7,7 +7,6 @@ import styled from '@emotion/styled'
 
 export const App = () => {
   const [toggle, setToggle] = useState(false)
-
   const handleToggle = () => {
     setToggle(!toggle)
   }
@@ -105,7 +104,6 @@ const LinkStyled = (props: {
         border: 'solid 1px transparent',
         ...props.style,
         backgroundColor: props.primary ? theme.primaryColor : 'transparent',
-        color: props.primary ? theme.quaternaryColor : theme.secondaryColor,
         borderColor:
           isActive || (isActive && props.primary) ? theme.quaternaryColor : 'transparent',
       })}
@@ -118,8 +116,23 @@ const LinkStyled = (props: {
 }
 
 const LinkStyledHover = styled(LinkStyled)`
-  &:hover {
+  margin: 5rem;
+  padding: 5rem;
+  color: ${props => (props.primary ? 'yellow' : 'blue')},
+  color :link {
+    color: ${theme.secondaryColor};
+  }
+  :visited {
+    color: ${theme.secondaryColor};
+  }
+  :hover {
     color: ${theme.basicColor};
+  }
+  :visit {
+    color: ${theme.secondaryColor};
+  }
+  :active {
+    color: ${theme.quaternaryColor};
   }
 `
 
