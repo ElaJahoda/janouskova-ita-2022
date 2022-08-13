@@ -4,14 +4,21 @@ import { theme } from '../theme'
 import React, { useState } from 'react'
 import styled from '@emotion/styled'
 
-const payment = (dataAmount: number, monthlyRate: number, time: number) => {
-  return (
-    Math.round(
-      ((dataAmount * monthlyRate * Math.pow(1 + monthlyRate, time)) /
-        (Math.pow(1 + monthlyRate, time) - 1)) *
-        100
-    ) / 100
-  )
+const calculateMonthlyPayment = (amount: number, rate: number, years: number) => {
+  const dataAmount = amount ? amount : 0
+  const monthlyRate = rate ? rate / 100 / 12 : 0
+  const time = years ? years * 12 : 0
+  if (amount && rate && years !== 0) {
+    return (
+      Math.round(
+        ((dataAmount * monthlyRate * Math.pow(1 + monthlyRate, time)) /
+          (Math.pow(1 + monthlyRate, time) - 1)) *
+          100
+      ) / 100
+    )
+  } else {
+    return 0
+  }
 }
 
 export const MortgageCalculator = () => {
@@ -19,13 +26,7 @@ export const MortgageCalculator = () => {
   const [rate, setRate] = useState(0)
   const [years, setYears] = useState(0)
 
-  const dataAmount = amount ? amount : 0
-  const monthlyRate = rate ? rate / 100 / 12 : 0
-  const time = years ? years * 12 : 0
-
-  const dataPayment = payment(dataAmount, monthlyRate, time)
-    ? payment(dataAmount, monthlyRate, time)
-    : 0
+  const dataMonthlyPayment = calculateMonthlyPayment(amount, rate, years)
 
   return (
     <Div_Styled>
@@ -64,7 +65,7 @@ export const MortgageCalculator = () => {
             value={years}
           />
         </label>
-        <div>Your estimated monthly payment is {dataPayment} CZK</div>
+        <div>Your estimated monthly payment is {dataMonthlyPayment} CZK</div>
       </Div_Container>
     </Div_Styled>
   )
