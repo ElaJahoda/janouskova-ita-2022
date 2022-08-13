@@ -22,7 +22,7 @@ root.render(
         <Route path={urls.counterUrl} element={<Counter />} />
         <Route path={urls.toDoUrl} element={<ToDo />} />
         <Route path={urls.hackertyper} element={<HackerTyper />} />
-        <Route path={urls.mortgagecalculator} element={<MortgageCalculator />} />
+        <Route path={urls.mortgageCalculator} element={<MortgageCalculator />} />
       </Routes>
     </BrowserRouter>
   </React.StrictMode>

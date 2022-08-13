@@ -4,6 +4,16 @@ import { theme } from '../theme'
 import React, { useState } from 'react'
 import styled from '@emotion/styled'
 
+const payment = (dataAmount: number, monthlyRate: number, time: number) => {
+  return (
+    Math.round(
+      ((dataAmount * monthlyRate * Math.pow(1 + monthlyRate, time)) /
+        (Math.pow(1 + monthlyRate, time) - 1)) *
+        100
+    ) / 100
+  )
+}
+
 export const MortgageCalculator = () => {
   const [amount, setAmount] = useState(0)
   const [rate, setRate] = useState(0)
@@ -12,21 +22,10 @@ export const MortgageCalculator = () => {
   const dataAmount = amount ? amount : 0
   const monthlyRate = rate ? rate / 100 / 12 : 0
   const time = years ? years * 12 : 0
-  const payment =
-    Math.round(
-      ((dataAmount * monthlyRate * Math.pow(1 + monthlyRate, time)) /
-        (Math.pow(1 + monthlyRate, time) - 1)) *
-        100
-    ) / 100
 
-  const dataPayment = payment ? payment : 0
-
-  //   const monthlyRate = rate / 12
-  //   const factor = Math.pow(monthlyRate + 1, years)
-  //   const numerator = monthlyRate * factor
-  //   const denominator = factor - 1
-  //   const quotient = numerator / denominator
-  //   const payment = (amount * quotient).toFixed(2)
+  const dataPayment = payment(dataAmount, monthlyRate, time)
+    ? payment(dataAmount, monthlyRate, time)
+    : 0
 
   return (
     <Div_Styled>
@@ -39,11 +38,11 @@ export const MortgageCalculator = () => {
           <Input_Styled
             type='number'
             placeholder='Loan Amount'
-            step='100000'
+            step='5000'
             required
             onChange={e => setAmount(parseInt(e.target.value))}
             value={amount}
-          ></Input_Styled>
+          />
         </label>
         <br />
         <label>
@@ -53,7 +52,7 @@ export const MortgageCalculator = () => {
             required
             onChange={e => setRate(parseInt(e.target.value))}
             value={rate}
-          ></Input_Styled>
+          />
         </label>
         <br />
         <label>
@@ -63,7 +62,7 @@ export const MortgageCalculator = () => {
             required
             onChange={e => setYears(parseInt(e.target.value))}
             value={years}
-          ></Input_Styled>
+          />
         </label>
         <div>Your estimated monthly payment is {dataPayment} CZK</div>
       </Div_Container>

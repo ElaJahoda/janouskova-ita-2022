@@ -30,7 +30,7 @@ export const App = () => {
           <LinkStyledHover to={urls.hackertyper} onClick={handleToggle}>
             HackerTyper
           </LinkStyledHover>
-          <LinkStyledHover to={urls.mortgagecalculator} onClick={handleToggle}>
+          <LinkStyledHover to={urls.mortgageCalculator} onClick={handleToggle}>
             MortgageCalculator
           </LinkStyledHover>
         </NavMenu>
