@@ -1,7 +1,6 @@
 import { Div_Styled } from '../HomePage'
 import { Helmet } from 'react-helmet'
 import { theme } from '../theme'
-import { url } from 'inspector'
 import { urls } from './../urls'
 import { useState } from 'react'
 import history from './pictures/history-of-JavaScript.png'
