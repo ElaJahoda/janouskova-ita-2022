@@ -5,6 +5,7 @@ export const urls = {
   toDoUrl: '/todo',
   hackertyper: '/hackertyper',
   mortgageCalculator: '/mortgage-calculator',
+  memoryGame: '/memory-game',
   jsAdoptionByMicrosoftUrl: 'adoption-by-microsoft',
   jsCreationAtNetscapeUrl: 'creation-at-netscape',
   jsTheRiseOfJScriptUrl: 'the-rise-of-jscript',

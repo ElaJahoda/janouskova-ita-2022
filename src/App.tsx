@@ -33,6 +33,9 @@ export const App = () => {
           <LinkStyledHover to={urls.mortgageCalculator} onClick={handleToggle}>
             MortgageCalculator
           </LinkStyledHover>
+          <LinkStyledHover to={urls.memoryGame} onClick={handleToggle}>
+            MemoryGame
+          </LinkStyledHover>
         </NavMenu>
       </Div_Nav>
     </Div_styled>
