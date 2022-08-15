@@ -1,6 +1,6 @@
 import { Button } from '../components/Button'
 import { Div_Styled } from '../HomePage'
-import { shuffleArray } from '../utils/util'
+import { delay, shuffleArray, uniqueId } from '../utils/util'
 import Helmet from 'react-helmet'
 import React, { useState } from 'react'
 import img1 from './pictures/img1.png'
@@ -14,25 +14,17 @@ import img8 from './pictures/img8.png'
 import questionMark from './pictures/question-mark.png'
 import styled from '@emotion/styled'
 
-type CardType = {
-  id?: string
-  flipped?: boolean
-  backImage?: string
-  frontImage?: string
-  frozen?: boolean
-  matchingCardId?: string
-}
+type CardType = ReturnType<typeof createBoard>[number]
 
 const cards = [img1, img2, img3, img4, img5, img6, img7, img8]
 
-const createBoard = (): CardType[] =>
-  [...cards, ...cards].map((card, i) => ({
-    id: `${i}`,
+const createBoard = () =>
+  [...cards, ...cards].map(card => ({
+    id: uniqueId(),
     flipped: false,
     backImage: questionMark,
     frontImage: card,
     frozen: true,
-    matchingCardId: i < cards.length ? `${i + cards.length}` : `${i - cards.length}`,
   }))
 
 const Card = (props: { card: CardType; callback: (card: CardType) => void }) => {
@@ -47,56 +39,52 @@ const Card = (props: { card: CardType; callback: (card: CardType) => void }) => 
   )
 }
 
-const delay = (ms: number) => new Promise(resolve => setTimeout(() => resolve(undefined), ms))
-
 export const MemoryGame = () => {
   const [cards, setCards] = useState(shuffleArray(createBoard()))
   const [matchedPairs, setMatchedPairs] = useState(0)
-  const [clickedCard, setClickedCard] = useState(
-    undefined as undefined | CardType['matchingCardId']
+  const [clickedCardImg, setClickedCardImg] = useState(
+    undefined as undefined | CardType['frontImage']
   )
-  const handleCardClick = (currentlyClickedCard: CardType) => {
+
+  const handleCardClick = async (currentlyClickedCard: CardType) => {
     setCards(prev =>
       prev.map(card =>
         card.id === currentlyClickedCard.id ? { ...card, flipped: true, frozen: false } : card
       )
     )
-    if (!clickedCard) {
+    if (!clickedCardImg) {
       const currentlyClickedCardCopy = { ...currentlyClickedCard }
-      const matchingCardIdCopy = currentlyClickedCardCopy.matchingCardId
-      setClickedCard(matchingCardIdCopy)
+      const imgCopy = currentlyClickedCardCopy.frontImage
+      setClickedCardImg(imgCopy)
       return
     }
-    if (clickedCard === currentlyClickedCard.id) {
+    if (clickedCardImg === currentlyClickedCard.frontImage) {
       setMatchedPairs(prev => prev + 1)
       setCards(prev =>
         prev.map(card =>
-          card.id === clickedCard || card.id === currentlyClickedCard.id
+          card.frontImage === clickedCardImg || card.frontImage === currentlyClickedCard.frontImage
             ? { ...card, frozen: false }
             : card
         )
       )
-      setClickedCard(undefined)
+      setClickedCardImg(undefined)
       return
     }
-    const flipBack = async () => {
-      await delay(500)
-      setCards(prev =>
-        prev.map(card =>
-          card.matchingCardId === clickedCard || card.id === currentlyClickedCard.id
-            ? { ...card, flipped: false, frozen: true }
-            : card
-        )
+    await delay(500)
+    setCards(prev =>
+      prev.map(card =>
+        card.frontImage === clickedCardImg || card.id === currentlyClickedCard.id
+          ? { ...card, flipped: false, frozen: true }
+          : card
       )
-    }
-    setClickedCard(undefined)
-    flipBack()
+    )
+    setClickedCardImg(undefined)
   }
 
   const handleReset = () => {
     setCards(shuffleArray(createBoard()))
     setMatchedPairs(0)
-    setClickedCard(undefined)
+    setClickedCardImg(undefined)
   }
 
   return (
@@ -128,7 +116,7 @@ const Div_Wrapper = styled.div`
   perspective: 1000px;
 `
 
-const Img_FrontImg = styled.img<CardType>`
+const Img_FrontImg = styled.img<{ flipped: boolean }>`
   box-sizing: border-box;
   width: 100%;
   height: 100%;

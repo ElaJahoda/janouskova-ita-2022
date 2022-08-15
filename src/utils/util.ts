@@ -28,3 +28,6 @@ export const useLocalStorage = <T>(key: string, initialValue: T) => {
 export const shuffleArray = <T>(arr: T[]) => {
   return arr.sort(() => Math.random() - 0.5)
 }
+
+export const delay = (ms: number) =>
+  new Promise(resolve => setTimeout(() => resolve(undefined), ms))
