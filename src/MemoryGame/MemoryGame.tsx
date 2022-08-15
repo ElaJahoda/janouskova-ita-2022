@@ -12,18 +12,18 @@ import img6 from './pictures/img6.png'
 import img7 from './pictures/img7.png'
 import img8 from './pictures/img8.png'
 import questionMark from './pictures/question-mark.png'
-import styled, { css } from 'styled-components'
+import styled from '@emotion/styled'
 
 type CardType = {
-  id: string
-  flipped: boolean
-  backImage: string
-  frontImage: string
-  frozen: boolean
-  matchingCardId: string
+  id?: string
+  flipped?: boolean
+  backImage?: string
+  frontImage?: string
+  frozen?: boolean
+  matchingCardId?: string
 }
 
-const cards: string[] = [img1, img2, img3, img4, img5, img6, img7, img8]
+const cards = [img1, img2, img3, img4, img5, img6, img7, img8]
 
 const createBoard = (): CardType[] =>
   [...cards, ...cards].map((card, i) => ({
@@ -35,27 +35,26 @@ const createBoard = (): CardType[] =>
     matchingCardId: i < cards.length ? `${i + cards.length}` : `${i - cards.length}`,
   }))
 
-type CardProps = {
-  card: CardType
-  callback: (card: CardType) => void
-}
-
-const Card: React.FC<CardProps> = ({ card, callback }) => {
+const Card = (props: { card: CardType; callback: (card: CardType) => void }) => {
   const handleClick = () => {
-    if (card.frozen) callback(card)
+    if (props.card.frozen) props.callback(props.card)
   }
   return (
     <Div_Wrapper onClick={handleClick}>
-      <Img_FrontImg flipped={card.flipped} src={card.frontImage} />
-      <Img_BackImg flipped={card.flipped} src={card.backImage} />
+      <Img_FrontImg flipped={props.card.flipped} src={props.card.frontImage} />
+      <Img_BackImg flipped={props.card.flipped} src={props.card.backImage} />
     </Div_Wrapper>
   )
 }
 
+const delay = (ms: number) => new Promise(resolve => setTimeout(() => resolve(undefined), ms))
+
 export const MemoryGame = () => {
-  const [cards, setCards] = useState<CardType[]>(shuffleArray(createBoard()))
+  const [cards, setCards] = useState(shuffleArray(createBoard()))
   const [matchedPairs, setMatchedPairs] = useState(0)
-  const [clickedCard, setClickedCard] = useState<undefined | CardType>(undefined)
+  const [clickedCard, setClickedCard] = useState(
+    undefined as undefined | CardType['matchingCardId']
+  )
   const handleCardClick = (currentlyClickedCard: CardType) => {
     setCards(prev =>
       prev.map(card =>
@@ -63,14 +62,16 @@ export const MemoryGame = () => {
       )
     )
     if (!clickedCard) {
-      setClickedCard({ ...currentlyClickedCard })
+      const currentlyClickedCardCopy = { ...currentlyClickedCard }
+      const matchingCardIdCopy = currentlyClickedCardCopy.matchingCardId
+      setClickedCard(matchingCardIdCopy)
       return
     }
-    if (clickedCard.matchingCardId === currentlyClickedCard.id) {
+    if (clickedCard === currentlyClickedCard.id) {
       setMatchedPairs(prev => prev + 1)
       setCards(prev =>
         prev.map(card =>
-          card.id === clickedCard.id || card.id === currentlyClickedCard.id
+          card.id === clickedCard || card.id === currentlyClickedCard.id
             ? { ...card, frozen: false }
             : card
         )
@@ -78,16 +79,18 @@ export const MemoryGame = () => {
       setClickedCard(undefined)
       return
     }
-    setTimeout(() => {
+    const flipBack = async () => {
+      await delay(500)
       setCards(prev =>
         prev.map(card =>
-          card.id === clickedCard.id || card.id === currentlyClickedCard.id
+          card.matchingCardId === clickedCard || card.id === currentlyClickedCard.id
             ? { ...card, flipped: false, frozen: true }
             : card
         )
       )
-    }, 1000)
+    }
     setClickedCard(undefined)
+    flipBack()
   }
 
   const handleReset = () => {
@@ -124,7 +127,8 @@ const Div_Wrapper = styled.div`
   position: relative;
   perspective: 1000px;
 `
-const Img_FrontImg = styled.img`
+
+const Img_FrontImg = styled.img<CardType>`
   box-sizing: border-box;
   width: 100%;
   height: 100%;
@@ -132,14 +136,12 @@ const Img_FrontImg = styled.img`
   backface-visibility: hidden;
   cursor: pointer;
   transform-style: preserve-3d;
-  z-index: ${(props: { flipped: boolean }) => (props.flipped ? 2 : 1)};
-  transform: ${(props: { flipped: boolean }) =>
-    props.flipped ? 'rotate(0deg)' : 'rotateY(180deg)'};
+  z-index: ${props => (props.flipped ? 2 : 1)};
+  transform: ${props => (props.flipped ? 'rotate(0deg)' : 'rotateY(180deg)')};
 `
 const Img_BackImg = styled(Img_FrontImg)`
-  z-index: ${(props: { flipped: boolean }) => (props.flipped ? 1 : 2)};
-  transform: ${(props: { flipped: boolean }) =>
-    props.flipped ? 'rotateY(180deg)' : 'rotate(360deg)'};
+  z-index: ${props => (props.flipped ? 1 : 2)};
+  transform: ${props => (props.flipped ? 'rotateY(180deg)' : 'rotate(360deg)')};
   position: absolute;
   top: 0px;
   left: 0px;
