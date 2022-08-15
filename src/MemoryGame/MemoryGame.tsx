@@ -53,9 +53,7 @@ export const MemoryGame = () => {
       )
     )
     if (!clickedCardImg) {
-      const currentlyClickedCardCopy = { ...currentlyClickedCard }
-      const imgCopy = currentlyClickedCardCopy.frontImage
-      setClickedCardImg(imgCopy)
+      setClickedCardImg(currentlyClickedCard.frontImage)
       return
     }
     if (clickedCardImg === currentlyClickedCard.frontImage) {
