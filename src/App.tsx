@@ -27,13 +27,13 @@ export const App = () => {
           <LinkStyledHover to={urls.toDoUrl} onClick={handleToggle}>
             ToDo
           </LinkStyledHover>
-          <LinkStyledHover to={urls.hackertyper} onClick={handleToggle}>
+          <LinkStyledHover to={urls.hackertyperUrl} onClick={handleToggle}>
             HackerTyper
           </LinkStyledHover>
-          <LinkStyledHover to={urls.mortgageCalculator} onClick={handleToggle}>
+          <LinkStyledHover to={urls.mortgageCalculatorUrl} onClick={handleToggle}>
             MortgageCalculator
           </LinkStyledHover>
-          <LinkStyledHover to={urls.memoryGame} onClick={handleToggle}>
+          <LinkStyledHover to={urls.memoryGameUrl} onClick={handleToggle}>
             MemoryGame
           </LinkStyledHover>
         </NavMenu>
@@ -49,7 +49,6 @@ const NavMenu = styled.div<Prop>`
   box-sizing: border-box;
   display: flex;
   align-items: center;
-  }
 
   @media screen and ${theme.mediaMax} {
     display: ${props => (props.prop ? 'block' : 'none')};
@@ -62,6 +61,7 @@ const NavMenu = styled.div<Prop>`
     background-color: white;
     border-top: 1px solid black;
     box-shadow: ${theme.boxShadow};
+    z-index: 5;
   }
 `
 const Div_Nav = styled.div`
@@ -70,7 +70,9 @@ const Div_Nav = styled.div`
   height: 85px;
   display: flex;
   justify-content: space-around;
+  flex-wrap: wrap;
   align-items: center;
+  padding: 0.2rem calc((100vw - 1000px) / 2);
   z-index: 14;
 `
 const Bars = styled.div`
@@ -106,11 +108,9 @@ const LinkStyled = (props: {
         marginLeft: '1rem',
         marginRight: '1rem',
         padding: '1px 6px',
-        border: 'solid 1px transparent',
-        ...props.style,
+        border: 'solid 2px transparent',
         backgroundColor: props.primary ? theme.primaryColor : 'transparent',
-        borderColor:
-          isActive || (isActive && props.primary) ? theme.quaternaryColor : 'transparent',
+        borderColor: isActive ? theme.primaryColor : 'transparent',
       })}
       to={props.to}
       onClick={props.onClick}

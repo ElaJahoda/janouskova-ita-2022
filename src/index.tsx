@@ -22,9 +22,9 @@ root.render(
         <Route path={urls.jsHistoryUrl} element={<JsHistory />} />
         <Route path={urls.counterUrl} element={<Counter />} />
         <Route path={urls.toDoUrl} element={<ToDo />} />
-        <Route path={urls.hackertyper} element={<HackerTyper />} />
-        <Route path={urls.mortgageCalculator} element={<MortgageCalculator />} />
-        <Route path={urls.memoryGame} element={<MemoryGame />} />
+        <Route path={urls.hackertyperUrl} element={<HackerTyper />} />
+        <Route path={urls.mortgageCalculatorUrl} element={<MortgageCalculator />} />
+        <Route path={urls.memoryGameUrl} element={<MemoryGame />} />
       </Routes>
     </BrowserRouter>
   </React.StrictMode>
