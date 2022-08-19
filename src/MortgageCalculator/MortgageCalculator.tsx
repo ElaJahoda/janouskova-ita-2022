@@ -21,17 +21,22 @@ const calculateMonthlyPayment = (amount: number, rate: number, years: number) =>
   }
 }
 
-const Jahoda = (amount: number, rate: number, years: number) => {
-  const amountFormat = (item: number) => {
-    return new Intl.NumberFormat('cs-CZ', {
-      style: 'currency',
-      currency: 'CZK',
-    }).format(item)
-  }
+const amountFormat = (item: number) => {
+  return new Intl.NumberFormat('cs-CZ', {
+    style: 'currency',
+    currency: 'CZK',
+  }).format(item)
+}
+
+const calculateMortgage = (amount: number, rate: number, years: number) => {
   const monthlyPayment = calculateMonthlyPayment(amount, rate, years)
   let remain = amount
-  const rowData = []
-  for (let i = 0; i < years * 12; i++) {
+  const rowData: {
+    monthlyInterestPayment: string
+    monthlyPrincipalPayment: string
+    remain: string
+  }[] = []
+  Array.from({ length: years * 12 }, (v, i) => i++).forEach(() => {
     const monthlyInterestPayment = (rate / 100 / 12) * remain
     const monthlyPrincipalPayment = monthlyPayment - monthlyInterestPayment
     remain -= monthlyPrincipalPayment
@@ -42,7 +47,20 @@ const Jahoda = (amount: number, rate: number, years: number) => {
       remain: amountFormat(remain),
     }
     rowData.push(row)
-  }
+  })
+
+  // for (let i = 0; i < years * 12; i++) {
+  //   const monthlyInterestPayment = (rate / 100 / 12) * remain
+  //   const monthlyPrincipalPayment = monthlyPayment - monthlyInterestPayment
+  //   remain -= monthlyPrincipalPayment
+
+  //   const row = {
+  //     monthlyInterestPayment: amountFormat(monthlyInterestPayment),
+  //     monthlyPrincipalPayment: amountFormat(monthlyPrincipalPayment),
+  //     remain: amountFormat(remain),
+  //   }
+  //   rowData.push(row)
+  // }
   return {
     monthlyPayment: amountFormat(monthlyPayment),
     rowData: rowData,
@@ -54,6 +72,7 @@ export const MortgageCalculator = () => {
   const [rate, setRate] = useState(3.5)
   const [years, setYears] = useState(30)
 
+  const dataCalculateMortgage = calculateMortgage(amount, rate, years)
   return (
     <Div_Styled>
       <Helmet>
@@ -92,18 +111,14 @@ export const MortgageCalculator = () => {
             value={years}
           />
         </Div_Form_Item>
-        <Table
-          jahoda={() => {
-            return Jahoda(amount, rate, years)
-          }}
-        />
+        <Table calculatedMortgage={dataCalculateMortgage} />
       </Div_Container>
     </Div_Styled>
   )
 }
 
 const Table = (props: {
-  jahoda: () => {
+  calculatedMortgage: {
     monthlyPayment: string
     rowData: {
       monthlyInterestPayment: string
@@ -112,7 +127,6 @@ const Table = (props: {
     }[]
   }
 }) => {
-  const data = props.jahoda()
   return (
     <Table_Styled>
       <thead>
@@ -125,15 +139,17 @@ const Table = (props: {
         </tr>
       </thead>
       <tbody>
-        {data.rowData.map((item: any, index: number) => (
-          <tr key={index}>
-            <Td_Styled>{index + 1}</Td_Styled>
-            <Td_Styled>{data.monthlyPayment}</Td_Styled>
-            <Td_Styled>{item.monthlyInterestPayment}</Td_Styled>
-            <Td_Styled>{item.monthlyPrincipalPayment}</Td_Styled>
-            <Td_Styled>{item.remain}</Td_Styled>
-          </tr>
-        ))}
+        {props.calculatedMortgage.rowData.map(
+          (item: typeof props.calculatedMortgage.rowData[number], index: number) => (
+            <tr key={index}>
+              <Td_Styled>{index + 1}</Td_Styled>
+              <Td_Styled>{props.calculatedMortgage.monthlyPayment}</Td_Styled>
+              <Td_Styled>{item.monthlyInterestPayment}</Td_Styled>
+              <Td_Styled>{item.monthlyPrincipalPayment}</Td_Styled>
+              <Td_Styled>{item.remain}</Td_Styled>
+            </tr>
+          )
+        )}
       </tbody>
     </Table_Styled>
   )
@@ -160,7 +176,7 @@ const Table_Styled = styled.table`
 const Th_Styled = styled.th`
   padding: 5px 12.5px;
   position: sticky;
-  background-color: white;
+  background-color: ${theme.backgroundColor};
   top: 0px;
   font-weight: normal;
 `

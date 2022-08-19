@@ -6,6 +6,7 @@ export const theme = {
   tertiaryColor: '#646464',
   quaternaryColor: '#40adec',
   basicColor: 'black',
+  backgroundColor: 'white',
   fontFamily: 'Segoe UI, Tahoma, Geneva, Verdana, sans-serif',
   fontSize: '16px',
   mediaSmaller: '(min-width: 400px)',
