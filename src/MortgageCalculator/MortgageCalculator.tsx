@@ -1,29 +1,58 @@
-import 'c3/c3.css'
-import { Button } from '../components/Button'
 import { Div_Styled } from '../HomePage'
 import { Helmet } from 'react-helmet'
 import { theme } from '../theme'
-import LoanJS from 'loanjs'
 import React, { useState } from 'react'
 import styled from '@emotion/styled'
 
-export const MortgageCalculator = () => {
-  const [amount, setAmount] = useState(300000)
-  const [rate, setRate] = useState(3.5)
-  const [years, setYears] = useState(30)
-  const [installments, setInstallments] = useState([])
-
-  const calculate = (amount: number, years: number, rate: number) => {
-    var loan = new LoanJS.Loan(amount, years * 12, rate)
-    setInstallments(loan.installments)
+const calculateMonthlyPayment = (amount: number, rate: number, years: number) => {
+  const dataAmount = amount ? amount : 0
+  const monthlyRate = rate ? rate / 100 / 12 : 0
+  const months = years ? years * 12 : 0
+  if (amount && rate && years) {
+    return (
+      Math.round(
+        ((dataAmount * monthlyRate * Math.pow(1 + monthlyRate, months)) /
+          (Math.pow(1 + monthlyRate, months) - 1)) *
+          100
+      ) / 100
+    )
+  } else {
+    return 0
   }
+}
 
-  const amountFormat = (amount: number) => {
+const Jahoda = (amount: number, rate: number, years: number) => {
+  const amountFormat = (item: number) => {
     return new Intl.NumberFormat('cs-CZ', {
       style: 'currency',
       currency: 'CZK',
-    }).format(amount)
+    }).format(item)
   }
+  const monthlyPayment = calculateMonthlyPayment(amount, rate, years)
+  let remain = amount
+  const rowData = []
+  for (let i = 0; i < years * 12; i++) {
+    const monthlyInterestPayment = (rate / 100 / 12) * remain
+    const monthlyPrincipalPayment = monthlyPayment - monthlyInterestPayment
+    remain -= monthlyPrincipalPayment
+
+    const row = {
+      monthlyInterestPayment: amountFormat(monthlyInterestPayment),
+      monthlyPrincipalPayment: amountFormat(monthlyPrincipalPayment),
+      remain: amountFormat(remain),
+    }
+    rowData.push(row)
+  }
+  return {
+    monthlyPayment: amountFormat(monthlyPayment),
+    rowData: rowData,
+  }
+}
+
+export const MortgageCalculator = () => {
+  const [amount, setAmount] = useState(30_0000)
+  const [rate, setRate] = useState(3.5)
+  const [years, setYears] = useState(30)
 
   return (
     <Div_Styled>
@@ -31,57 +60,59 @@ export const MortgageCalculator = () => {
         <title>Eva Janouskova - Mortgage Calculator</title>
       </Helmet>
       <h1>Mortgage Calculator</h1>
-      <form
-        onSubmit={e => {
-          e.preventDefault()
-          calculate(amount, years, rate)
-        }}
-      >
-        <Div_Container>
-          <Div_Form_Item>
-            <label>Loan Amount</label>
-            <Input_Styled
-              type='number'
-              placeholder='0'
-              step='5000'
-              required
-              onChange={e => setAmount(parseInt(e.target.value))}
-              value={amount}
-            />
-          </Div_Form_Item>
-          <Div_Form_Item>
-            <label>Interest Rate (%)</label>
-            <Input_Styled
-              type='number'
-              placeholder='0'
-              required
-              onChange={e => setRate(parseInt(e.target.value))}
-              value={rate}
-            />
-          </Div_Form_Item>
-          <Div_Form_Item>
-            <label>Lenght of loan (Years)</label>
-            <Input_Styled
-              type='number'
-              placeholder='0'
-              required
-              onChange={e => setYears(parseInt(e.target.value))}
-              value={years}
-            />
-          </Div_Form_Item>
-          <Div_Form_Action>
-            <Button_Styled type='submit'>Calculate</Button_Styled>
-          </Div_Form_Action>
-          {!!installments?.length && (
-            <Table installments={installments} amountFormat={amountFormat} />
-          )}
-        </Div_Container>
-      </form>
+      <Div_Container>
+        <Div_Form_Item>
+          <label>Loan Amount</label>
+          <Input_Styled
+            type='number'
+            placeholder='0'
+            step='5000'
+            required
+            onChange={e => setAmount(parseInt(e.target.value))}
+            value={amount}
+          />
+        </Div_Form_Item>
+        <Div_Form_Item>
+          <label>Interest Rate (%)</label>
+          <Input_Styled
+            type='number'
+            placeholder='0'
+            required
+            onChange={e => setRate(parseInt(e.target.value))}
+            value={rate}
+          />
+        </Div_Form_Item>
+        <Div_Form_Item>
+          <label>Lenght of loan (Years)</label>
+          <Input_Styled
+            type='number'
+            placeholder='0'
+            required
+            onChange={e => setYears(parseInt(e.target.value))}
+            value={years}
+          />
+        </Div_Form_Item>
+        <Table
+          jahoda={() => {
+            return Jahoda(amount, rate, years)
+          }}
+        />
+      </Div_Container>
     </Div_Styled>
   )
 }
 
-const Table = (props: { installments: never[]; amountFormat: (amount: number) => string }) => {
+const Table = (props: {
+  jahoda: () => {
+    monthlyPayment: string
+    rowData: {
+      monthlyInterestPayment: string
+      monthlyPrincipalPayment: string
+      remain: string
+    }[]
+  }
+}) => {
+  const data = props.jahoda()
   return (
     <Table_Styled>
       <thead>
@@ -94,13 +125,13 @@ const Table = (props: { installments: never[]; amountFormat: (amount: number) =>
         </tr>
       </thead>
       <tbody>
-        {props.installments.map((item: any, index: number) => (
+        {data.rowData.map((item: any, index: number) => (
           <tr key={index}>
             <Td_Styled>{index + 1}</Td_Styled>
-            <Td_Styled>{props.amountFormat(item.installment)}</Td_Styled>
-            <Td_Styled>{props.amountFormat(item.interest)}</Td_Styled>
-            <Td_Styled>{props.amountFormat(item.capital)}</Td_Styled>
-            <Td_Styled>{props.amountFormat(item.remain)}</Td_Styled>
+            <Td_Styled>{data.monthlyPayment}</Td_Styled>
+            <Td_Styled>{item.monthlyInterestPayment}</Td_Styled>
+            <Td_Styled>{item.monthlyPrincipalPayment}</Td_Styled>
+            <Td_Styled>{item.remain}</Td_Styled>
           </tr>
         ))}
       </tbody>
@@ -112,17 +143,11 @@ const Div_Form_Item = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  border-top: 1px solid gray;
+  border-top: 1px solid ${theme.secondaryColor};
   padding: 2px;
 `
-const Div_Form_Action = styled.div`
-  text-align: center;
-  font-weight: 600;
-`
-const Button_Styled = styled(Button)`
-  width: 200px;
-`
 const Table_Styled = styled.table`
+  border: solid 1px ${theme.secondaryColor};
   text-align: center;
   display: block;
   width: 100%;

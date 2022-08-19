@@ -15,25 +15,25 @@ export const App = () => {
       <Div_Nav>
         <Bars onClick={handleToggle}>{toggle ? <FaChevronUp /> : <FaChevronDown />}</Bars>
         <NavMenu prop={toggle}>
-          <LinkStyledHover primary='primary' to={urls.homePageUrl} onClick={handleToggle}>
+          <LinkStyledHover primary='primary' to={urls.homePage} onClick={handleToggle}>
             Home
           </LinkStyledHover>
-          <LinkStyledHover to={urls.jsHistoryUrl} onClick={handleToggle}>
+          <LinkStyledHover to={urls.jsHistory} onClick={handleToggle}>
             JsHistory
           </LinkStyledHover>
-          <LinkStyledHover to={urls.counterUrl} onClick={handleToggle}>
+          <LinkStyledHover to={urls.counter} onClick={handleToggle}>
             Counter
           </LinkStyledHover>
-          <LinkStyledHover to={urls.toDoUrl} onClick={handleToggle}>
+          <LinkStyledHover to={urls.toDo} onClick={handleToggle}>
             ToDo
           </LinkStyledHover>
-          <LinkStyledHover to={urls.hackertyperUrl} onClick={handleToggle}>
+          <LinkStyledHover to={urls.hackertyper} onClick={handleToggle}>
             HackerTyper
           </LinkStyledHover>
-          <LinkStyledHover to={urls.mortgageCalculatorUrl} onClick={handleToggle}>
+          <LinkStyledHover to={urls.mortgageCalculator} onClick={handleToggle}>
             MortgageCalculator
           </LinkStyledHover>
-          <LinkStyledHover to={urls.memoryGameUrl} onClick={handleToggle}>
+          <LinkStyledHover to={urls.memoryGame} onClick={handleToggle}>
             MemoryGame
           </LinkStyledHover>
         </NavMenu>
