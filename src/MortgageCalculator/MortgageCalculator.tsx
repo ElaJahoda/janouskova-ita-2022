@@ -31,22 +31,16 @@ const amountFormat = (item: number) => {
 const calculateMortgage = (amount: number, rate: number, years: number) => {
   const monthlyPayment = calculateMonthlyPayment(amount, rate, years)
   let remain = amount
-  let rowData: {
-    monthlyInterestPayment: string
-    monthlyPrincipalPayment: string
-    remain: string
-  }[] = []
-  Array.from({ length: years * 12 }, (v, i) => i++).map(() => {
+  const rowData = Array.from({ length: years * 12 }, (v, i) => i++).map(() => {
     const monthlyInterestPayment = (rate / 100 / 12) * remain
     const monthlyPrincipalPayment = monthlyPayment - monthlyInterestPayment
     remain -= monthlyPrincipalPayment
 
-    const row = {
+    return {
       monthlyInterestPayment: amountFormat(monthlyInterestPayment),
       monthlyPrincipalPayment: amountFormat(monthlyPrincipalPayment),
       remain: amountFormat(remain),
     }
-    rowData = [...rowData, row]
   })
 
   return {
