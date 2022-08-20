@@ -18,10 +18,10 @@ root.render(
     <BrowserRouter>
       <App />
       <Routes>
-        <Route path={urls.homePageUrl} element={<Home />} />
-        <Route path={urls.jsHistoryUrl} element={<JsHistory />} />
-        <Route path={urls.counterUrl} element={<Counter />} />
-        <Route path={urls.toDoUrl} element={<ToDo />} />
+        <Route path={urls.homePage} element={<Home />} />
+        <Route path={urls.jsHistory} element={<JsHistory />} />
+        <Route path={urls.counter} element={<Counter />} />
+        <Route path={urls.toDo} element={<ToDo />} />
         <Route path={urls.hackertyper} element={<HackerTyper />} />
         <Route path={urls.mortgageCalculator} element={<MortgageCalculator />} />
         <Route path={urls.memoryGame} element={<MemoryGame />} />
