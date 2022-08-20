@@ -11,7 +11,7 @@ import {
 import { Div_Styled } from '../HomePage'
 import { Helmet } from 'react-helmet'
 import { theme } from '../theme'
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import styled from '@emotion/styled'
 
 const calculateMonthlyPayment = (amount: number, rate: number, years: number) => {
@@ -20,11 +20,8 @@ const calculateMonthlyPayment = (amount: number, rate: number, years: number) =>
   const months = years ? years * 12 : 0
   if (amount && rate && years) {
     return (
-      Math.round(
-        ((dataAmount * monthlyRate * Math.pow(1 + monthlyRate, months)) /
-          (Math.pow(1 + monthlyRate, months) - 1)) *
-          100
-      ) / 100
+      (dataAmount * monthlyRate * Math.pow(1 + monthlyRate, months)) /
+      (Math.pow(1 + monthlyRate, months) - 1)
     )
   } else {
     return 0
@@ -38,39 +35,56 @@ const amountFormat = (item: number) => {
   }).format(item)
 }
 
+type DataCalculateMortgage = {
+  monthlyPayment: number
+  rowData: {
+    monthlyInterestPayment: number
+    monthlyPrincipalPayment: number
+    remain: number
+  }[]
+  chartData: {
+    xAxis: {
+      index: number
+    }
+    interestPaid: number
+    principalPaid: number
+    remain: number
+  }[]
+}
+
 const calculateMortgage = (amount: number, rate: number, years: number) => {
   const monthlyPayment = calculateMonthlyPayment(amount, rate, years)
   let remain = amount
-  const rowData = Array.from({ length: years * 12 }, (v, i) => i++).map(() => {
+  const rowData = Array.from({ length: years * 12 }, (v, i) => (i = i + 1)).map(() => {
     const monthlyInterestPayment = (rate / 100 / 12) * remain
     const monthlyPrincipalPayment = monthlyPayment - monthlyInterestPayment
     remain -= monthlyPrincipalPayment
 
     return {
-      monthlyInterestPayment: monthlyInterestPayment,
-      monthlyPrincipalPayment: monthlyPrincipalPayment,
-      remain: remain,
+      monthlyInterestPayment,
+      monthlyPrincipalPayment,
+      remain,
     }
   })
 
-  const chartData = Array.from({ length: years * 12 }, (v, i) => i++).map((index: number) => {
-    const x = { index }
+  const chartData = Array.from({ length: years * 12 }, (v, i) => (i = i + 1)).map((item, index) => {
+    const xAxis = { index }
     const interestPaid = Number(rowData[index].monthlyInterestPayment.toFixed(2))
     const principalPaid = Number(rowData[index].monthlyPrincipalPayment.toFixed(2))
     const remain = Number(rowData[index].remain.toFixed(2))
 
     return {
-      x: x,
-      interestPaid: interestPaid,
-      principalPaid: principalPaid,
-      remain: remain,
+      xAxis,
+      interestPaid,
+      principalPaid,
+      remain,
     }
   })
 
   return {
-    monthlyPayment: monthlyPayment,
-    rowData: rowData,
-    chartData: chartData,
+    monthlyPayment,
+    rowData,
+    chartData,
   }
 }
 
@@ -125,24 +139,7 @@ export const MortgageCalculator = () => {
   )
 }
 
-const Table = (props: {
-  calculatedMortgage: {
-    monthlyPayment: number
-    rowData: {
-      monthlyInterestPayment: number
-      monthlyPrincipalPayment: number
-      remain: number
-    }[]
-    chartData: {
-      x: {
-        index: number
-      }
-      interestPaid: number
-      principalPaid: number
-      remain: number
-    }[]
-  }
-}) => {
+const Table = (props: { calculatedMortgage: DataCalculateMortgage }) => {
   return (
     <Table_Styled>
       <thead>
@@ -171,24 +168,7 @@ const Table = (props: {
   )
 }
 
-const Charts = (props: {
-  calculatedMortgage: {
-    monthlyPayment: number
-    rowData: {
-      monthlyInterestPayment: number
-      monthlyPrincipalPayment: number
-      remain: number
-    }[]
-    chartData: {
-      x: {
-        index: number
-      }
-      interestPaid: number
-      principalPaid: number
-      remain: number
-    }[]
-  }
-}) => {
+const Charts = (props: { calculatedMortgage: DataCalculateMortgage }) => {
   return (
     <div>
       <LineChart
@@ -203,7 +183,7 @@ const Charts = (props: {
         }}
       >
         <CartesianGrid stroke='#eee' strokeDasharray='3 3' />
-        <XAxis dataKey='x' />
+        <XAxis dataKey='xAxis' />
         <YAxis />
         <Tooltip />
         <Legend />
@@ -225,21 +205,23 @@ const Charts = (props: {
           bottom: 15,
         }}
       >
-        <XAxis dataKey='x' />
+        <CartesianGrid stroke='#eee' strokeDasharray='3 3' />
+        <XAxis dataKey='xAxis' />
         <YAxis />
         <Tooltip />
         <Legend />
-        <CartesianGrid stroke='#eee' strokeDasharray='3 3' />
         <Line
           type='monotone'
           dataKey='interestPaid'
           stroke={theme.primaryColor}
+          strokeWidth={1}
           activeDot={{ r: 8 }}
         />
         <Line
           type='monotone'
           dataKey='principalPaid'
           stroke={theme.quaternaryColor}
+          strokeWidth={1}
           activeDot={{ r: 8 }}
         />
       </LineChart>
