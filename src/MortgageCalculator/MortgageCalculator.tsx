@@ -1,7 +1,17 @@
+import {
+  CartesianGrid,
+  Legend,
+  Line,
+  LineChart,
+  ResponsiveContainer,
+  Tooltip,
+  XAxis,
+  YAxis,
+} from 'recharts'
 import { Div_Styled } from '../HomePage'
 import { Helmet } from 'react-helmet'
 import { theme } from '../theme'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import styled from '@emotion/styled'
 
 const calculateMonthlyPayment = (amount: number, rate: number, years: number) => {
@@ -37,15 +47,30 @@ const calculateMortgage = (amount: number, rate: number, years: number) => {
     remain -= monthlyPrincipalPayment
 
     return {
-      monthlyInterestPayment: amountFormat(monthlyInterestPayment),
-      monthlyPrincipalPayment: amountFormat(monthlyPrincipalPayment),
-      remain: amountFormat(remain),
+      monthlyInterestPayment: monthlyInterestPayment,
+      monthlyPrincipalPayment: monthlyPrincipalPayment,
+      remain: remain,
+    }
+  })
+
+  const chartData = Array.from({ length: years * 12 }, (v, i) => i++).map((index: number) => {
+    const x = { index }
+    const interestPaid = Number(rowData[index].monthlyInterestPayment.toFixed(2))
+    const principalPaid = Number(rowData[index].monthlyPrincipalPayment.toFixed(2))
+    const remain = Number(rowData[index].remain.toFixed(2))
+
+    return {
+      x: x,
+      interestPaid: interestPaid,
+      principalPaid: principalPaid,
+      remain: remain,
     }
   })
 
   return {
-    monthlyPayment: amountFormat(monthlyPayment),
+    monthlyPayment: monthlyPayment,
     rowData: rowData,
+    chartData: chartData,
   }
 }
 
@@ -93,6 +118,7 @@ export const MortgageCalculator = () => {
             value={years}
           />
         </Div_Form_Item>
+        <Charts calculatedMortgage={dataCalculateMortgage} />
         <Table calculatedMortgage={dataCalculateMortgage} />
       </Div_Container>
     </Div_Styled>
@@ -101,11 +127,19 @@ export const MortgageCalculator = () => {
 
 const Table = (props: {
   calculatedMortgage: {
-    monthlyPayment: string
+    monthlyPayment: number
     rowData: {
-      monthlyInterestPayment: string
-      monthlyPrincipalPayment: string
-      remain: string
+      monthlyInterestPayment: number
+      monthlyPrincipalPayment: number
+      remain: number
+    }[]
+    chartData: {
+      x: {
+        index: number
+      }
+      interestPaid: number
+      principalPaid: number
+      remain: number
     }[]
   }
 }) => {
@@ -125,15 +159,91 @@ const Table = (props: {
           (item: typeof props.calculatedMortgage.rowData[number], index: number) => (
             <tr key={index}>
               <Td_Styled>{index + 1}</Td_Styled>
-              <Td_Styled>{props.calculatedMortgage.monthlyPayment}</Td_Styled>
-              <Td_Styled>{item.monthlyInterestPayment}</Td_Styled>
-              <Td_Styled>{item.monthlyPrincipalPayment}</Td_Styled>
-              <Td_Styled>{item.remain}</Td_Styled>
+              <Td_Styled>{amountFormat(props.calculatedMortgage.monthlyPayment)}</Td_Styled>
+              <Td_Styled>{amountFormat(item.monthlyInterestPayment)}</Td_Styled>
+              <Td_Styled>{amountFormat(item.monthlyPrincipalPayment)}</Td_Styled>
+              <Td_Styled>{amountFormat(item.remain)}</Td_Styled>
             </tr>
           )
         )}
       </tbody>
     </Table_Styled>
+  )
+}
+
+const Charts = (props: {
+  calculatedMortgage: {
+    monthlyPayment: number
+    rowData: {
+      monthlyInterestPayment: number
+      monthlyPrincipalPayment: number
+      remain: number
+    }[]
+    chartData: {
+      x: {
+        index: number
+      }
+      interestPaid: number
+      principalPaid: number
+      remain: number
+    }[]
+  }
+}) => {
+  return (
+    <div>
+      <LineChart
+        width={600}
+        height={300}
+        data={props.calculatedMortgage.chartData}
+        margin={{
+          top: 15,
+          right: 30,
+          left: 10,
+          bottom: 15,
+        }}
+      >
+        <CartesianGrid stroke='#eee' strokeDasharray='3 3' />
+        <XAxis dataKey='x' />
+        <YAxis />
+        <Tooltip />
+        <Legend />
+        <Line
+          type='monotone'
+          dataKey='remain'
+          stroke={theme.quaternaryColor}
+          activeDot={{ r: 8 }}
+        />
+      </LineChart>
+      <LineChart
+        width={600}
+        height={300}
+        data={props.calculatedMortgage.chartData}
+        margin={{
+          top: 15,
+          right: 30,
+          left: 10,
+          bottom: 15,
+        }}
+      >
+        <XAxis dataKey='x' />
+        <YAxis />
+        <Tooltip />
+        <Legend />
+        <CartesianGrid stroke='#eee' strokeDasharray='3 3' />
+        <Line
+          type='monotone'
+          dataKey='interestPaid'
+          stroke={theme.primaryColor}
+          activeDot={{ r: 8 }}
+        />
+        <Line
+          type='monotone'
+          dataKey='principalPaid'
+          stroke={theme.quaternaryColor}
+          activeDot={{ r: 8 }}
+        />
+      </LineChart>
+    </div>
   )
 }
 
