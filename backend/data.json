@@ -1,0 +1,32 @@
+{
+    "users" : [
+        {
+            "id": "1",
+            "name": "Lojd"
+        },
+        {
+            "id": "2",
+            "name": "Rebeka"
+        },
+        {
+            "id": "3",
+            "name": "Theodor"
+        },
+        {
+            "id": "4",
+            "name": "Vesna"
+        },
+        {
+            "id": "5",
+            "name": "Ilja"
+        },
+        {
+            "id": "6",
+            "name": "Zohan"
+        },
+        {
+            "id": "7",
+            "name": "Gertruda"
+        }
+    ]
+}

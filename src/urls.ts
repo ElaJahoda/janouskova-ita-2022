@@ -6,6 +6,7 @@ export const urls = {
   hackertyper: '/hackertyper',
   mortgageCalculator: '/mortgage-calculator',
   memoryGame: '/memory-game',
+  httpFilter: '/http-filter',
   jsAdoptionByMicrosoft: 'adoption-by-microsoft',
   jsCreationAtNetscape: 'creation-at-netscape',
   jsTheRiseOfJScript: 'the-rise-of-jscript',

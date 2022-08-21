@@ -31,3 +31,7 @@ export const shuffleArray = <T>(arr: T[]) => {
 
 export const delay = (ms: number) =>
   new Promise(resolve => setTimeout(() => resolve(undefined), ms))
+
+export const urlBackendFilter = (filterValue: string) => {
+  return `${process.env.REACT_APP_HTTP_FILTER_URL}?search=${filterValue}`
+}

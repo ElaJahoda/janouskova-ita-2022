@@ -1,0 +1,17 @@
+{
+  "name": "backend",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "ts-node-dev --respawn src/index.ts"
+  },
+  "author": "Eva Janoušková",
+  "license": "ISC",
+  "dependencies": {
+    "@types/cors": "^2.8.12",
+    "cors": "^2.8.5",
+    "express": "^4.7.4",
+    "ts-node-dev": "^10.9.1"
+  }
+}

@@ -3,6 +3,7 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import { Counter } from './Counter/Counter'
 import { HackerTyper } from './HackerTyper/HackerTyper'
 import { Home } from './HomePage'
+import { HttpFilter } from './HttpFilter/HttpFilter'
 import { JsHistory } from './JShistory/JsHistory'
 import { MemoryGame } from './MemoryGame/MemoryGame'
 import { MortgageCalculator } from './MortgageCalculator/MortgageCalculator'
@@ -25,6 +26,7 @@ root.render(
         <Route path={urls.hackertyper} element={<HackerTyper />} />
         <Route path={urls.mortgageCalculator} element={<MortgageCalculator />} />
         <Route path={urls.memoryGame} element={<MemoryGame />} />
+        <Route path={urls.httpFilter} element={<HttpFilter />} />
       </Routes>
     </BrowserRouter>
   </React.StrictMode>
