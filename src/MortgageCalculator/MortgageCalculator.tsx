@@ -126,41 +126,28 @@ const Table = (props: { calculatedMortgage: DataCalculateMortgage }) => {
         </tr>
       </thead>
       <tbody>
-        {props.calculatedMortgage.rowsData.map(
-          (item: typeof props.calculatedMortgage.rowsData[number], index: number) => (
-            <tr key={index}>
-              <Td_Styled>{index + 1}</Td_Styled>
-              <Td_Styled>{amountFormat(props.calculatedMortgage.monthlyPayment)}</Td_Styled>
-              <Td_Styled>{amountFormat(item.monthlyInterestPayment)}</Td_Styled>
-              <Td_Styled>{amountFormat(item.monthlyPrincipalPayment)}</Td_Styled>
-              <Td_Styled>{amountFormat(item.remain)}</Td_Styled>
-            </tr>
-          )
-        )}
+        {props.calculatedMortgage.rowsData.map((item, index) => (
+          <tr key={index}>
+            <Td_Styled>{index + 1}</Td_Styled>
+            <Td_Styled>{amountFormat(props.calculatedMortgage.monthlyPayment)}</Td_Styled>
+            <Td_Styled>{amountFormat(item.monthlyInterestPayment)}</Td_Styled>
+            <Td_Styled>{amountFormat(item.monthlyPrincipalPayment)}</Td_Styled>
+            <Td_Styled>{amountFormat(item.remain)}</Td_Styled>
+          </tr>
+        ))}
       </tbody>
     </Table_Styled>
   )
 }
 
 const Charts = (props: { calculatedMortgage: DataCalculateMortgage }) => {
-  const chartData = props.calculatedMortgage.rowsData.map((item, index) => {
-    const xAxis = { index }
-    const interestPaid = formatDecimals(
-      props.calculatedMortgage.rowsData[index].monthlyInterestPayment
-    )
+  const chartData = props.calculatedMortgage.rowsData.map((item, index) => ({
+    xAxis: { index },
+    interestPaid: formatDecimals(item.monthlyInterestPayment),
+    principalPaid: formatDecimals(item.monthlyPrincipalPayment),
+    remain: formatDecimals(item.monthlyPrincipalPayment),
+  }))
 
-    const principalPaid = formatDecimals(
-      props.calculatedMortgage.rowsData[index].monthlyPrincipalPayment
-    )
-    const remain = formatDecimals(props.calculatedMortgage.rowsData[index].remain)
-
-    return {
-      xAxis,
-      interestPaid,
-      principalPaid,
-      remain,
-    }
-  })
   return (
     <div>
       <LineChart
