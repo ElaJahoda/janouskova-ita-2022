@@ -35,6 +35,10 @@ const amountFormat = (item: number) => {
   }).format(item)
 }
 
+const formatDecimals = (item: number) => {
+  return Number(item.toFixed(2))
+}
+
 type DataCalculateMortgage = ReturnType<typeof calculateMortgage>
 
 const calculateMortgage = (amount: number, rate: number, years: number) => {
@@ -141,13 +145,14 @@ const Table = (props: { calculatedMortgage: DataCalculateMortgage }) => {
 const Charts = (props: { calculatedMortgage: DataCalculateMortgage }) => {
   const chartData = props.calculatedMortgage.rowsData.map((item, index) => {
     const xAxis = { index }
-    const interestPaid = Number(
-      props.calculatedMortgage.rowsData[index].monthlyInterestPayment.toFixed(2)
+    const interestPaid = formatDecimals(
+      props.calculatedMortgage.rowsData[index].monthlyInterestPayment
     )
-    const principalPaid = Number(
-      props.calculatedMortgage.rowsData[index].monthlyPrincipalPayment.toFixed(2)
+
+    const principalPaid = formatDecimals(
+      props.calculatedMortgage.rowsData[index].monthlyPrincipalPayment
     )
-    const remain = Number(props.calculatedMortgage.rowsData[index].remain.toFixed(2))
+    const remain = formatDecimals(props.calculatedMortgage.rowsData[index].remain)
 
     return {
       xAxis,
