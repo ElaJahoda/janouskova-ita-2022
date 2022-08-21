@@ -1,7 +1,5 @@
 import { Div_Styled } from '../HomePage'
-import { theme } from '../theme'
-import React, { useEffect, useState } from 'react'
-import styled from '@emotion/styled'
+import React, { useState } from 'react'
 
 type Data = { id: string; name: string }[]
 
