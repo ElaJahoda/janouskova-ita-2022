@@ -35,27 +35,12 @@ const amountFormat = (item: number) => {
   }).format(item)
 }
 
-type DataCalculateMortgage = {
-  monthlyPayment: number
-  rowData: {
-    monthlyInterestPayment: number
-    monthlyPrincipalPayment: number
-    remain: number
-  }[]
-  chartData: {
-    xAxis: {
-      index: number
-    }
-    interestPaid: number
-    principalPaid: number
-    remain: number
-  }[]
-}
+type DataCalculateMortgage = ReturnType<typeof calculateMortgage>
 
 const calculateMortgage = (amount: number, rate: number, years: number) => {
   const monthlyPayment = calculateMonthlyPayment(amount, rate, years)
   let remain = amount
-  const rowData = Array.from({ length: years * 12 }, (v, i) => (i = i + 1)).map(() => {
+  const rowsData = Array.from({ length: years * 12 }, (v, i) => (i = i + 1)).map(() => {
     const monthlyInterestPayment = (rate / 100 / 12) * remain
     const monthlyPrincipalPayment = monthlyPayment - monthlyInterestPayment
     remain -= monthlyPrincipalPayment
@@ -67,24 +52,9 @@ const calculateMortgage = (amount: number, rate: number, years: number) => {
     }
   })
 
-  const chartData = Array.from({ length: years * 12 }, (v, i) => (i = i + 1)).map((item, index) => {
-    const xAxis = { index }
-    const interestPaid = Number(rowData[index].monthlyInterestPayment.toFixed(2))
-    const principalPaid = Number(rowData[index].monthlyPrincipalPayment.toFixed(2))
-    const remain = Number(rowData[index].remain.toFixed(2))
-
-    return {
-      xAxis,
-      interestPaid,
-      principalPaid,
-      remain,
-    }
-  })
-
   return {
     monthlyPayment,
-    rowData,
-    chartData,
+    rowsData,
   }
 }
 
@@ -152,8 +122,8 @@ const Table = (props: { calculatedMortgage: DataCalculateMortgage }) => {
         </tr>
       </thead>
       <tbody>
-        {props.calculatedMortgage.rowData.map(
-          (item: typeof props.calculatedMortgage.rowData[number], index: number) => (
+        {props.calculatedMortgage.rowsData.map(
+          (item: typeof props.calculatedMortgage.rowsData[number], index: number) => (
             <tr key={index}>
               <Td_Styled>{index + 1}</Td_Styled>
               <Td_Styled>{amountFormat(props.calculatedMortgage.monthlyPayment)}</Td_Styled>
@@ -169,12 +139,29 @@ const Table = (props: { calculatedMortgage: DataCalculateMortgage }) => {
 }
 
 const Charts = (props: { calculatedMortgage: DataCalculateMortgage }) => {
+  const chartData = props.calculatedMortgage.rowsData.map((item, index) => {
+    const xAxis = { index }
+    const interestPaid = Number(
+      props.calculatedMortgage.rowsData[index].monthlyInterestPayment.toFixed(2)
+    )
+    const principalPaid = Number(
+      props.calculatedMortgage.rowsData[index].monthlyPrincipalPayment.toFixed(2)
+    )
+    const remain = Number(props.calculatedMortgage.rowsData[index].remain.toFixed(2))
+
+    return {
+      xAxis,
+      interestPaid,
+      principalPaid,
+      remain,
+    }
+  })
   return (
     <div>
       <LineChart
         width={600}
         height={300}
-        data={props.calculatedMortgage.chartData}
+        data={chartData}
         margin={{
           top: 15,
           right: 30,
@@ -197,7 +184,7 @@ const Charts = (props: { calculatedMortgage: DataCalculateMortgage }) => {
       <LineChart
         width={600}
         height={300}
-        data={props.calculatedMortgage.chartData}
+        data={chartData}
         margin={{
           top: 15,
           right: 30,
