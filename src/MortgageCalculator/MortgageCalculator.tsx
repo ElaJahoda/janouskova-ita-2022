@@ -1,3 +1,13 @@
+import {
+  CartesianGrid,
+  Legend,
+  Line,
+  LineChart,
+  ResponsiveContainer,
+  Tooltip,
+  XAxis,
+  YAxis,
+} from 'recharts'
 import { Div_Styled } from '../HomePage'
 import { Helmet } from 'react-helmet'
 import { theme } from '../theme'
@@ -10,11 +20,8 @@ const calculateMonthlyPayment = (amount: number, rate: number, years: number) =>
   const months = years ? years * 12 : 0
   if (amount && rate && years) {
     return (
-      Math.round(
-        ((dataAmount * monthlyRate * Math.pow(1 + monthlyRate, months)) /
-          (Math.pow(1 + monthlyRate, months) - 1)) *
-          100
-      ) / 100
+      (dataAmount * monthlyRate * Math.pow(1 + monthlyRate, months)) /
+      (Math.pow(1 + monthlyRate, months) - 1)
     )
   } else {
     return 0
@@ -28,24 +35,30 @@ const amountFormat = (item: number) => {
   }).format(item)
 }
 
+const formatDecimals = (item: number) => {
+  return Number(item.toFixed(2))
+}
+
+type DataCalculateMortgage = ReturnType<typeof calculateMortgage>
+
 const calculateMortgage = (amount: number, rate: number, years: number) => {
   const monthlyPayment = calculateMonthlyPayment(amount, rate, years)
   let remain = amount
-  const rowData = Array.from({ length: years * 12 }, (v, i) => i++).map(() => {
+  const rowsData = Array.from({ length: years * 12 }, (v, i) => (i = i + 1)).map(() => {
     const monthlyInterestPayment = (rate / 100 / 12) * remain
     const monthlyPrincipalPayment = monthlyPayment - monthlyInterestPayment
     remain -= monthlyPrincipalPayment
 
     return {
-      monthlyInterestPayment: amountFormat(monthlyInterestPayment),
-      monthlyPrincipalPayment: amountFormat(monthlyPrincipalPayment),
-      remain: amountFormat(remain),
+      monthlyInterestPayment,
+      monthlyPrincipalPayment,
+      remain,
     }
   })
 
   return {
-    monthlyPayment: amountFormat(monthlyPayment),
-    rowData: rowData,
+    monthlyPayment,
+    rowsData,
   }
 }
 
@@ -93,22 +106,14 @@ export const MortgageCalculator = () => {
             value={years}
           />
         </Div_Form_Item>
+        <Charts calculatedMortgage={dataCalculateMortgage} />
         <Table calculatedMortgage={dataCalculateMortgage} />
       </Div_Container>
     </Div_Styled>
   )
 }
 
-const Table = (props: {
-  calculatedMortgage: {
-    monthlyPayment: string
-    rowData: {
-      monthlyInterestPayment: string
-      monthlyPrincipalPayment: string
-      remain: string
-    }[]
-  }
-}) => {
+const Table = (props: { calculatedMortgage: DataCalculateMortgage }) => {
   return (
     <Table_Styled>
       <thead>
@@ -121,19 +126,85 @@ const Table = (props: {
         </tr>
       </thead>
       <tbody>
-        {props.calculatedMortgage.rowData.map(
-          (item: typeof props.calculatedMortgage.rowData[number], index: number) => (
-            <tr key={index}>
-              <Td_Styled>{index + 1}</Td_Styled>
-              <Td_Styled>{props.calculatedMortgage.monthlyPayment}</Td_Styled>
-              <Td_Styled>{item.monthlyInterestPayment}</Td_Styled>
-              <Td_Styled>{item.monthlyPrincipalPayment}</Td_Styled>
-              <Td_Styled>{item.remain}</Td_Styled>
-            </tr>
-          )
-        )}
+        {props.calculatedMortgage.rowsData.map((item, index) => (
+          <tr key={index}>
+            <Td_Styled>{index + 1}</Td_Styled>
+            <Td_Styled>{amountFormat(props.calculatedMortgage.monthlyPayment)}</Td_Styled>
+            <Td_Styled>{amountFormat(item.monthlyInterestPayment)}</Td_Styled>
+            <Td_Styled>{amountFormat(item.monthlyPrincipalPayment)}</Td_Styled>
+            <Td_Styled>{amountFormat(item.remain)}</Td_Styled>
+          </tr>
+        ))}
       </tbody>
     </Table_Styled>
+  )
+}
+
+const Charts = (props: { calculatedMortgage: DataCalculateMortgage }) => {
+  const chartData = props.calculatedMortgage.rowsData.map((item, index) => ({
+    xAxis: { index },
+    interestPaid: formatDecimals(item.monthlyInterestPayment),
+    principalPaid: formatDecimals(item.monthlyPrincipalPayment),
+    remain: formatDecimals(item.monthlyPrincipalPayment),
+  }))
+
+  return (
+    <div>
+      <LineChart
+        width={600}
+        height={300}
+        data={chartData}
+        margin={{
+          top: 15,
+          right: 30,
+          left: 10,
+          bottom: 15,
+        }}
+      >
+        <CartesianGrid stroke='#eee' strokeDasharray='3 3' />
+        <XAxis dataKey='xAxis' />
+        <YAxis />
+        <Tooltip />
+        <Legend />
+        <Line
+          type='monotone'
+          dataKey='remain'
+          stroke={theme.quaternaryColor}
+          activeDot={{ r: 8 }}
+        />
+      </LineChart>
+      <LineChart
+        width={600}
+        height={300}
+        data={chartData}
+        margin={{
+          top: 15,
+          right: 30,
+          left: 10,
+          bottom: 15,
+        }}
+      >
+        <CartesianGrid stroke='#eee' strokeDasharray='3 3' />
+        <XAxis dataKey='xAxis' />
+        <YAxis />
+        <Tooltip />
+        <Legend />
+        <Line
+          type='monotone'
+          dataKey='interestPaid'
+          stroke={theme.primaryColor}
+          strokeWidth={1}
+          activeDot={{ r: 8 }}
+        />
+        <Line
+          type='monotone'
+          dataKey='principalPaid'
+          stroke={theme.quaternaryColor}
+          strokeWidth={1}
+          activeDot={{ r: 8 }}
+        />
+      </LineChart>
+    </div>
   )
 }
 
