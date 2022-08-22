@@ -36,6 +36,9 @@ export const App = () => {
           <LinkStyledHover to={urls.memoryGame} onClick={handleToggle}>
             MemoryGame
           </LinkStyledHover>
+          <LinkStyledHover to={urls.httpFilter} onClick={handleToggle}>
+            HttpFilter
+          </LinkStyledHover>
         </NavMenu>
       </Div_Nav>
     </Div_styled>
