@@ -11,7 +11,6 @@ export const HttpFilter = () => {
   const [loading, setLoading] = useState(false)
 
   const handleChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    console.info(process.env.REACT_APP_URL)
     setLoading(true)
     setValue(e.target.value)
     setErrorMessage('')
@@ -35,13 +34,13 @@ export const HttpFilter = () => {
       ) : loading ? (
         <div>Loading...</div>
       ) : (
-        <Div_List data={data} />
+        <List data={data} />
       )}
     </Div_Styled>
   )
 }
 
-const Div_List = (props: { data: Data }) => {
+const List = (props: { data: Data }) => {
   return (
     <div>
       {props.data.map(i => (

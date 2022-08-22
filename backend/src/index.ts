@@ -7,23 +7,23 @@ const port = 1234
 
 app.use(cors())
 
+type Data = {
+  id: string
+  name: string
+}
+
 const formatValue = (value: string) => value.toLowerCase().trim().replace(/[y]/g, 'i')
 
 app.get('/users', (req, res, next) => {
-  console.info('nekdo vola server')
   try {
-    const dataString = fs.readFileSync(`${__dirname}/../data.son`, 'utf-8')
+    const dataString = fs.readFileSync(`${__dirname}/../data.json`, 'utf-8')
     const data = JSON.parse(dataString).users
 
-    const keys = ['id', 'name']
-
-    const filtered = (data: any[]) => {
-      return data.filter(item =>
-        keys.some(key => formatValue(item[key]).includes(formatValue(req.query.search!.toString())))
+    res.send(
+      data.filter((item: Data) =>
+        formatValue(item.name).includes(formatValue(req.query.search!.toString()))
       )
-    }
-
-    res.send(filtered(data))
+    )
   } catch (err) {
     next(err)
   }
