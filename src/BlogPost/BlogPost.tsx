@@ -1,3 +1,4 @@
+import { BlogContext } from './BlogContextProvider'
 import { Button } from '../components/Button'
 import { Div_Styled } from '../HomePage'
 import { Helmet } from 'react-helmet'
@@ -7,65 +8,6 @@ import { css } from '@emotion/css'
 import { genericHookContextBuilder } from '../utils/genericHookContextBuilder'
 import { useNavigate } from 'react-router-dom'
 import React, { useContext, useState } from 'react'
-
-export type Article = {
-  id: number
-  url: string
-  title: string
-  content: string
-}
-
-const useLogicState = () => {
-  const [articles, setArticles] = useLocalStorage('articles:list', [] as Article[])
-  const [error, setError] = useState('')
-
-  const checkUrl = (url: string) => {
-    return articles.some(article => article.url === url)
-  }
-
-  const addArticle = (title: string, content: string) => {
-    if (!checkUrl(convertToSlug(title))) {
-      setError('Use different title')
-    }
-    if (title.trim().length === 0) {
-      setError('Title is required')
-      return
-    }
-    if (content.trim().length === 0) {
-      setError('Text is required')
-      return
-    }
-    setArticles(prevArt => [
-      {
-        id: uniqueId(),
-        url: convertToSlug(title),
-        title: title,
-        content: content,
-      },
-      ...prevArt,
-    ])
-    setError('')
-  }
-  return {
-    articles,
-    setArticles,
-    error,
-    setError,
-    addArticle,
-    checkUrl,
-  }
-}
-
-export const { ContextProvider: BlogContextProvider, Context: BlogContext } =
-  genericHookContextBuilder(useLogicState)
-
-export const BlogPost = () => {
-  return (
-    <BlogContextProvider>
-      <Blog />
-    </BlogContextProvider>
-  )
-}
 
 export const Blog = () => {
   const logic = useContext(BlogContext)
@@ -88,18 +30,13 @@ export const Blog = () => {
       </nav>
       <div>
         <h2>List of Articles:</h2>
-        {logic.articles.map(item => {
-          return (
-            <div key={item.id}>
-              <Button
-                className={styles.styledButton}
-                onClick={() => navigate(concatUrls(item.url))}
-              >
-                {item.title}
-              </Button>
-            </div>
-          )
-        })}
+        {logic.articles.map(item => (
+          <div key={item.id}>
+            <Button className={styles.styledButton} onClick={() => navigate(concatUrls(item.url))}>
+              {item.title}
+            </Button>
+          </div>
+        ))}
       </div>
     </Div_Styled>
   )

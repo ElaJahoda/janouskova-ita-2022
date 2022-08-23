@@ -1,4 +1,4 @@
-import { BlogContext, BlogContextProvider } from './BlogPost'
+import { BlogContext } from './BlogContextProvider'
 import { Button } from '../components/Button'
 import {
   Div_Container,

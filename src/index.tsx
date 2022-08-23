@@ -1,6 +1,6 @@
 import { App } from './App'
 import { BlogArticle } from './BlogPost/BlogArticle'
-import { BlogContextProvider, BlogPost } from './BlogPost/BlogPost'
+import { BlogContextProvider, BlogPost } from './BlogPost/BlogContextProvider'
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import { Counter } from './Counter/Counter'
 import { HackerTyper } from './HackerTyper/HackerTyper'
