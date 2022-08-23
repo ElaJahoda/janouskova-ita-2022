@@ -32,8 +32,8 @@ export const shuffleArray = <T>(arr: T[]) => {
 export const delay = (ms: number) =>
   new Promise(resolve => setTimeout(() => resolve(undefined), ms))
 
-export const convertToSlug = (item: string) => {
-  return item
+export const convertToSlug = (text: string) => {
+  return text
     .toLowerCase()
     .replace(/[^\w\s-]/g, '')
     .replace(/[\s_-]+/g, '-')

@@ -9,15 +9,13 @@ import ReactMarkdown from 'react-markdown'
 import remarkGfm from 'remark-gfm'
 
 export const BlogArticle = () => {
-  const { url } = useParams()
+  const { params } = useParams()
   const logic = useContext(BlogContext)
-  const article = logic.articles.find(article => article.url === url)
+  const article = logic.articles.find(article => article.url === params)
   return (
     <Div_Styled>
       <h1>{article?.title}</h1>
-      <ReactMarkdown remarkPlugins={[remarkGfm]}>
-        {article === undefined ? '' : article.content}
-      </ReactMarkdown>
+      <ReactMarkdown remarkPlugins={[remarkGfm]}>{article?.content ?? ''}</ReactMarkdown>
       <Link to={urls.blogPost}>
         <Button>Go back</Button>
       </Link>

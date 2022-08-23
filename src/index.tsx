@@ -33,7 +33,7 @@ root.render(
           <Route path={urls.httpFilter} element={<HttpFilter />} />
           <Route path={urls.blogPost} element={<BlogPost />} />
           <Route path={urls.blogNewArticle} element={<NewArticle />} />
-          <Route path={`${urls.blogArticles}/:url`} element={<BlogArticle />} />
+          <Route path={urls.blogArticles} element={<BlogArticle />} />
         </Routes>
       </BrowserRouter>
     </BlogContextProvider>

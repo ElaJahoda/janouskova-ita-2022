@@ -9,7 +9,7 @@ export const urls = {
   httpFilter: '/http-filter',
   blogPost: '/blog',
   blogNewArticle: '/blog/new-article',
-  blogArticles: '/blog/articles',
+  blogArticles: '/blog/articles/:params',
   jsAdoptionByMicrosoft: 'adoption-by-microsoft',
   jsCreationAtNetscape: 'creation-at-netscape',
   jsTheRiseOfJScript: 'the-rise-of-jscript',
@@ -21,6 +21,6 @@ export const urls = {
   jsGrowthAndStandardizationUrlAll: '/jshistory#growth-and-standardization',
   jsReachingMaturityUrlAll: '/jshistory#reaching-maturity',
 }
-export const concatUrls = (urls: String[]) => {
-  return urls.map(url => `${url}`).join('')
+export const concatUrls = (url: String) => {
+  return `/blog/articles/${url}`
 }

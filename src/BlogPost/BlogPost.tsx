@@ -93,7 +93,7 @@ export const Blog = () => {
             <div key={item.id}>
               <Button
                 className={styles.styledButton}
-                onClick={() => navigate(concatUrls([urls.blogArticles, '/', item.url]))}
+                onClick={() => navigate(concatUrls(item.url))}
               >
                 {item.title}
               </Button>
