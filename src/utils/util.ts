@@ -31,3 +31,11 @@ export const shuffleArray = <T>(arr: T[]) => {
 
 export const delay = (ms: number) =>
   new Promise(resolve => setTimeout(() => resolve(undefined), ms))
+
+export const convertToSlug = (item: string) => {
+  return item
+    .toLowerCase()
+    .replace(/[^\w\s-]/g, '')
+    .replace(/[\s_-]+/g, '-')
+    .replace(/^-+|-+$/g, '')
+}

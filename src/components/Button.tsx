@@ -7,6 +7,7 @@ font-size: ${theme.fontSize};
   border: transparent;
   border-radius: 5px;
   padding: 7px;
+  margin: 3px;
   cursor: pointer;
   transition: opacity 0.15s ease-in-out, background-color 0.2s ease-in-out;
   &:hover {
