@@ -39,6 +39,9 @@ export const App = () => {
           <LinkStyledHover to={urls.httpFilter} onClick={handleToggle}>
             HttpFilter
           </LinkStyledHover>
+          <LinkStyledHover to={urls.blogPost} onClick={handleToggle}>
+            BlogPost
+          </LinkStyledHover>
         </NavMenu>
       </Div_Nav>
     </Div_styled>

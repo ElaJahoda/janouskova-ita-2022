@@ -208,7 +208,7 @@ const Charts = (props: { calculatedMortgage: DataCalculateMortgage }) => {
   )
 }
 
-const Div_Form_Item = styled.div`
+export const Div_Form_Item = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -238,7 +238,7 @@ const Td_Styled = styled.td`
   border-bottom: 1px solid ${theme.primaryColor};
   padding: 5px;
 `
-const Div_Container = styled.div`
+export const Div_Container = styled.div`
   padding: 10px;
   box-sizing: border-box;
   margin: auto;
@@ -251,7 +251,7 @@ const Div_Container = styled.div`
     width: 95%;
   }
 `
-const Input_Styled = styled.input`
+export const Input_Styled = styled.input`
   padding: 3px;
   margin: 10px 0px;
   width: 200px;
