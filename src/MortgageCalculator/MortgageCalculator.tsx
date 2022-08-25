@@ -41,18 +41,31 @@ const formatDecimals = (item: number) => {
 
 type DataCalculateMortgage = ReturnType<typeof calculateMortgage>
 
-const calculateMortgage = (amount: number, rate: number, years: number) => {
+const calculateMortgage = (amount: number, rate: number, years: number, inflation: number) => {
   const monthlyPayment = calculateMonthlyPayment(amount, rate, years)
+  const dataInflation = inflation ? inflation : 0
   let remain = amount
-  const rowsData = Array.from({ length: years * 12 }, (v, i) => (i = i + 1)).map(() => {
+  let inflationCoefficient = 1
+  const monthInflation = Math.pow(dataInflation, 1 / 12)
+
+  const rowsData = Array.from({ length: years * 12 }, (v, i) => (i = i + 1)).map(i => {
     const monthlyInterestPayment = (rate / 100 / 12) * remain
     const monthlyPrincipalPayment = monthlyPayment - monthlyInterestPayment
     remain -= monthlyPrincipalPayment
+
+    const inflationInterestPaid = monthlyInterestPayment * inflationCoefficient
+    const inflationPrincipalPaid = monthlyPrincipalPayment * inflationCoefficient
+    const inflationRemain = remain * inflationCoefficient
+
+    inflationCoefficient = inflationCoefficient * ((100 - monthInflation) / 100)
 
     return {
       monthlyInterestPayment,
       monthlyPrincipalPayment,
       remain,
+      inflationInterestPaid,
+      inflationPrincipalPaid,
+      inflationRemain,
     }
   })
 
@@ -63,11 +76,12 @@ const calculateMortgage = (amount: number, rate: number, years: number) => {
 }
 
 export const MortgageCalculator = () => {
-  const [amount, setAmount] = useState(30_0000)
-  const [rate, setRate] = useState(3.5)
-  const [years, setYears] = useState(30)
+  const [amount, setAmount] = useState(10_0000)
+  const [rate, setRate] = useState(12)
+  const [years, setYears] = useState(5)
+  const [inflation, setInflation] = useState(4)
 
-  const dataCalculateMortgage = calculateMortgage(amount, rate, years)
+  const dataCalculateMortgage = calculateMortgage(amount, rate, years, inflation)
   return (
     <Div_Styled>
       <Helmet>
@@ -106,6 +120,16 @@ export const MortgageCalculator = () => {
             value={years}
           />
         </Div_Form_Item>
+        <Div_Form_Item>
+          <label>Inflation (%)</label>
+          <Input_Styled
+            type='number'
+            placeholder='0'
+            required
+            onChange={e => setInflation(parseInt(e.target.value))}
+            value={inflation}
+          />
+        </Div_Form_Item>
         <Charts calculatedMortgage={dataCalculateMortgage} />
         <Table calculatedMortgage={dataCalculateMortgage} />
       </Div_Container>
@@ -123,6 +147,9 @@ const Table = (props: { calculatedMortgage: DataCalculateMortgage }) => {
           <Th_Styled>Interest Paid</Th_Styled>
           <Th_Styled>Principal Paid</Th_Styled>
           <Th_Styled>Remain</Th_Styled>
+          <Th_Styled>Inf. Interest Paid</Th_Styled>
+          <Th_Styled>Inf. Principal Paid</Th_Styled>
+          <Th_Styled>Inf. Remain</Th_Styled>
         </tr>
       </thead>
       <tbody>
@@ -133,6 +160,9 @@ const Table = (props: { calculatedMortgage: DataCalculateMortgage }) => {
             <Td_Styled>{amountFormat(item.monthlyInterestPayment)}</Td_Styled>
             <Td_Styled>{amountFormat(item.monthlyPrincipalPayment)}</Td_Styled>
             <Td_Styled>{amountFormat(item.remain)}</Td_Styled>
+            <Td_Styled>{amountFormat(item.inflationInterestPaid)}</Td_Styled>
+            <Td_Styled>{amountFormat(item.inflationPrincipalPaid)}</Td_Styled>
+            <Td_Styled>{amountFormat(item.inflationRemain)}</Td_Styled>
           </tr>
         ))}
       </tbody>
@@ -145,7 +175,10 @@ const Charts = (props: { calculatedMortgage: DataCalculateMortgage }) => {
     xAxis: { index },
     interestPaid: formatDecimals(item.monthlyInterestPayment),
     principalPaid: formatDecimals(item.monthlyPrincipalPayment),
-    remain: formatDecimals(item.monthlyPrincipalPayment),
+    remain: formatDecimals(item.remain),
+    inflationInterestPaid: formatDecimals(item.inflationInterestPaid),
+    inflationPrincipalPaid: formatDecimals(item.inflationPrincipalPaid),
+    inflationRemain: formatDecimals(item.inflationRemain),
   }))
 
   return (
@@ -172,6 +205,12 @@ const Charts = (props: { calculatedMortgage: DataCalculateMortgage }) => {
           stroke={theme.quaternaryColor}
           activeDot={{ r: 8 }}
         />
+        <Line
+          type='monotone'
+          dataKey='inflationRemain'
+          stroke={theme.darkQuaternaryColor}
+          activeDot={{ r: 8 }}
+        />
       </LineChart>
       <LineChart
         width={600}
@@ -192,14 +231,28 @@ const Charts = (props: { calculatedMortgage: DataCalculateMortgage }) => {
         <Line
           type='monotone'
           dataKey='interestPaid'
-          stroke={theme.primaryColor}
+          stroke={theme.quaternaryColor}
           strokeWidth={1}
           activeDot={{ r: 8 }}
         />
         <Line
           type='monotone'
           dataKey='principalPaid'
-          stroke={theme.quaternaryColor}
+          stroke={theme.primaryColor}
+          strokeWidth={1}
+          activeDot={{ r: 8 }}
+        />
+        <Line
+          type='monotone'
+          dataKey='inflationInterestPaid'
+          stroke={theme.darkQuaternaryColor}
+          strokeWidth={1}
+          activeDot={{ r: 8 }}
+        />
+        <Line
+          type='monotone'
+          dataKey='inflationPrincipalPaid'
+          stroke={theme.darkPrimaryColor}
           strokeWidth={1}
           activeDot={{ r: 8 }}
         />
