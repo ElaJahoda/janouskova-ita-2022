@@ -15,9 +15,9 @@ import React, { useState } from 'react'
 import styled from '@emotion/styled'
 
 const calculateMonthlyPayment = (amount: number, rate: number, years: number) => {
-  const dataAmount = amount ? amount : 0
-  const monthlyRate = rate ? rate / 100 / 12 : 0
-  const months = years ? years * 12 : 0
+  const dataAmount = amount || 0
+  const monthlyRate = rate / 100 / 12 || 0
+  const months = years * 12 || 0
   if (amount && rate && years) {
     return (
       (dataAmount * monthlyRate * Math.pow(1 + monthlyRate, months)) /
@@ -39,17 +39,25 @@ const formatDecimals = (item: number) => {
   return Number(item.toFixed(2))
 }
 
+const getLinearMonthInflation = (yearInflation: number) => {
+  return Math.pow(yearInflation || 0, 1 / 12)
+}
+
 type DataCalculateMortgage = ReturnType<typeof calculateMortgage>
 
-const calculateMortgage = (amount: number, rate: number, years: number, inflation: number) => {
-  const monthlyPayment = calculateMonthlyPayment(amount, rate, years)
-  const dataInflation = inflation ? inflation : 0
-  let remain = amount
+const calculateMortgage = (arg: {
+  amount: number
+  rate: number
+  years: number
+  inflation: number
+}) => {
+  const monthlyPayment = calculateMonthlyPayment(arg.amount, arg.rate, arg.years)
+  const monthInflation = getLinearMonthInflation(arg.inflation)
+  let remain = arg.amount
   let inflationCoefficient = 1
-  const monthInflation = Math.pow(dataInflation, 1 / 12)
 
-  const rowsData = Array.from({ length: years * 12 }, (v, i) => (i = i + 1)).map(i => {
-    const monthlyInterestPayment = (rate / 100 / 12) * remain
+  const rowsData = Array.from({ length: arg.years * 12 }, (v, i) => i + 1).map(i => {
+    const monthlyInterestPayment = (arg.rate / 100 / 12) * remain
     const monthlyPrincipalPayment = monthlyPayment - monthlyInterestPayment
     remain -= monthlyPrincipalPayment
 
@@ -81,7 +89,7 @@ export const MortgageCalculator = () => {
   const [years, setYears] = useState(5)
   const [inflation, setInflation] = useState(4)
 
-  const dataCalculateMortgage = calculateMortgage(amount, rate, years, inflation)
+  const dataCalculateMortgage = calculateMortgage({ amount, rate, years, inflation })
   return (
     <Div_Styled>
       <Helmet>
@@ -173,12 +181,12 @@ const Table = (props: { calculatedMortgage: DataCalculateMortgage }) => {
 const Charts = (props: { calculatedMortgage: DataCalculateMortgage }) => {
   const chartData = props.calculatedMortgage.rowsData.map((item, index) => ({
     xAxis: { index },
-    interestPaid: formatDecimals(item.monthlyInterestPayment),
-    principalPaid: formatDecimals(item.monthlyPrincipalPayment),
+    'Interest Paid': formatDecimals(item.monthlyInterestPayment),
+    'Principal Paid': formatDecimals(item.monthlyPrincipalPayment),
     remain: formatDecimals(item.remain),
-    inflationInterestPaid: formatDecimals(item.inflationInterestPaid),
-    inflationPrincipalPaid: formatDecimals(item.inflationPrincipalPaid),
-    inflationRemain: formatDecimals(item.inflationRemain),
+    'Inflation Interest Paid': formatDecimals(item.inflationInterestPaid),
+    'Inflation Principal Paid': formatDecimals(item.inflationPrincipalPaid),
+    'Inflation Remain': formatDecimals(item.inflationRemain),
   }))
 
   return (
@@ -207,7 +215,7 @@ const Charts = (props: { calculatedMortgage: DataCalculateMortgage }) => {
         />
         <Line
           type='monotone'
-          dataKey='inflationRemain'
+          dataKey='Inflation Remain'
           stroke={theme.darkQuaternaryColor}
           activeDot={{ r: 8 }}
         />
@@ -230,28 +238,28 @@ const Charts = (props: { calculatedMortgage: DataCalculateMortgage }) => {
         <Legend />
         <Line
           type='monotone'
-          dataKey='interestPaid'
+          dataKey='Interest Paid'
           stroke={theme.quaternaryColor}
           strokeWidth={1}
           activeDot={{ r: 8 }}
         />
         <Line
           type='monotone'
-          dataKey='principalPaid'
+          dataKey='Principal Paid'
           stroke={theme.primaryColor}
           strokeWidth={1}
           activeDot={{ r: 8 }}
         />
         <Line
           type='monotone'
-          dataKey='inflationInterestPaid'
+          dataKey='Inflation Interest Paid'
           stroke={theme.darkQuaternaryColor}
           strokeWidth={1}
           activeDot={{ r: 8 }}
         />
         <Line
           type='monotone'
-          dataKey='inflationPrincipalPaid'
+          dataKey='Inflation Principal Paid'
           stroke={theme.darkPrimaryColor}
           strokeWidth={1}
           activeDot={{ r: 8 }}
