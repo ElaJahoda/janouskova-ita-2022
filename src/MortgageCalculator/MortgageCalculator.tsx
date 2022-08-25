@@ -16,16 +16,13 @@ import styled from '@emotion/styled'
 
 const calculateMonthlyPayment = (amount: number, rate: number, years: number) => {
   const dataAmount = amount || 0
-  const monthlyRate = rate / 100 / 12 || 0
+  const monthlyRate = rate ? rate / 100 / 12 : 0
   const months = years * 12 || 0
-  if (amount && rate && years) {
-    return (
-      (dataAmount * monthlyRate * Math.pow(1 + monthlyRate, months)) /
-      (Math.pow(1 + monthlyRate, months) - 1)
-    )
-  } else {
-    return 0
-  }
+
+  return (
+    (dataAmount * monthlyRate * Math.pow(1 + monthlyRate, months)) /
+    (Math.pow(1 + monthlyRate, months) - 1)
+  )
 }
 
 const amountFormat = (item: number) => {
@@ -40,7 +37,7 @@ const formatDecimals = (item: number) => {
 }
 
 const getLinearMonthInflation = (yearInflation: number) => {
-  return Math.pow(yearInflation || 0, 1 / 12)
+  return Math.pow(yearInflation, 1 / 12)
 }
 
 type DataCalculateMortgage = ReturnType<typeof calculateMortgage>
@@ -52,7 +49,7 @@ const calculateMortgage = (arg: {
   inflation: number
 }) => {
   const monthlyPayment = calculateMonthlyPayment(arg.amount, arg.rate, arg.years)
-  const monthInflation = getLinearMonthInflation(arg.inflation)
+  const monthInflation = getLinearMonthInflation(arg.inflation || 0)
   let remain = arg.amount
   let inflationCoefficient = 1
 
