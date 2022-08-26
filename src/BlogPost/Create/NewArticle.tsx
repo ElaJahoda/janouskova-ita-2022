@@ -1,18 +1,18 @@
-import { BlogContext } from './BlogContextProvider'
-import { Button } from '../components/Button'
+import { BlogNewContext } from './CreateBlogContext'
+import { Button } from '../../components/Button'
 import {
   Div_Container,
   Div_Form_Item,
   Input_Styled,
-} from '../MortgageCalculator/MortgageCalculator'
-import { Div_Styled } from '../HomePage'
+} from '../../MortgageCalculator/MortgageCalculator'
+import { Div_Styled } from '../../HomePage'
 import { css } from '@emotion/css'
-import { urls } from '../urls'
+import { urls } from '../../urls'
 import { useNavigate } from 'react-router-dom'
 import React, { useContext, useState } from 'react'
 
 export const NewArticle = () => {
-  const logic = useContext(BlogContext)
+  const logic = useContext(BlogNewContext)
   const navigate = useNavigate()
 
   const [title, setTitle] = useState('')

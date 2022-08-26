@@ -1,6 +1,6 @@
-import { Blog } from './BlogPost'
-import { convertToSlug, uniqueId, useLocalStorage } from '../utils/util'
-import { genericHookContextBuilder } from '../utils/genericHookContextBuilder'
+import { NewArticle } from './NewArticle'
+import { convertToSlug, uniqueId, useLocalStorage } from '../../utils/util'
+import { genericHookContextBuilder } from '../../utils/genericHookContextBuilder'
 import { useState } from 'react'
 
 export type Article = {
@@ -51,13 +51,13 @@ const useLogicState = () => {
   }
 }
 
-export const { ContextProvider: BlogContextProvider, Context: BlogContext } =
+export const { ContextProvider: BlogContextNewProvider, Context: BlogNewContext } =
   genericHookContextBuilder(useLogicState)
 
 export const BlogPost = () => {
   return (
-    <BlogContextProvider>
-      <Blog />
-    </BlogContextProvider>
+    <BlogContextNewProvider>
+      <NewArticle />
+    </BlogContextNewProvider>
   )
 }

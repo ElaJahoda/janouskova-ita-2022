@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 export const uniqueId = () => Math.floor(Math.random() * 10_000)
 
@@ -38,4 +38,10 @@ export const convertToSlug = (text: string) => {
     .replace(/[^\w\s-]/g, '')
     .replace(/[\s_-]+/g, '-')
     .replace(/^-+|-+$/g, '')
+}
+
+export const useComponentDidMount = (fn: () => void) => {
+  useEffect(() => {
+    fn()
+  }, [])
 }

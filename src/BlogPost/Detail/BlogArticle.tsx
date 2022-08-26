@@ -1,8 +1,8 @@
-import { BlogContext } from './BlogContextProvider'
-import { Button } from '../components/Button'
-import { Div_Styled } from '../HomePage'
+import { BlogDetailContext } from './DetailArticleContext'
+import { Button } from '../../components/Button'
+import { Div_Styled } from '../../HomePage'
 import { Link } from 'react-router-dom'
-import { urls } from '../urls'
+import { urls } from '../../urls'
 import { useContext } from 'react'
 import { useParams } from 'react-router'
 import ReactMarkdown from 'react-markdown'
@@ -10,8 +10,10 @@ import remarkGfm from 'remark-gfm'
 
 export const BlogArticle = () => {
   const params = useParams()
-  const logic = useContext(BlogContext)
-  const article = logic.articles.find(article => article.url === params.slug)
+  const logic = useContext(BlogDetailContext)
+  const article = logic.articles.find(
+    (article: { url: string | undefined }) => article.url === params.slug
+  )
   return (
     <Div_Styled>
       <h1>{article?.title}</h1>

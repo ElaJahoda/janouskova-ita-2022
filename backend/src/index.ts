@@ -12,6 +12,8 @@ type User = {
   name: string
 }
 
+type Article = { id: number; url: string; title: string; content: string }
+
 const formatValue = (value: string) => value.toLowerCase().trim().replace(/[y]/g, 'i')
 
 app.get('/users', (req, res, next) => {
@@ -27,6 +29,14 @@ app.get('/users', (req, res, next) => {
   } catch (err) {
     next(err)
   }
+})
+
+//vypise data na http://localhost:1234/blog
+app.get('/blog', (req, res) => {
+  const dataString = fs.readFileSync(`${__dirname}/../dataArticles.json`, 'utf-8')
+  const data = JSON.parse(dataString).articles as Article[]
+
+  res.send(data)
 })
 
 app.use((err: Error, req: express.Request, res: express.Response, next: express.NextFunction) => {
