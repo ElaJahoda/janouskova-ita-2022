@@ -15,9 +15,9 @@ import React, { useState } from 'react'
 import styled from '@emotion/styled'
 
 const calculateMonthlyPayment = (amount: number, rate: number, years: number) => {
-  const dataAmount = amount || 0
-  const monthlyRate = rate ? rate / 100 / 12 : 0
-  const months = years * 12 || 0
+  const dataAmount = amount
+  const monthlyRate = rate / 100 / 12
+  const months = years * 12
 
   return (
     (dataAmount * monthlyRate * Math.pow(1 + monthlyRate, months)) /
@@ -49,7 +49,7 @@ const calculateMortgage = (arg: {
   inflation: number
 }) => {
   const monthlyPayment = calculateMonthlyPayment(arg.amount, arg.rate, arg.years)
-  const monthInflation = getLinearMonthInflation(arg.inflation || 0)
+  const monthInflation = getLinearMonthInflation(arg.inflation)
   let remain = arg.amount
   let inflationCoefficient = 1
 
@@ -102,7 +102,7 @@ export const MortgageCalculator = () => {
             step='5000'
             required
             onChange={e => setAmount(parseInt(e.target.value))}
-            value={amount}
+            value={amount || 0}
           />
         </Div_Form_Item>
         <Div_Form_Item>
@@ -112,7 +112,7 @@ export const MortgageCalculator = () => {
             placeholder='0'
             required
             onChange={e => setRate(parseInt(e.target.value))}
-            value={rate}
+            value={rate || 0}
           />
         </Div_Form_Item>
         <Div_Form_Item>
@@ -122,7 +122,7 @@ export const MortgageCalculator = () => {
             placeholder='0'
             required
             onChange={e => setYears(parseInt(e.target.value))}
-            value={years}
+            value={years || 0}
           />
         </Div_Form_Item>
         <Div_Form_Item>
@@ -132,7 +132,7 @@ export const MortgageCalculator = () => {
             placeholder='0'
             required
             onChange={e => setInflation(parseInt(e.target.value))}
-            value={inflation}
+            value={inflation || 0}
           />
         </Div_Form_Item>
         <Charts calculatedMortgage={dataCalculateMortgage} />

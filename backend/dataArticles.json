@@ -1,0 +1,31 @@
+{
+    "articles" : [
+        {
+            "id": "1",
+            "url": "abc",
+            "title": "Lojd",
+            "content": "strasne husty clanek 1"
+        },
+        {
+            "id": "2",
+            "url": "abcd",
+            "title": "Zohan",
+            "content": "strasne husty clanek 2"
+        },  {
+            "id": "3",
+            "url": "bcd",
+            "title": "Podes",
+            "content": "strasne husty clanek 3"
+        },  {
+            "id": "4",
+            "url": "cde",
+            "title": "Lojza",
+            "content": "strasne husty clanek 4"
+        },  {
+            "id": "5",
+            "url": "efg",
+            "title": "Brut",
+            "content": "strasne husty clanek 5"
+        }
+    ]
+}
