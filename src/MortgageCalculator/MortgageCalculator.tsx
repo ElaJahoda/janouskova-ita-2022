@@ -15,17 +15,14 @@ import React, { useState } from 'react'
 import styled from '@emotion/styled'
 
 const calculateMonthlyPayment = (amount: number, rate: number, years: number) => {
-  const dataAmount = amount ? amount : 0
-  const monthlyRate = rate ? rate / 100 / 12 : 0
-  const months = years ? years * 12 : 0
-  if (amount && rate && years) {
-    return (
-      (dataAmount * monthlyRate * Math.pow(1 + monthlyRate, months)) /
-      (Math.pow(1 + monthlyRate, months) - 1)
-    )
-  } else {
-    return 0
-  }
+  const dataAmount = amount
+  const monthlyRate = rate / 100 / 12
+  const months = years * 12
+
+  return (
+    (dataAmount * monthlyRate * Math.pow(1 + monthlyRate, months)) /
+    (Math.pow(1 + monthlyRate, months) - 1)
+  )
 }
 
 const amountFormat = (item: number) => {
@@ -39,20 +36,41 @@ const formatDecimals = (item: number) => {
   return Number(item.toFixed(2))
 }
 
+const getLinearMonthInflation = (yearInflation: number) => {
+  return Math.pow(1 + -yearInflation / 100, 1 / 12) - 1
+}
+
 type DataCalculateMortgage = ReturnType<typeof calculateMortgage>
 
-const calculateMortgage = (amount: number, rate: number, years: number) => {
-  const monthlyPayment = calculateMonthlyPayment(amount, rate, years)
-  let remain = amount
-  const rowsData = Array.from({ length: years * 12 }, (v, i) => (i = i + 1)).map(() => {
-    const monthlyInterestPayment = (rate / 100 / 12) * remain
+const calculateMortgage = (arg: {
+  amount: number
+  rate: number
+  years: number
+  inflation: number
+}) => {
+  const monthlyPayment = calculateMonthlyPayment(arg.amount, arg.rate, arg.years)
+  const monthInflation = getLinearMonthInflation(arg.inflation)
+  let remain = arg.amount
+  let inflationCoefficient = 1
+
+  const rowsData = Array.from({ length: arg.years * 12 }, (v, i) => i + 1).map(i => {
+    const monthlyInterestPayment = (arg.rate / 100 / 12) * remain
     const monthlyPrincipalPayment = monthlyPayment - monthlyInterestPayment
     remain -= monthlyPrincipalPayment
+
+    const inflationInterestPaid = monthlyInterestPayment * inflationCoefficient
+    const inflationPrincipalPaid = monthlyPrincipalPayment * inflationCoefficient
+    const inflationRemain = remain * inflationCoefficient
+
+    inflationCoefficient = inflationCoefficient * (1 + monthInflation)
 
     return {
       monthlyInterestPayment,
       monthlyPrincipalPayment,
       remain,
+      inflationInterestPaid,
+      inflationPrincipalPaid,
+      inflationRemain,
     }
   })
 
@@ -63,11 +81,12 @@ const calculateMortgage = (amount: number, rate: number, years: number) => {
 }
 
 export const MortgageCalculator = () => {
-  const [amount, setAmount] = useState(30_0000)
-  const [rate, setRate] = useState(3.5)
-  const [years, setYears] = useState(30)
+  const [amount, setAmount] = useState(10_0000)
+  const [rate, setRate] = useState(12)
+  const [years, setYears] = useState(5)
+  const [inflation, setInflation] = useState(4)
 
-  const dataCalculateMortgage = calculateMortgage(amount, rate, years)
+  const dataCalculateMortgage = calculateMortgage({ amount, rate, years, inflation })
   return (
     <Div_Styled>
       <Helmet>
@@ -82,8 +101,8 @@ export const MortgageCalculator = () => {
             placeholder='0'
             step='5000'
             required
-            onChange={e => setAmount(parseInt(e.target.value))}
-            value={amount}
+            onChange={e => setAmount(parseFloat(e.target.value))}
+            value={amount || 0}
           />
         </Div_Form_Item>
         <Div_Form_Item>
@@ -91,9 +110,10 @@ export const MortgageCalculator = () => {
           <Input_Styled
             type='number'
             placeholder='0'
+            step='.1'
             required
-            onChange={e => setRate(parseInt(e.target.value))}
-            value={rate}
+            onChange={e => setRate(parseFloat(e.target.value))}
+            value={rate || 0}
           />
         </Div_Form_Item>
         <Div_Form_Item>
@@ -102,8 +122,19 @@ export const MortgageCalculator = () => {
             type='number'
             placeholder='0'
             required
-            onChange={e => setYears(parseInt(e.target.value))}
-            value={years}
+            onChange={e => setYears(parseFloat(e.target.value))}
+            value={years || 0}
+          />
+        </Div_Form_Item>
+        <Div_Form_Item>
+          <label>Inflation (%)</label>
+          <Input_Styled
+            type='number'
+            placeholder='0'
+            step='.1'
+            required
+            onChange={e => setInflation(parseFloat(e.target.value))}
+            value={inflation || 0}
           />
         </Div_Form_Item>
         <Charts calculatedMortgage={dataCalculateMortgage} />
@@ -123,6 +154,9 @@ const Table = (props: { calculatedMortgage: DataCalculateMortgage }) => {
           <Th_Styled>Interest Paid</Th_Styled>
           <Th_Styled>Principal Paid</Th_Styled>
           <Th_Styled>Remain</Th_Styled>
+          <Th_Styled>Inf. Interest Paid</Th_Styled>
+          <Th_Styled>Inf. Principal Paid</Th_Styled>
+          <Th_Styled>Inf. Remain</Th_Styled>
         </tr>
       </thead>
       <tbody>
@@ -133,6 +167,9 @@ const Table = (props: { calculatedMortgage: DataCalculateMortgage }) => {
             <Td_Styled>{amountFormat(item.monthlyInterestPayment)}</Td_Styled>
             <Td_Styled>{amountFormat(item.monthlyPrincipalPayment)}</Td_Styled>
             <Td_Styled>{amountFormat(item.remain)}</Td_Styled>
+            <Td_Styled>{amountFormat(item.inflationInterestPaid)}</Td_Styled>
+            <Td_Styled>{amountFormat(item.inflationPrincipalPaid)}</Td_Styled>
+            <Td_Styled>{amountFormat(item.inflationRemain)}</Td_Styled>
           </tr>
         ))}
       </tbody>
@@ -143,9 +180,12 @@ const Table = (props: { calculatedMortgage: DataCalculateMortgage }) => {
 const Charts = (props: { calculatedMortgage: DataCalculateMortgage }) => {
   const chartData = props.calculatedMortgage.rowsData.map((item, index) => ({
     xAxis: { index },
-    interestPaid: formatDecimals(item.monthlyInterestPayment),
-    principalPaid: formatDecimals(item.monthlyPrincipalPayment),
-    remain: formatDecimals(item.monthlyPrincipalPayment),
+    'Interest Paid': formatDecimals(item.monthlyInterestPayment),
+    'Principal Paid': formatDecimals(item.monthlyPrincipalPayment),
+    remain: formatDecimals(item.remain),
+    'Inflation Interest Paid': formatDecimals(item.inflationInterestPaid),
+    'Inflation Principal Paid': formatDecimals(item.inflationPrincipalPaid),
+    'Inflation Remain': formatDecimals(item.inflationRemain),
   }))
 
   return (
@@ -172,6 +212,12 @@ const Charts = (props: { calculatedMortgage: DataCalculateMortgage }) => {
           stroke={theme.quaternaryColor}
           activeDot={{ r: 8 }}
         />
+        <Line
+          type='monotone'
+          dataKey='Inflation Remain'
+          stroke={theme.darkQuaternaryColor}
+          activeDot={{ r: 8 }}
+        />
       </LineChart>
       <LineChart
         width={600}
@@ -191,15 +237,29 @@ const Charts = (props: { calculatedMortgage: DataCalculateMortgage }) => {
         <Legend />
         <Line
           type='monotone'
-          dataKey='interestPaid'
+          dataKey='Interest Paid'
+          stroke={theme.quaternaryColor}
+          strokeWidth={1}
+          activeDot={{ r: 8 }}
+        />
+        <Line
+          type='monotone'
+          dataKey='Principal Paid'
           stroke={theme.primaryColor}
           strokeWidth={1}
           activeDot={{ r: 8 }}
         />
         <Line
           type='monotone'
-          dataKey='principalPaid'
-          stroke={theme.quaternaryColor}
+          dataKey='Inflation Interest Paid'
+          stroke={theme.darkQuaternaryColor}
+          strokeWidth={1}
+          activeDot={{ r: 8 }}
+        />
+        <Line
+          type='monotone'
+          dataKey='Inflation Principal Paid'
+          stroke={theme.darkPrimaryColor}
           strokeWidth={1}
           activeDot={{ r: 8 }}
         />
