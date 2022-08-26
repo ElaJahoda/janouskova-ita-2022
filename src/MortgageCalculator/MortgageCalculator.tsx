@@ -37,7 +37,7 @@ const formatDecimals = (item: number) => {
 }
 
 const getLinearMonthInflation = (yearInflation: number) => {
-  return Math.pow(yearInflation, 1 / 12)
+  return Math.pow(1 + -yearInflation / 100, 1 / 12) - 1
 }
 
 type DataCalculateMortgage = ReturnType<typeof calculateMortgage>
@@ -62,7 +62,7 @@ const calculateMortgage = (arg: {
     const inflationPrincipalPaid = monthlyPrincipalPayment * inflationCoefficient
     const inflationRemain = remain * inflationCoefficient
 
-    inflationCoefficient = inflationCoefficient * ((100 - monthInflation) / 100)
+    inflationCoefficient = inflationCoefficient * (1 + monthInflation)
 
     return {
       monthlyInterestPayment,
@@ -101,7 +101,7 @@ export const MortgageCalculator = () => {
             placeholder='0'
             step='5000'
             required
-            onChange={e => setAmount(parseInt(e.target.value))}
+            onChange={e => setAmount(parseFloat(e.target.value))}
             value={amount || 0}
           />
         </Div_Form_Item>
@@ -110,8 +110,9 @@ export const MortgageCalculator = () => {
           <Input_Styled
             type='number'
             placeholder='0'
+            step='.1'
             required
-            onChange={e => setRate(parseInt(e.target.value))}
+            onChange={e => setRate(parseFloat(e.target.value))}
             value={rate || 0}
           />
         </Div_Form_Item>
@@ -121,7 +122,7 @@ export const MortgageCalculator = () => {
             type='number'
             placeholder='0'
             required
-            onChange={e => setYears(parseInt(e.target.value))}
+            onChange={e => setYears(parseFloat(e.target.value))}
             value={years || 0}
           />
         </Div_Form_Item>
@@ -130,8 +131,9 @@ export const MortgageCalculator = () => {
           <Input_Styled
             type='number'
             placeholder='0'
+            step='.1'
             required
-            onChange={e => setInflation(parseInt(e.target.value))}
+            onChange={e => setInflation(parseFloat(e.target.value))}
             value={inflation || 0}
           />
         </Div_Form_Item>
