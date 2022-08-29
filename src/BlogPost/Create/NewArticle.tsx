@@ -22,8 +22,9 @@ export const NewArticle = () => {
     <Div_Styled>
       <h1>New article</h1>
       <form
-        onSubmit={e => {
+        onSubmit={async e => {
           e.preventDefault()
+          if ((await logic.validation(title, content)) === false) return
           logic.addArticle(title, content)
           navigate(urls.blogPost)
         }}
@@ -32,6 +33,7 @@ export const NewArticle = () => {
           <Div_Form_Item>
             <label>Title input:</label>
             <Input_Styled
+              value={title}
               type='text'
               placeholder='Title...'
               onChange={e => {
@@ -42,6 +44,7 @@ export const NewArticle = () => {
           <Div_Form_Item>
             <label>Content input:</label>
             <textarea
+              value={content}
               className={styles.textarea}
               placeholder='Text content...'
               onChange={e => {

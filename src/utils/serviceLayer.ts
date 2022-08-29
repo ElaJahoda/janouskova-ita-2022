@@ -1,3 +1,5 @@
-export const filterUrl = (value: string) => {
-  return `${process.env.REACT_APP_URL}?search=${value}`
+export const myCustomFetch = async (...args: Parameters<typeof fetch>) => {
+  const response = await fetch(...args)
+  if (!response.ok) new Error('aplication error')
+  return await response.json()
 }

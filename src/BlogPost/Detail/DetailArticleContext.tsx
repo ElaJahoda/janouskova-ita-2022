@@ -1,6 +1,9 @@
 import { BlogArticle } from './BlogArticle'
-import { convertToSlug, uniqueId, useLocalStorage } from '../../utils/util'
+import { blogArticleUrl } from '../../urls'
+import { convertToSlug, uniqueId, useComponentDidMount, useLocalStorage } from '../../utils/util'
 import { genericHookContextBuilder } from '../../utils/genericHookContextBuilder'
+import { myCustomFetch } from '../../utils/serviceLayer'
+import { useParams } from 'react-router-dom'
 import { useState } from 'react'
 
 export type Article = {
@@ -11,50 +14,46 @@ export type Article = {
 }
 
 const useLogicState = () => {
-  const [articles, setArticles] = useLocalStorage('articles:list', [] as Article[])
-  const [error, setError] = useState('')
+  const [article, setArticle] = useState(undefined as Article | undefined)
+  const [loading, setLoading] = useState(false)
+  const [errorMessage, setErrorMessage] = useState('')
 
-  const checkUrl = (url: string) => {
-    return articles.some(article => article.url === url)
+  const params = useParams()
+  useComponentDidMount(async () => {
+    setErrorMessage('')
+    setLoading(true)
+    try {
+      const response = await myCustomFetch(blogArticleUrl(params.slug!))
+      setArticle(response)
+    } catch (err) {
+      if (err) setErrorMessage('Server side error')
+    } finally {
+      setLoading(false)
+    }
+  })
+
+  const deleteArticle = async () => {
+    await myCustomFetch(blogArticleUrl(params.slug!), {
+      method: 'DELETE',
+    })
   }
 
-  const addArticle = (title: string, content: string) => {
-    if (!checkUrl(convertToSlug(title))) {
-      setError('Use different title')
-    }
-    if (title.trim().length === 0) {
-      setError('Title is required')
-      return
-    }
-    if (content.trim().length === 0) {
-      setError('Text is required')
-      return
-    }
-    setArticles(prevArt => [
-      {
-        id: uniqueId(),
-        url: convertToSlug(title),
-        title: title,
-        content: content,
-      },
-      ...prevArt,
-    ])
-    setError('')
-  }
   return {
-    articles,
-    setArticles,
-    error,
-    setError,
-    addArticle,
-    checkUrl,
+    article,
+    setArticle,
+    loading,
+    setLoading,
+    errorMessage,
+    setErrorMessage,
+    deleteArticle,
+    params,
   }
 }
 
 export const { ContextProvider: BlogContextDetailProvider, Context: BlogDetailContext } =
   genericHookContextBuilder(useLogicState)
 
-export const BlogPost = () => {
+export const DetailArticle = () => {
   return (
     <BlogContextDetailProvider>
       <BlogArticle />

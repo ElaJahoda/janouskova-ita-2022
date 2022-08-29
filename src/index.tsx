@@ -1,15 +1,16 @@
 import { App } from './App'
-import { BlogArticle } from './BlogPost/Detail/BlogArticle'
 import { BlogPost } from './BlogPost/List/BlogContextProvider'
+import { BlogUpdateArticle } from './BlogPost/Update/UpdateArticleContext'
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import { Counter } from './Counter/Counter'
+import { CreateNewArticle } from './BlogPost/Create/CreateBlogContext'
+import { DetailArticle } from './BlogPost/Detail/DetailArticleContext'
 import { HackerTyper } from './HackerTyper/HackerTyper'
 import { Home } from './HomePage'
 import { HttpFilter } from './HttpFilter/HttpFilter'
 import { JsHistory } from './JShistory/JsHistory'
 import { MemoryGame } from './MemoryGame/MemoryGame'
 import { MortgageCalculator } from './MortgageCalculator/MortgageCalculator'
-import { NewArticle } from './BlogPost/Create/NewArticle'
 import { ToDo } from './ToDo/ToDo'
 import { urls } from './urls'
 import React from 'react'
@@ -31,8 +32,9 @@ root.render(
         <Route path={urls.memoryGame} element={<MemoryGame />} />
         <Route path={urls.httpFilter} element={<HttpFilter />} />
         <Route path={urls.blogPost} element={<BlogPost />} />
-        <Route path={urls.blogNewArticle} element={<NewArticle />} />
-        <Route path={urls.blogArticles} element={<BlogArticle />} />
+        <Route path={urls.blogNewArticle} element={<CreateNewArticle />} />
+        <Route path={urls.blogArticles} element={<DetailArticle />} />
+        <Route path={urls.blogUpdateArticle} element={<BlogUpdateArticle />} />
       </Routes>
     </BrowserRouter>
   </React.StrictMode>

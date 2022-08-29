@@ -1,5 +1,5 @@
 import { Div_Styled } from '../HomePage'
-import { filterUrl } from '../utils/serviceLayer'
+import { filterUrl } from '../urls'
 import React, { useState } from 'react'
 
 type Data = { id: string; name: string }[]
