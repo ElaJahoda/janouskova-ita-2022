@@ -1,8 +1,6 @@
 import { NewArticle } from './NewArticle'
-import { blogServices, serviceLayerFetch } from '../../utils/serviceLayer'
+import { blogServices } from '../../utils/serviceLayer'
 import { genericHookContextBuilder } from '../../utils/genericHookContextBuilder'
-import { urlBlog } from '../../urls'
-import { useComponentDidMount } from '../../utils/util'
 import { useState } from 'react'
 
 export type Article = {
@@ -13,7 +11,6 @@ export type Article = {
 }
 
 const useLogicState = () => {
-  const [articles, setArticles] = useState([] as Article[])
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(true)
   const [title, setTitle] = useState('')
@@ -21,21 +18,16 @@ const useLogicState = () => {
   const [content, setContent] = useState('')
   const [contentError, setContentError] = useState('')
 
-  useComponentDidMount(async () => {
-    try {
-      const response = await serviceLayerFetch(urlBlog)
-      setArticles(response)
-    } catch (err) {
-      setError('Database is unavailable')
-    }
-  })
-
-  const setNewArticle = () => blogServices.setNew({ title, content })
+  const setNewArticle = () => blogServices.create({ title, content })
 
   const addArticle = async (title: string, content: string) => {
     setTitleError('')
     setContentError('')
-
+    if (title.trim().length === 0 && content.trim().length === 0) {
+      setTitleError('Title is required')
+      setContentError('Text is required')
+      return
+    }
     if (title.trim().length === 0) {
       setTitleError('Title is required')
       return
@@ -44,7 +36,6 @@ const useLogicState = () => {
       setContentError('Text is required')
       return
     }
-
     setNewArticle()
     setTitle('')
     setContent('')

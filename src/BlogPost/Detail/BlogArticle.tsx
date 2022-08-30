@@ -2,8 +2,8 @@ import { BlogDetailContext } from './DetailArticleContext'
 import { Button } from '../../components/Button'
 import { Div_Styled } from '../../HomePage'
 import { FaEdit, FaTrash } from 'react-icons/fa'
-import { Link, useNavigate, useParams } from 'react-router-dom'
-import { concatUrlUpdate, urls } from '../../urls'
+import { Link } from 'react-router-dom'
+import { urls } from '../../urls'
 import { useContext } from 'react'
 import ReactMarkdown from 'react-markdown'
 import remarkGfm from 'remark-gfm'
@@ -20,9 +20,9 @@ export const BlogArticle = () => {
         <div>Loading...</div>
       ) : (
         <div>
-          <h2>{logic.article?.title}</h2>
-          <ReactMarkdown remarkPlugins={[remarkGfm]}>{logic.article?.content ?? ''}</ReactMarkdown>
-          <Link to={concatUrlUpdate(logic.params.slug!)}>
+          <h2>{logic.title}</h2>
+          <ReactMarkdown remarkPlugins={[remarkGfm]}>{logic.content ?? ''}</ReactMarkdown>
+          <Link to={urls.blogUpdateArticleSlug(logic.params.slug!)}>
             <Button>
               <FaEdit />
             </Button>

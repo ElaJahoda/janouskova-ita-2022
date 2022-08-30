@@ -18,12 +18,14 @@ type Article = { id: number; url: string; title: string; content: string }
 
 const formatValue = (value: string) => value.toLowerCase().trim().replace(/[y]/g, 'i')
 
-const generateSlug = (textToSlug: string, id: number | string) => {
-  return `${textToSlug
+const slugifiedTitle = (textToSlug: string, id: number | string) => {
+  textToSlug
     .toLowerCase()
     .replace(/[^\w\s-]/g, '')
     .replace(/[\s_-]+/g, '-')
-    .replace(/^-+|-+$/g, '')}-${id}`
+    .replace(/^-+|-+$/g, '')
+
+  return `${textToSlug}-${id}`
 }
 const generateID = () => {
   return Math.floor(Math.random() * 100_000_000)
@@ -56,8 +58,16 @@ app.get('/users', (req, res, next) => {
   }
 })
 
-//filter articles
 app.get('/blog', (req, res, next) => {
+  try {
+    const data = readData()
+    res.send(data)
+  } catch (err) {
+    next(err)
+  }
+})
+
+app.get('/blog/filter', (req, res, next) => {
   try {
     const data = readData()
     res.send(
@@ -69,37 +79,21 @@ app.get('/blog', (req, res, next) => {
     next(err)
   }
 })
-
-//all articles
-app.get('/blog', (req, res, next) => {
-  try {
-    const data = readData()
-    res.send(data)
-  } catch (err) {
-    next(err)
-  }
-})
-
-//detail article
 app.get('/blog/articles/:slug', (req, res, next) => {
   try {
     const data = readData()
     const filteredArticle = data.filter(item => item.url === req.params.slug)
-
     res.send(filteredArticle[0])
-    console.info('ahoj')
   } catch (err) {
     next(err)
   }
 })
 
-//create article
 app.post('/blog', (req, res) => {
   const id = generateID()
-  //id: id, slug: generateSlug(req.body.title, id), body: req.body
   const newArticle = {
     id: id,
-    url: generateSlug(req.body.title, id),
+    url: slugifiedTitle(req.body.title, id),
     title: req.body.title,
     content: req.body.content,
   }
@@ -109,7 +103,6 @@ app.post('/blog', (req, res) => {
   res.send(newArticle)
 })
 
-//update article
 app.post('/blog/articles/update/:slug', (req, res, next) => {
   try {
     const data = readData()
@@ -131,7 +124,6 @@ app.post('/blog/articles/update/:slug', (req, res, next) => {
   }
 })
 
-//delete article
 app.delete('/blog/articles/:slug', (req, res, next) => {
   try {
     const data = readData()

@@ -1,8 +1,7 @@
 import { BlogArticle } from './BlogArticle'
-import { blogArticleUrl } from '../../urls'
-import { blogServices, serviceLayerFetch } from '../../utils/serviceLayer'
+import { blogServices } from '../../utils/serviceLayer'
 import { genericHookContextBuilder } from '../../utils/genericHookContextBuilder'
-import { useComponentDidMount, useLocalStorage } from '../../utils/util'
+import { useComponentDidMount } from '../../utils/util'
 import { useParams } from 'react-router-dom'
 import { useState } from 'react'
 
@@ -17,22 +16,23 @@ const useLogicState = () => {
   const [article, setArticle] = useState(undefined as Article | undefined)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
+  const [content, setContent] = useState('')
+  const [title, setTitle] = useState('')
 
   const params = useParams()
   useComponentDidMount(async () => {
     setError('')
     setLoading(true)
     try {
-      const response = await serviceLayerFetch(blogArticleUrl(params.slug!))
-      setArticle(response)
+      blogServices.getOne(params.slug!, setTitle, setContent)
     } catch (err) {
-      if (err) setError('Server side error')
+      setError('Server side error')
     } finally {
       setLoading(false)
     }
   })
 
-  const deleteArticle = async () => await blogServices.delete(params.slug!)
+  const deleteArticle = () => blogServices.delete(params.slug!)
 
   return {
     article,
@@ -43,6 +43,10 @@ const useLogicState = () => {
     setError,
     deleteArticle,
     params,
+    content,
+    setContent,
+    title,
+    setTitle,
   }
 }
 

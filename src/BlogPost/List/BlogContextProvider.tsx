@@ -1,7 +1,6 @@
 import { Blog } from './BlogPost'
-import { blogFilterUrl, urlBlog } from '../../urls'
+import { blogServices } from '../../utils/serviceLayer'
 import { genericHookContextBuilder } from '../../utils/genericHookContextBuilder'
-import { serviceLayerFetch } from '../../utils/serviceLayer'
 import { useComponentDidMount } from '../../utils/util'
 import { useState } from 'react'
 
@@ -11,30 +10,29 @@ const useLogicState = () => {
   const [articles, setArticles] = useState([] as Article)
   const [valueInput, setValueInput] = useState('')
   const [loading, setLoading] = useState(false)
-  const [errorMessage, setErrorMessage] = useState('')
+  const [error, setError] = useState('')
+  const [filterArticles, setFilterArticles] = useState([] as Article)
 
   useComponentDidMount(async () => {
-    setLoading(true)
-    setErrorMessage('')
+    setError('')
     try {
-      const response = await serviceLayerFetch(urlBlog)
-      setArticles(response)
+      setLoading(true)
+      setArticles(await blogServices.read())
     } catch (err) {
-      setErrorMessage('Database is unavailable')
+      setError('Database is unavailable')
     } finally {
       setLoading(false)
     }
   })
 
   const handleChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    setLoading(true)
     setValueInput(e.target.value)
-    setErrorMessage('')
+    setError('')
     try {
-      const response = await serviceLayerFetch(blogFilterUrl(valueInput))
-      setArticles(response)
+      setLoading(true)
+      setFilterArticles(await blogServices.filter(valueInput))
     } catch (err) {
-      if (err) setErrorMessage('Database is unavailable')
+      setError('Database is unavailable')
     } finally {
       setLoading(false)
     }
@@ -46,10 +44,12 @@ const useLogicState = () => {
     valueInput,
     setValueInput,
     handleChange,
-    errorMessage,
-    setErrorMessage,
+    error,
+    setError,
     loading,
     setLoading,
+    filterArticles,
+    setFilterArticles,
   }
 }
 

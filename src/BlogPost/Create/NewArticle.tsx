@@ -6,10 +6,10 @@ import {
   Input_Styled,
 } from '../../MortgageCalculator/MortgageCalculator'
 import { Div_Styled } from '../../HomePage'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import { css } from '@emotion/css'
 import { urls } from '../../urls'
-import React, { useContext, useState } from 'react'
+import React, { useContext } from 'react'
 
 export const NewArticle = () => {
   const logic = useContext(BlogNewContext)

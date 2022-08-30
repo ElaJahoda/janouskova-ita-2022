@@ -1,6 +1,5 @@
 import { UpdateArticle } from './UpdateArticle'
-import { blogArticleUrl, blogUpdateUrl } from '../../urls'
-import { blogServices, serviceLayerFetch } from '../../utils/serviceLayer'
+import { blogServices } from '../../utils/serviceLayer'
 import { genericHookContextBuilder } from '../../utils/genericHookContextBuilder'
 import { useComponentDidMount } from '../../utils/util'
 import { useParams } from 'react-router'
@@ -25,9 +24,7 @@ const useLogicState = () => {
 
   useComponentDidMount(async () => {
     try {
-      const response = (await serviceLayerFetch(blogArticleUrl(params.slug!))) as Article
-      setTitle(response.title)
-      setContent(response.content)
+      blogServices.getOne(params.slug!, setTitle, setContent)
     } catch (err) {
       setError('Database is unavailable')
     } finally {

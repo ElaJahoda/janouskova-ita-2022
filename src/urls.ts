@@ -10,7 +10,9 @@ export const urls = {
   blogPost: '/blog',
   blogNewArticle: '/blog/new-article',
   blogArticles: '/blog/articles/:slug',
+  blogArticleSlug: (url: string) => `/blog/articles/${url}`,
   blogUpdateArticle: '/blog/articles/update/:slug',
+  blogUpdateArticleSlug: (url: string) => `/blog/articles/update/${url}`,
   jsAdoptionByMicrosoft: 'adoption-by-microsoft',
   jsCreationAtNetscape: 'creation-at-netscape',
   jsTheRiseOfJScript: 'the-rise-of-jscript',
@@ -22,30 +24,15 @@ export const urls = {
   jsGrowthAndStandardizationUrlAll: '/jshistory#growth-and-standardization',
   jsReachingMaturityUrlAll: '/jshistory#reaching-maturity',
 }
-export const concatUrls = (url: String) => {
-  return `/blog/articles/${url}`
-}
-
-export const concatUrlUpdate = (url: String) => {
-  return `/blog/articles/update/${url}`
-}
 
 export const filterUrl = (value: string) => {
   return `${process.env.REACT_APP_URL}?search=${value}`
 }
-
 export const apiUrlBlog = process.env.REACT_APP_URL_BLOG
 
-export const urlBlog = `${apiUrlBlog}`
-
-export const blogFilterUrl = (value: string) => {
-  return `${apiUrlBlog}/?search=${value}`
-}
-
-export const blogUpdateUrl = (slug: String) => {
-  return `${apiUrlBlog}/articles/update/${slug}`
-}
-
-export const blogArticleUrl = (url: String) => {
-  return `${apiUrlBlog}/articles/${url}`
+export const apiBlog = {
+  filter: (value: string) => `${apiUrlBlog}/filter/?search=${value}`,
+  update: (slug: String) => `${apiUrlBlog}/articles/update/${slug}`,
+  detail: (url: String) => `${apiUrlBlog}/articles/${url}`,
+  blog: `${apiUrlBlog}`,
 }

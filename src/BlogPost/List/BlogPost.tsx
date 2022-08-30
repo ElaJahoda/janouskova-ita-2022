@@ -4,9 +4,9 @@ import { Div_Styled } from '../../HomePage'
 import { Helmet } from 'react-helmet'
 import { Input_Styled } from '../../MortgageCalculator/MortgageCalculator'
 import { Link } from 'react-router-dom'
-import { concatUrls, urls } from '../../urls'
 import { css } from '@emotion/css'
-import React, { useContext, useState } from 'react'
+import { urls } from '../../urls'
+import React, { useContext } from 'react'
 
 export const Blog = () => {
   const logic = useContext(BlogPageContext)
@@ -29,17 +29,24 @@ export const Blog = () => {
           onChange={logic.handleChange}
           placeholder='Search...'
         />
-
-        {logic.errorMessage.length > 0 ? (
-          <div>{logic.errorMessage}</div>
+        {logic.error.length > 0 ? (
+          <div>{logic.error}</div>
         ) : logic.loading ? (
           <p>Loading...</p>
         ) : logic.articles.length < 1 ? (
           <p>Create your first blog post</p>
+        ) : logic.valueInput.length > 0 ? (
+          logic.filterArticles.map(item => (
+            <div key={item.id}>
+              <Link to={urls.blogArticleSlug(item.url)}>
+                <Button className={styles.styledButton}>{item.title} </Button>
+              </Link>
+            </div>
+          ))
         ) : (
           logic.articles.map(item => (
             <div key={item.id}>
-              <Link to={concatUrls(item.url)}>
+              <Link to={urls.blogArticleSlug(item.url)}>
                 <Button className={styles.styledButton}>{item.title} </Button>
               </Link>
             </div>
