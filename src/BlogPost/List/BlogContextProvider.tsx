@@ -1,7 +1,7 @@
 import { Blog } from './BlogPost'
-import { apiUrlBlog, blogFilterUrl, urlBlog } from '../../urls'
+import { blogFilterUrl, urlBlog } from '../../urls'
 import { genericHookContextBuilder } from '../../utils/genericHookContextBuilder'
-import { myCustomFetch } from '../../utils/serviceLayer'
+import { serviceLayerFetch } from '../../utils/serviceLayer'
 import { useComponentDidMount } from '../../utils/util'
 import { useState } from 'react'
 
@@ -17,7 +17,7 @@ const useLogicState = () => {
     setLoading(true)
     setErrorMessage('')
     try {
-      const response = await myCustomFetch(urlBlog)
+      const response = await serviceLayerFetch(urlBlog)
       setArticles(response)
     } catch (err) {
       setErrorMessage('Database is unavailable')
@@ -31,7 +31,7 @@ const useLogicState = () => {
     setValueInput(e.target.value)
     setErrorMessage('')
     try {
-      const response = await myCustomFetch(blogFilterUrl(valueInput))
+      const response = await serviceLayerFetch(blogFilterUrl(valueInput))
       setArticles(response)
     } catch (err) {
       if (err) setErrorMessage('Database is unavailable')

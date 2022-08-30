@@ -18,6 +18,16 @@ type Article = { id: number; url: string; title: string; content: string }
 
 const formatValue = (value: string) => value.toLowerCase().trim().replace(/[y]/g, 'i')
 
+const generateSlug = (textToSlug: string, id: number | string) => {
+  return `${textToSlug
+    .toLowerCase()
+    .replace(/[^\w\s-]/g, '')
+    .replace(/[\s_-]+/g, '-')
+    .replace(/^-+|-+$/g, '')}-${id}`
+}
+const generateID = () => {
+  return Math.floor(Math.random() * 100_000_000)
+}
 const readData = () => {
   const dataString = fs.readFileSync(`${__dirname}/../dataArticles.json`, 'utf-8')
   return JSON.parse(dataString).articles as Article[]
@@ -85,7 +95,14 @@ app.get('/blog/articles/:slug', (req, res, next) => {
 
 //create article
 app.post('/blog', (req, res) => {
-  const newArticle = req.body
+  const id = generateID()
+  //id: id, slug: generateSlug(req.body.title, id), body: req.body
+  const newArticle = {
+    id: id,
+    url: generateSlug(req.body.title, id),
+    title: req.body.title,
+    content: req.body.content,
+  }
   const data = readData()
   const articles = [newArticle, ...data]
   writeData({ articles: articles })
@@ -98,7 +115,11 @@ app.post('/blog/articles/update/:slug', (req, res, next) => {
     const data = readData()
     const slug = req.params.slug
     const newArticle = req.body
-    const articles = data.map(article => (article.url === slug ? newArticle : article))
+    const articles = data.map(article =>
+      article.url === slug
+        ? { ...article, title: req.body.title, content: req.body.content }
+        : article
+    )
     if (!data.some(article => article.url === slug)) {
       res.sendStatus(400)
     } else {

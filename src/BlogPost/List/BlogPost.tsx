@@ -3,16 +3,13 @@ import { Button } from '../../components/Button'
 import { Div_Styled } from '../../HomePage'
 import { Helmet } from 'react-helmet'
 import { Input_Styled } from '../../MortgageCalculator/MortgageCalculator'
+import { Link } from 'react-router-dom'
 import { concatUrls, urls } from '../../urls'
-import { convertToSlug, uniqueId, useLocalStorage } from '../../utils/util'
 import { css } from '@emotion/css'
-import { genericHookContextBuilder } from '../../utils/genericHookContextBuilder'
-import { useNavigate } from 'react-router-dom'
 import React, { useContext, useState } from 'react'
 
 export const Blog = () => {
   const logic = useContext(BlogPageContext)
-  const navigate = useNavigate()
   return (
     <Div_Styled>
       <Helmet>
@@ -20,14 +17,9 @@ export const Blog = () => {
       </Helmet>
       <h1>Blog Post</h1>
       <nav>
-        <Button
-          className={styles.styledButton}
-          onClick={() => {
-            navigate(urls.blogNewArticle)
-          }}
-        >
-          Create New Article
-        </Button>
+        <Link to={urls.blogNewArticle}>
+          <Button className={styles.styledButton}>Create New Article</Button>
+        </Link>
       </nav>
       <div>
         <h2>List of Articles:</h2>
@@ -47,12 +39,9 @@ export const Blog = () => {
         ) : (
           logic.articles.map(item => (
             <div key={item.id}>
-              <Button
-                className={styles.styledButton}
-                onClick={() => navigate(concatUrls(item.url))}
-              >
-                {item.title} - {item.id}{' '}
-              </Button>
+              <Link to={concatUrls(item.url)}>
+                <Button className={styles.styledButton}>{item.title} </Button>
+              </Link>
             </div>
           ))
         )}

@@ -1,8 +1,8 @@
 import { NewArticle } from './NewArticle'
-import { convertToSlug, uniqueId, useComponentDidMount, useLocalStorage } from '../../utils/util'
+import { blogServices, serviceLayerFetch } from '../../utils/serviceLayer'
 import { genericHookContextBuilder } from '../../utils/genericHookContextBuilder'
-import { myCustomFetch } from '../../utils/serviceLayer'
 import { urlBlog } from '../../urls'
+import { useComponentDidMount } from '../../utils/util'
 import { useState } from 'react'
 
 export type Article = {
@@ -13,61 +13,54 @@ export type Article = {
 }
 
 const useLogicState = () => {
-  const [articles, setArticles] = useLocalStorage('articles:list', [] as Article[])
+  const [articles, setArticles] = useState([] as Article[])
   const [error, setError] = useState('')
-  const [valid, setValid] = useState(true)
+  const [loading, setLoading] = useState(true)
+  const [title, setTitle] = useState('')
+  const [titleError, setTitleError] = useState('')
+  const [content, setContent] = useState('')
+  const [contentError, setContentError] = useState('')
 
   useComponentDidMount(async () => {
     try {
-      const response = await myCustomFetch(urlBlog)
+      const response = await serviceLayerFetch(urlBlog)
       setArticles(response)
     } catch (err) {
-      console.info('network error')
+      setError('Database is unavailable')
     }
   })
 
-  const checkIfUrlExists = (url: string) => {
-    return articles.some(article => article.url === url)
-  }
-
-  const validation = async (title: string, content: string) => {
-    if (!checkIfUrlExists(convertToSlug(title))) {
-      setError('Use different title')
-      setValid(false)
-    }
-    if (title.trim().length === 0) {
-      setError('Title is required')
-      setValid(false)
-    }
-    if (content.trim().length === 0) {
-      setError('Text is required')
-      setValid(false)
-    }
-    return valid
-  }
+  const setNewArticle = () => blogServices.setNew({ title, content })
 
   const addArticle = async (title: string, content: string) => {
-    await fetch(urlBlog, {
-      method: 'POST',
-      headers: new Headers({
-        'content-type': 'application/json',
-      }),
-      body: JSON.stringify({
-        id: uniqueId(),
-        url: convertToSlug(title),
-        title: title,
-        content: content,
-      }),
-    })
-    setError('')
+    setTitleError('')
+    setContentError('')
+
+    if (title.trim().length === 0) {
+      setTitleError('Title is required')
+      return
+    }
+    if (content.trim().length === 0) {
+      setContentError('Text is required')
+      return
+    }
+
+    setNewArticle()
+    setTitle('')
+    setContent('')
   }
   return {
-    articles,
-    setArticles,
-    error,
-    setError,
+    title,
+    setTitle,
+    content,
+    setContent,
+    titleError,
     addArticle,
-    validation,
+    contentError,
+    setError,
+    loading,
+    error,
+    setLoading,
   }
 }
 

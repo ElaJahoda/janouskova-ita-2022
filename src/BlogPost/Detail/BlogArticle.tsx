@@ -14,8 +14,8 @@ export const BlogArticle = () => {
   return (
     <Div_Styled>
       <h1>Blog article</h1>
-      {logic.errorMessage.length > 0 ? (
-        <div>{logic.errorMessage}</div>
+      {logic.error.length > 0 ? (
+        <div>{logic.error}</div>
       ) : logic.loading ? (
         <div>Loading...</div>
       ) : (

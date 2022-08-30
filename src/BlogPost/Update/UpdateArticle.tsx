@@ -6,34 +6,33 @@ import {
   Input_Styled,
 } from '../../MortgageCalculator/MortgageCalculator'
 import { Div_Styled } from '../../HomePage'
+import { Link, useNavigate } from 'react-router-dom'
 import { css } from '@emotion/css'
 import { urls } from '../../urls'
-import { useNavigate } from 'react-router-dom'
 import React, { useContext, useState } from 'react'
 
 export const UpdateArticle = () => {
   const logic = useContext(BlogUpdateContext)
-  const navigate = useNavigate()
 
   return (
     <Div_Styled>
       <h1>Update article</h1>
-      <form
-        onSubmit={async e => {
-          e.preventDefault()
-          if ((await logic.validation(logic.title, logic.content)) === false) return
-          logic.updateArticle(logic.title, logic.content)
-          navigate(urls.blogPost)
-        }}
-      >
-        {logic.error.length > 0 ? (
-          <div>{logic.error}</div>
-        ) : logic.loading ? (
-          <p>...Loading</p>
-        ) : (
+
+      {logic.error.length > 0 ? (
+        <div>{logic.error}</div>
+      ) : logic.loading ? (
+        <p>...Loading</p>
+      ) : (
+        <form
+          onSubmit={async e => {
+            e.preventDefault()
+            logic.updateArticle(logic.title, logic.content)
+          }}
+        >
           <Div_Container>
             <Div_Form_Item>
               <label>Title input:</label>
+              {logic.titleError}
               <Input_Styled
                 value={logic.title}
                 type='text'
@@ -45,6 +44,7 @@ export const UpdateArticle = () => {
             </Div_Form_Item>
             <Div_Form_Item>
               <label>Content input:</label>
+              {logic.contentError}
               <textarea
                 value={logic.content}
                 className={styles.textarea}
@@ -58,19 +58,13 @@ export const UpdateArticle = () => {
               <Button className={styles.button} type='submit'>
                 Save
               </Button>
-              <div>{logic.error}</div>
-              <Button
-                className={styles.button}
-                onClick={() => {
-                  navigate(urls.blogPost)
-                }}
-              >
-                Go back
-              </Button>
             </div>
           </Div_Container>
-        )}
-      </form>
+        </form>
+      )}
+      <Link to={urls.blogPost}>
+        <Button className={styles.button}>Go back</Button>
+      </Link>
     </Div_Styled>
   )
 }

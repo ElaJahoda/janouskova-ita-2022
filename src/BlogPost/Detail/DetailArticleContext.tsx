@@ -1,8 +1,8 @@
 import { BlogArticle } from './BlogArticle'
 import { blogArticleUrl } from '../../urls'
-import { convertToSlug, uniqueId, useComponentDidMount, useLocalStorage } from '../../utils/util'
+import { blogServices, serviceLayerFetch } from '../../utils/serviceLayer'
 import { genericHookContextBuilder } from '../../utils/genericHookContextBuilder'
-import { myCustomFetch } from '../../utils/serviceLayer'
+import { useComponentDidMount, useLocalStorage } from '../../utils/util'
 import { useParams } from 'react-router-dom'
 import { useState } from 'react'
 
@@ -16,35 +16,31 @@ export type Article = {
 const useLogicState = () => {
   const [article, setArticle] = useState(undefined as Article | undefined)
   const [loading, setLoading] = useState(false)
-  const [errorMessage, setErrorMessage] = useState('')
+  const [error, setError] = useState('')
 
   const params = useParams()
   useComponentDidMount(async () => {
-    setErrorMessage('')
+    setError('')
     setLoading(true)
     try {
-      const response = await myCustomFetch(blogArticleUrl(params.slug!))
+      const response = await serviceLayerFetch(blogArticleUrl(params.slug!))
       setArticle(response)
     } catch (err) {
-      if (err) setErrorMessage('Server side error')
+      if (err) setError('Server side error')
     } finally {
       setLoading(false)
     }
   })
 
-  const deleteArticle = async () => {
-    await myCustomFetch(blogArticleUrl(params.slug!), {
-      method: 'DELETE',
-    })
-  }
+  const deleteArticle = async () => await blogServices.delete(params.slug!)
 
   return {
     article,
     setArticle,
     loading,
     setLoading,
-    errorMessage,
-    setErrorMessage,
+    error,
+    setError,
     deleteArticle,
     params,
   }

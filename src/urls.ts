@@ -37,19 +37,15 @@ export const filterUrl = (value: string) => {
 export const apiUrlBlog = process.env.REACT_APP_URL_BLOG
 
 export const urlBlog = `${apiUrlBlog}`
-//`http://localhost:1234/blog`
 
 export const blogFilterUrl = (value: string) => {
   return `${apiUrlBlog}/?search=${value}`
-  //`http://localhost:1234/blog/?search=${valueInput}`
 }
 
 export const blogUpdateUrl = (slug: String) => {
   return `${apiUrlBlog}/articles/update/${slug}`
-  //`http://localhost:1234/blog/articles/update/${slug}`
 }
 
 export const blogArticleUrl = (url: String) => {
   return `${apiUrlBlog}/articles/${url}`
-  //`http://localhost:1234/blog/articles/${slug}`
 }

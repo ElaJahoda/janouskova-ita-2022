@@ -6,17 +6,13 @@ import {
   Input_Styled,
 } from '../../MortgageCalculator/MortgageCalculator'
 import { Div_Styled } from '../../HomePage'
+import { Link, useNavigate } from 'react-router-dom'
 import { css } from '@emotion/css'
 import { urls } from '../../urls'
-import { useNavigate } from 'react-router-dom'
 import React, { useContext, useState } from 'react'
 
 export const NewArticle = () => {
   const logic = useContext(BlogNewContext)
-  const navigate = useNavigate()
-
-  const [title, setTitle] = useState('')
-  const [content, setContent] = useState('')
 
   return (
     <Div_Styled>
@@ -24,31 +20,31 @@ export const NewArticle = () => {
       <form
         onSubmit={async e => {
           e.preventDefault()
-          if ((await logic.validation(title, content)) === false) return
-          logic.addArticle(title, content)
-          navigate(urls.blogPost)
+          logic.addArticle(logic.title, logic.content)
         }}
       >
         <Div_Container>
           <Div_Form_Item>
             <label>Title input:</label>
+            {logic.titleError}
             <Input_Styled
-              value={title}
+              value={logic.title}
               type='text'
               placeholder='Title...'
               onChange={e => {
-                setTitle(e.target.value)
+                logic.setTitle(e.target.value)
               }}
             />
           </Div_Form_Item>
           <Div_Form_Item>
             <label>Content input:</label>
+            {logic.contentError}
             <textarea
-              value={content}
+              value={logic.content}
               className={styles.textarea}
               placeholder='Text content...'
               onChange={e => {
-                setContent(e.target.value)
+                logic.setContent(e.target.value)
               }}
             />
           </Div_Form_Item>
@@ -56,15 +52,9 @@ export const NewArticle = () => {
             <Button className={styles.button} type='submit'>
               Save
             </Button>
-            <div>{logic.error}</div>
-            <Button
-              className={styles.button}
-              onClick={() => {
-                navigate(urls.blogPost)
-              }}
-            >
-              Go back
-            </Button>
+            <Link to={urls.blogPost}>
+              <Button className={styles.button}>Go back</Button>
+            </Link>
           </div>
         </Div_Container>
       </form>
