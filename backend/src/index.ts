@@ -79,6 +79,7 @@ app.get('/blog/filter', (req, res, next) => {
     next(err)
   }
 })
+
 app.get('/blog/articles/:slug', (req, res, next) => {
   try {
     const data = readData()
@@ -129,6 +130,7 @@ app.delete('/blog/articles/:slug', (req, res, next) => {
     const data = readData()
     const articles = data.filter(article => article.url !== req.params.slug)
     writeData({ articles: articles })
+    res.send('Article deleted')
   } catch (err) {
     next(err)
   }
