@@ -17,7 +17,8 @@ const useLogicState = () => {
     setError('')
     try {
       setLoading(true)
-      setArticles(await blogServices.read())
+      const response = await blogServices.read()
+      setArticles(response)
     } catch (err) {
       setError('Database is unavailable')
     } finally {

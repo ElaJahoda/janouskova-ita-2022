@@ -24,7 +24,9 @@ const useLogicState = () => {
 
   useComponentDidMount(async () => {
     try {
-      blogServices.getOne(params.slug!, setTitle, setContent)
+      const response = await blogServices.getOne(params.slug!)
+      setTitle(response.title)
+      setContent(response.content)
     } catch (err) {
       setError('Database is unavailable')
     } finally {
@@ -32,19 +34,22 @@ const useLogicState = () => {
     }
   })
 
-  const updateArticle = async (title: string, content: string) => {
+  const validation = async (title: string, content: string) => {
     setTitleError('')
     setContentError('')
-
+    let isValid = true
     if (title.trim().length === 0) {
       setTitleError('Title is required')
-      return
+      isValid = false
     }
     if (content.trim().length === 0) {
       setContentError('Text is required')
-      return
+      isValid = false
     }
+    return isValid
+  }
 
+  const updateArticle = async (title: string, content: string) => {
     try {
       setLoading(true)
       await blogServices.update(params.slug!, { title, content })
@@ -69,6 +74,7 @@ const useLogicState = () => {
     loading,
     error,
     setLoading,
+    validation,
   }
 }
 

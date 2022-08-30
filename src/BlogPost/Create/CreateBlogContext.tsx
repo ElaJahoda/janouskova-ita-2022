@@ -18,25 +18,23 @@ const useLogicState = () => {
   const [content, setContent] = useState('')
   const [contentError, setContentError] = useState('')
 
-  const setNewArticle = () => blogServices.create({ title, content })
-
-  const addArticle = async (title: string, content: string) => {
+  const validation = async (title: string, content: string) => {
     setTitleError('')
     setContentError('')
-    if (title.trim().length === 0 && content.trim().length === 0) {
-      setTitleError('Title is required')
-      setContentError('Text is required')
-      return
-    }
+    let isValid = true
     if (title.trim().length === 0) {
       setTitleError('Title is required')
-      return
+      isValid = false
     }
     if (content.trim().length === 0) {
       setContentError('Text is required')
-      return
+      isValid = false
     }
-    setNewArticle()
+    return isValid
+  }
+
+  const addArticle = async (title: string, content: string) => {
+    blogServices.create({ title, content })
     setTitle('')
     setContent('')
   }
@@ -52,6 +50,7 @@ const useLogicState = () => {
     loading,
     error,
     setLoading,
+    validation,
   }
 }
 

@@ -13,18 +13,17 @@ export type Article = {
 }
 
 const useLogicState = () => {
-  const [article, setArticle] = useState(undefined as Article | undefined)
+  const [article, setArticle] = useState({} as Article)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
-  const [content, setContent] = useState('')
-  const [title, setTitle] = useState('')
 
   const params = useParams()
   useComponentDidMount(async () => {
     setError('')
     setLoading(true)
     try {
-      blogServices.getOne(params.slug!, setTitle, setContent)
+      const response = await blogServices.getOne(params.slug!)
+      setArticle(response)
     } catch (err) {
       setError('Server side error')
     } finally {
@@ -43,10 +42,6 @@ const useLogicState = () => {
     setError,
     deleteArticle,
     params,
-    content,
-    setContent,
-    title,
-    setTitle,
   }
 }
 

@@ -20,8 +20,8 @@ export const BlogArticle = () => {
         <div>Loading...</div>
       ) : (
         <div>
-          <h2>{logic.title}</h2>
-          <ReactMarkdown remarkPlugins={[remarkGfm]}>{logic.content ?? ''}</ReactMarkdown>
+          <h2>{logic.article.title}</h2>
+          <ReactMarkdown remarkPlugins={[remarkGfm]}>{logic.article.content ?? ''}</ReactMarkdown>
           <Link to={urls.blogUpdateArticleSlug(logic.params.slug!)}>
             <Button>
               <FaEdit />

@@ -27,22 +27,18 @@ export const blogServices = {
       }),
       body: JSON.stringify(body),
     })
-    return await response
+    return response
   },
-  getOne: async (
-    slug: string,
-    setTitle: React.Dispatch<React.SetStateAction<string>>,
-    setContent: React.Dispatch<React.SetStateAction<string>>
-  ) => {
+  getOne: async (slug: string) => {
     const response = await serviceLayerFetch(apiBlog.detail(slug))
-    return setTitle(response.title), setContent(response.content)
+    return response
   },
   read: async () => {
     const response = await serviceLayerFetch(apiBlog.blog)
-    return await response
+    return response
   },
   filter: async (inputValue: string) => {
     const response = await serviceLayerFetch(apiBlog.filter(inputValue))
-    return await response
+    return response
   },
 }
