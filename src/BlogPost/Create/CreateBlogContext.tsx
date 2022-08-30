@@ -34,9 +34,16 @@ const useLogicState = () => {
   }
 
   const addArticle = async (title: string, content: string) => {
-    blogServices.create({ title, content })
-    setTitle('')
-    setContent('')
+    try {
+      setLoading(true)
+      await blogServices.create({ title, content })
+      setTitle('')
+      setContent('')
+    } catch (err) {
+      setError('Database is unavailable')
+    } finally {
+      setLoading(false)
+    }
   }
   return {
     title,
