@@ -1,51 +1,52 @@
-import { BlogContext } from './BlogContextProvider'
-import { Button } from '../components/Button'
+import { BlogNewContext } from './CreateBlogContext'
+import { Button } from '../../components/Button'
 import {
   Div_Container,
   Div_Form_Item,
   Input_Styled,
-} from '../MortgageCalculator/MortgageCalculator'
-import { Div_Styled } from '../HomePage'
+} from '../../MortgageCalculator/MortgageCalculator'
+import { Div_Styled } from '../../HomePage'
+import { Link } from 'react-router-dom'
 import { css } from '@emotion/css'
-import { urls } from '../urls'
-import { useNavigate } from 'react-router-dom'
-import React, { useContext, useState } from 'react'
+import { urls } from '../../urls'
+import React, { useContext } from 'react'
 
 export const NewArticle = () => {
-  const logic = useContext(BlogContext)
-  const navigate = useNavigate()
-
-  const [title, setTitle] = useState('')
-  const [content, setContent] = useState('')
+  const logic = useContext(BlogNewContext)
 
   return (
     <Div_Styled>
       <h1>New article</h1>
       <form
-        onSubmit={e => {
+        onSubmit={async e => {
           e.preventDefault()
-          logic.addArticle(title, content)
-          navigate(urls.blogPost)
+          const isValid = await logic.validate(logic.title, logic.content)
+          if (!isValid) return
+          logic.addArticle(logic.title, logic.content)
         }}
       >
         <Div_Container>
           <Div_Form_Item>
             <label>Title input:</label>
+            {logic.titleError}
             <Input_Styled
+              value={logic.title}
               type='text'
               placeholder='Title...'
               onChange={e => {
-                setTitle(e.target.value)
+                logic.setTitle(e.target.value)
               }}
             />
           </Div_Form_Item>
           <Div_Form_Item>
             <label>Content input:</label>
+            {logic.contentError}
             <textarea
+              value={logic.content}
               className={styles.textarea}
               placeholder='Text content...'
               onChange={e => {
-                setContent(e.target.value)
+                logic.setContent(e.target.value)
               }}
             />
           </Div_Form_Item>
@@ -53,15 +54,9 @@ export const NewArticle = () => {
             <Button className={styles.button} type='submit'>
               Save
             </Button>
-            <div>{logic.error}</div>
-            <Button
-              className={styles.button}
-              onClick={() => {
-                navigate(urls.blogPost)
-              }}
-            >
-              Go back
-            </Button>
+            <Link to={urls.blogPost}>
+              <Button className={styles.button}>Go back</Button>
+            </Link>
           </div>
         </Div_Container>
       </form>
