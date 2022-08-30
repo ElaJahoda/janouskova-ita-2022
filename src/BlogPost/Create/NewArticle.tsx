@@ -20,7 +20,7 @@ export const NewArticle = () => {
       <form
         onSubmit={async e => {
           e.preventDefault()
-          const isValid = await logic.validation(logic.title, logic.content)
+          const isValid = await logic.validate(logic.title, logic.content)
           if (!isValid) return
           logic.addArticle(logic.title, logic.content)
         }}

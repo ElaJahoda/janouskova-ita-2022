@@ -5,13 +5,6 @@ import { useComponentDidMount } from '../../utils/util'
 import { useParams } from 'react-router'
 import { useState } from 'react'
 
-export type Article = {
-  id: number
-  url: string
-  title: string
-  content: string
-}
-
 const useLogicState = () => {
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
@@ -34,7 +27,7 @@ const useLogicState = () => {
     }
   })
 
-  const validation = async (title: string, content: string) => {
+  const validate = async (title: string, content: string) => {
     setTitleError('')
     setContentError('')
     let isValid = true
@@ -74,7 +67,7 @@ const useLogicState = () => {
     loading,
     error,
     setLoading,
-    validation,
+    validate,
   }
 }
 

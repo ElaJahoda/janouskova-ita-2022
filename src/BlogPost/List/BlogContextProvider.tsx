@@ -4,14 +4,14 @@ import { genericHookContextBuilder } from '../../utils/genericHookContextBuilder
 import { useComponentDidMount } from '../../utils/util'
 import { useState } from 'react'
 
-export type Article = { id: number; url: string; title: string; content: string }[]
+export type Articles = { id: number; url: string; title: string; content: string }[]
 
 const useLogicState = () => {
-  const [articles, setArticles] = useState([] as Article)
+  const [articles, setArticles] = useState([] as Articles)
   const [valueInput, setValueInput] = useState('')
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
-  const [filterArticles, setFilterArticles] = useState([] as Article)
+  const [filterArticles, setFilterArticles] = useState([] as Articles)
 
   useComponentDidMount(async () => {
     setError('')

@@ -1,16 +1,10 @@
+import { Article } from '../Create/CreateBlogContext'
 import { BlogArticle } from './BlogArticle'
 import { blogServices } from '../../utils/serviceLayer'
 import { genericHookContextBuilder } from '../../utils/genericHookContextBuilder'
 import { useComponentDidMount } from '../../utils/util'
 import { useParams } from 'react-router-dom'
 import { useState } from 'react'
-
-export type Article = {
-  id: number
-  url: string
-  title: string
-  content: string
-}
 
 const useLogicState = () => {
   const [article, setArticle] = useState({} as Article)

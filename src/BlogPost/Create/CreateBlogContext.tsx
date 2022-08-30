@@ -18,7 +18,7 @@ const useLogicState = () => {
   const [content, setContent] = useState('')
   const [contentError, setContentError] = useState('')
 
-  const validation = async (title: string, content: string) => {
+  const validate = async (title: string, content: string) => {
     setTitleError('')
     setContentError('')
     let isValid = true
@@ -50,7 +50,7 @@ const useLogicState = () => {
     loading,
     error,
     setLoading,
-    validation,
+    validate,
   }
 }
 
