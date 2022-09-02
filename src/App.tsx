@@ -15,7 +15,7 @@ export const App = () => {
       <Div_Nav>
         <Bars onClick={handleToggle}>{toggle ? <FaChevronUp /> : <FaChevronDown />}</Bars>
         <NavMenu prop={toggle}>
-          <LinkStyledHover primary='primary' to={urls.homePage} onClick={handleToggle}>
+          <LinkStyledHover to={urls.homePage} onClick={handleToggle}>
             Home
           </LinkStyledHover>
           <LinkStyledHover to={urls.jsHistory} onClick={handleToggle}>
@@ -98,7 +98,6 @@ const LinkStyled = (props: {
   style?: React.CSSProperties
   children: React.ReactNode
   to: string
-  primary?: string
   onClick: MouseEventHandler<HTMLAnchorElement>
   className?: string
 }) => {
@@ -111,12 +110,12 @@ const LinkStyled = (props: {
         display: 'flex',
         fontSize: '1.5rem',
         alignItems: 'center',
-        marginLeft: '1rem',
-        marginRight: '1rem',
+        marginLeft: '0.5rem',
+        marginRight: '0.5rem',
         padding: '1px 6px',
         border: 'solid 2px transparent',
-        backgroundColor: props.primary ? theme.primaryColor : 'transparent',
-        borderColor: isActive ? theme.primaryColor : 'transparent',
+
+        backgroundColor: isActive ? theme.primaryColor : 'transparent',
       })}
       to={props.to}
       onClick={props.onClick}

@@ -1,4 +1,5 @@
 import { Div_Styled } from '../HomePage'
+import { Input_Styled } from '../MortgageCalculator/MortgageCalculator'
 import { filterUrl } from '../urls'
 import React, { useState } from 'react'
 
@@ -28,7 +29,12 @@ export const HttpFilter = () => {
   return (
     <Div_Styled>
       <h1>Http Filter</h1>
-      <input type='text' value={value} onChange={handleChange} placeholder='Search...'></input>
+      <Input_Styled
+        type='text'
+        value={value}
+        onChange={handleChange}
+        placeholder='Search...'
+      ></Input_Styled>
       {errorMessage.length > 0 ? (
         <div>{errorMessage}</div>
       ) : loading ? (

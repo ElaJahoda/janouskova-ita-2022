@@ -11,7 +11,8 @@ export const theme = {
   fontSize: '16px',
   mediaSmaller: '(min-width: 400px)',
   mediaBigger: '(min-width: 800px)',
-  mediaMax: '(max-width: 768px)',
+  mediaSMax: '(max-width: 650px)',
+  mediaMax: '(max-width: 1350px)',
   darkPrimaryColor: '#d4af37',
   darkQuaternaryColor: '#0571b0',
 }
