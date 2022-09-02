@@ -6,14 +6,15 @@ import {
   Input_Styled,
 } from '../../MortgageCalculator/MortgageCalculator'
 import { Div_Styled } from '../../HomePage'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { css } from '@emotion/css'
+import { theme } from '../../theme'
 import { urls } from '../../urls'
 import React, { useContext } from 'react'
 
 export const UpdateArticle = () => {
   const logic = useContext(BlogUpdateContext)
-
+  const navigate = useNavigate()
   return (
     <Div_Styled>
       <h1>Update article</h1>
@@ -29,6 +30,7 @@ export const UpdateArticle = () => {
             const isValid = await logic.validate(logic.title, logic.content)
             if (!isValid) return
             logic.updateArticle(logic.title, logic.content)
+            navigate(urls.blogPost)
           }}
         >
           <Div_Container>
@@ -81,5 +83,8 @@ const styles = {
     padding: 3px;
     margin: 10px 0px;
     width: 200px;
+    :focus {
+      outline-color: ${theme.primaryColor};
+    }
   `,
 }

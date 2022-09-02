@@ -188,7 +188,7 @@ const Div_Main = styled.div`
   }
   @media ${theme.mediaBigger} {
     flex: 4 0px;
-    margin: 0px 245px 0px 2px;
+    margin: 0px 15% 0px 2px;
     order: 2;
     text-align: justify;
   }

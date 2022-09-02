@@ -21,7 +21,7 @@ export const blogServices = {
         'content-type': 'application/json',
       }),
       body: JSON.stringify(body),
-    })) as {}
+    })) as Articles
   },
   create: async (body: {}) => {
     const response = (await serviceLayerFetch(apiBlog.blog, {

@@ -46,7 +46,7 @@ export class Counter extends React.Component<Props, State> {
 }
 
 const Div_Container = styled.div`
-  font-size: 35px;
+  font-size: 25px;
   @media screen and ${theme.mediaMax} {
     widht: 95%;
   }

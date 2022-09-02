@@ -42,8 +42,8 @@ const useLogicState = () => {
     setError(false)
   }
 
-  const deleteTask = (taskNameToDelete: string) => {
-    setTodoList(todoList.filter(task => task.taskName !== taskNameToDelete))
+  const deleteTask = (taskNameToDelete: number) => {
+    setTodoList(todoList.filter(task => task.id !== taskNameToDelete))
   }
 
   const incompletedTodosCount = todoList.filter(todo => !todo.complete).length
@@ -96,7 +96,7 @@ const TodoListBoard = () => {
               onChange={e => logic.setTask(e.target.value)}
               value={logic.task}
             ></Input_styled>
-            <Button type='submit'>Add</Button>
+            <Button_submit type='submit'>Add</Button_submit>
           </Div_header>
           <table>
             <tbody>
@@ -123,9 +123,9 @@ const TodoListBoard = () => {
                       <Span_styled checked={task.complete}>{task.taskName}</Span_styled>
                     </Td_styled>
                     <Td_styled width='10%'>
-                      <Button onClick={() => logic.deleteTask(task.taskName)}>
+                      <Button_delete onClick={() => logic.deleteTask(task.id)}>
                         <FaTrash />
-                      </Button>
+                      </Button_delete>
                     </Td_styled>
                   </tr>
                 )
@@ -181,13 +181,20 @@ const Input_styled = (props: {
           border: 'none',
           width: 'inherit',
           paddingTop: '5px',
+          fontSize: '16px',
         }}
         onChange={props.onChange}
         value={props.value}
         type='text'
         placeholder='What need to be done?'
       ></input>
-      <p>{props.error ? 'Error: Nothing added. Please, add task item...' : ''}</p>
+      <p
+        style={{
+          margin: 'inherit',
+        }}
+      >
+        {props.error ? 'Error: Nothing added. Please, add task item...' : ''}
+      </p>
     </label>
   )
 }
@@ -197,11 +204,11 @@ const Div_TodoApp = styled.div`
   text-align: left;
   border-bottom: solid 2px ${themeTodo.primaryColor};
   border-radius: 5px;
-  width: 50%;
+  max-width: 500px;
   margin: auto;
   background: #fff;
   box-shadow: ${themeTodo.boxShadow};
-  @media screen and ${theme.mediaMax} {
+  @media screen and ${theme.mediaSMax} {
     width: 95%;
   }
 `
@@ -217,7 +224,7 @@ const Span_Counter = styled.span`
   padding: 5px;
   font-size: inherit;
   font-family: inherit;
-  @media screen and ${theme.mediaMax} {
+  @media screen and ${theme.mediaSMax} {
     text-align: center;
   }
 `
@@ -231,35 +238,55 @@ const Div_header = styled.div`
   background: #fff;
   border-bottom: solid 1px ${themeTodo.primaryColor};
   padding: 5px;
-  padding-bottom: 0px;
+  padding-bottom: px;
 `
 
-const Button_footer = styled.button`
-  border: transparent;
-  width: 75px;
-  cursor: pointer;
-  margin-left: 0.5rem;
-  margin-right: 0.5rem;
-  font-family: inherit;
-  font-size: inherit;
+const Button_delete = styled(Button)`
+  background-color: ${theme.backgroundColor};
+  transition: all 0.15s ease-out;
+  &:hover {
+    transition: all 0.15s ease-in;
+    transform: scale(1.1);
+    background-color: ${theme.backgroundColor};
+  }
+`
+
+const Button_footer = styled(Button)`
+  width: 80px;
+  transition: inherit:
   &:hover {
     background-color: ${theme.primaryColor};
     border-radius: 5px;
-    transform: scale(1.1);
   }
   &[aria-pressed='true'] {
-    border: 2px solid ${theme.primaryColor};
+    border: 3px dotted ${theme.primaryColor};
   }
-  @media screen and ${theme.mediaMax} {
+  @media screen and ${theme.mediaSMax} {
     width: 98%;
     margin: 1% 1%;
   }
 `
+
+const Button_submit = styled(Button)`
+  padding: 5px 15px 3px 15px;
+  background-color: ${theme.primaryColor};
+  transition: all 0.15s ease-out;
+  &:hover {
+    transition: all 0.15s ease-in;
+    transform: scale(1.1);
+    opacity: 1;
+  }
+  @media screen and ${theme.mediaSMax} {
+    width: 80px;
+    margin: 1% 1%;
+  }
+`
+
 const Div_Footer = styled.div`
   display: flex;
   justify-content: center;
   margin: 5px;
-  @media screen and ${theme.mediaMax} {
+  @media screen and ${theme.mediaSMax} {
     flex-direction: column;
   }
 `

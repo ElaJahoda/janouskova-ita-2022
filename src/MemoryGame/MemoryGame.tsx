@@ -11,7 +11,7 @@ import img5 from './pictures/img5.png'
 import img6 from './pictures/img6.png'
 import img7 from './pictures/img7.png'
 import img8 from './pictures/img8.png'
-import questionMark from './pictures/question-mark.png'
+import imgBack from './pictures/question-mark.png'
 import styled from '@emotion/styled'
 
 type CardType = ReturnType<typeof createBoard>[number]
@@ -22,7 +22,7 @@ const createBoard = () =>
   [...cards, ...cards].map(card => ({
     id: uniqueId(),
     flipped: false,
-    backImage: questionMark,
+    backImage: imgBack,
     frontImage: card,
     frozen: true,
   }))

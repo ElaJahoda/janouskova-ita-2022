@@ -81,10 +81,10 @@ const calculateMortgage = (arg: {
 }
 
 export const MortgageCalculator = () => {
-  const [amount, setAmount] = useState(10_0000)
-  const [rate, setRate] = useState(12)
-  const [years, setYears] = useState(5)
-  const [inflation, setInflation] = useState(4)
+  const [amount, setAmount] = useState(1_000_000)
+  const [rate, setRate] = useState(5)
+  const [years, setYears] = useState(30)
+  const [inflation, setInflation] = useState(3)
 
   const dataCalculateMortgage = calculateMortgage({ amount, rate, years, inflation })
   return (
@@ -179,94 +179,108 @@ const Table = (props: { calculatedMortgage: DataCalculateMortgage }) => {
 
 const Charts = (props: { calculatedMortgage: DataCalculateMortgage }) => {
   const chartData = props.calculatedMortgage.rowsData.map((item, index) => ({
-    xAxis: { index },
+    xAxis: `${index + 1}`,
     'Interest Paid': formatDecimals(item.monthlyInterestPayment),
     'Principal Paid': formatDecimals(item.monthlyPrincipalPayment),
-    remain: formatDecimals(item.remain),
+    Remain: formatDecimals(item.remain),
     'Inflation Interest Paid': formatDecimals(item.inflationInterestPaid),
     'Inflation Principal Paid': formatDecimals(item.inflationPrincipalPaid),
     'Inflation Remain': formatDecimals(item.inflationRemain),
   }))
 
   return (
-    <div>
-      <LineChart
-        width={600}
-        height={300}
-        data={chartData}
-        margin={{
-          top: 15,
-          right: 30,
-          left: 10,
-          bottom: 15,
-        }}
-      >
-        <CartesianGrid stroke='#eee' strokeDasharray='3 3' />
-        <XAxis dataKey='xAxis' />
-        <YAxis />
-        <Tooltip />
-        <Legend />
-        <Line
-          type='monotone'
-          dataKey='remain'
-          stroke={theme.quaternaryColor}
-          activeDot={{ r: 8 }}
-        />
-        <Line
-          type='monotone'
-          dataKey='Inflation Remain'
-          stroke={theme.darkQuaternaryColor}
-          activeDot={{ r: 8 }}
-        />
-      </LineChart>
-      <LineChart
-        width={600}
-        height={300}
-        data={chartData}
-        margin={{
-          top: 15,
-          right: 30,
-          left: 10,
-          bottom: 15,
-        }}
-      >
-        <CartesianGrid stroke='#eee' strokeDasharray='3 3' />
-        <XAxis dataKey='xAxis' />
-        <YAxis />
-        <Tooltip />
-        <Legend />
-        <Line
-          type='monotone'
-          dataKey='Interest Paid'
-          stroke={theme.quaternaryColor}
-          strokeWidth={1}
-          activeDot={{ r: 8 }}
-        />
-        <Line
-          type='monotone'
-          dataKey='Principal Paid'
-          stroke={theme.primaryColor}
-          strokeWidth={1}
-          activeDot={{ r: 8 }}
-        />
-        <Line
-          type='monotone'
-          dataKey='Inflation Interest Paid'
-          stroke={theme.darkQuaternaryColor}
-          strokeWidth={1}
-          activeDot={{ r: 8 }}
-        />
-        <Line
-          type='monotone'
-          dataKey='Inflation Principal Paid'
-          stroke={theme.darkPrimaryColor}
-          strokeWidth={1}
-          activeDot={{ r: 8 }}
-        />
-      </LineChart>
-    </div>
+    <ResponsiveContainer width='100%' height='100%'>
+      <Div_Grid>
+        <div>
+          <LineChart
+            width={390}
+            height={300}
+            data={chartData}
+            margin={{
+              top: 15,
+              right: 30,
+              left: 0,
+              bottom: 15,
+            }}
+          >
+            <CartesianGrid stroke='#eee' strokeDasharray='3 3' />
+            <XAxis dataKey='xAxis' />
+            <YAxis />
+            <Tooltip />
+            <Legend />
+            <Line
+              type='monotone'
+              dataKey='Remain'
+              stroke={theme.quaternaryColor}
+              activeDot={{ r: 8 }}
+            />
+            <Line
+              type='monotone'
+              dataKey='Inflation Remain'
+              stroke={theme.darkQuaternaryColor}
+              activeDot={{ r: 8 }}
+            />
+          </LineChart>
+        </div>
+        <div>
+          <LineChart
+            width={390}
+            height={340}
+            data={chartData}
+            margin={{
+              top: 15,
+              right: 30,
+              left: 0,
+              bottom: 15,
+            }}
+          >
+            <CartesianGrid stroke='#eee' strokeDasharray='3 3' />
+            <XAxis dataKey='xAxis' />
+            <YAxis />
+            <Tooltip />
+            <Legend />
+            <Line
+              type='monotone'
+              dataKey='Interest Paid'
+              stroke={theme.quaternaryColor}
+              strokeWidth={1}
+              activeDot={{ r: 8 }}
+            />
+            <Line
+              type='monotone'
+              dataKey='Principal Paid'
+              stroke={theme.primaryColor}
+              strokeWidth={1}
+              activeDot={{ r: 8 }}
+            />
+            <Line
+              type='monotone'
+              dataKey='Inflation Interest Paid'
+              stroke={theme.darkQuaternaryColor}
+              strokeWidth={1}
+              activeDot={{ r: 8 }}
+            />
+            <Line
+              type='monotone'
+              dataKey='Inflation Principal Paid'
+              stroke={theme.darkPrimaryColor}
+              strokeWidth={1}
+              activeDot={{ r: 8 }}
+            />
+          </LineChart>
+        </div>
+      </Div_Grid>
+    </ResponsiveContainer>
   )
 }
+
+const Div_Grid = styled.div`
+  display: flex;
+  flex-flow: row wrap;
+  @media screen and ${theme.mediaSMax} {
+    flex-flow: column wrap;
+  }
+`
 
 export const Div_Form_Item = styled.div`
   display: flex;
@@ -302,12 +316,12 @@ export const Div_Container = styled.div`
   padding: 10px;
   box-sizing: border-box;
   margin: auto;
-  width: 600px;
+  max-width: 800px;
   font-size: inherit;
   font-family: inherit;
   text-align: left;
 
-  @media screen and ${theme.mediaMax} {
+  @media screen and ${theme.mediaSMax} {
     width: 95%;
   }
 `
@@ -315,4 +329,7 @@ export const Input_Styled = styled.input`
   padding: 3px;
   margin: 10px 0px;
   width: 200px;
+  :focus {
+    outline-color: ${theme.primaryColor};
+  }
 `

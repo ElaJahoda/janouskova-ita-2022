@@ -107,18 +107,16 @@ app.post('/blog', (req, res) => {
 app.post('/blog/articles/update/:slug', (req, res, next) => {
   try {
     const data = readData()
-    const slug = req.params.slug
-    const newArticle = req.body
     const articles = data.map(article =>
-      article.url === slug
+      article.url === req.params.slug
         ? { ...article, title: req.body.title, content: req.body.content }
         : article
     )
-    if (!data.some(article => article.url === slug)) {
+    if (!data.some(article => article.url === req.params.slug)) {
       res.sendStatus(400)
     } else {
       writeData({ articles: articles })
-      res.send('Article updated')
+      res.send(data)
     }
   } catch (err) {
     next(err)
