@@ -1,12 +1,12 @@
-import { AppDispatch, RootState } from './store'
+import { AppDispatch, RootState, store } from './store'
 import { Button } from '../components/Button'
 import { Div_Styled } from '../HomePage'
 import { FaTrash } from 'react-icons/fa'
 import { Helmet } from 'react-helmet'
+import { Provider, useDispatch } from 'react-redux'
 import { addTask, deleteTask, toggleCompleted } from './todoSlice'
 import { theme } from '../theme'
 import { themeTodo } from '../ToDo/theme'
-import { useDispatch } from 'react-redux'
 import { useSelector } from 'react-redux'
 import React, { useState } from 'react'
 import styled from '@emotion/styled'
@@ -18,11 +18,19 @@ export type Task = {
 }
 
 export const ToDoRedux = () => {
+  return (
+    <Provider store={store}>
+      <ToDoListRedux />
+    </Provider>
+  )
+}
+
+export const ToDoListRedux = () => {
   const tasks = useSelector((state: RootState) => state)
   const dispatch = useDispatch<AppDispatch>()
   const [error, setError] = useState(false)
   const [task, setTask] = useState('')
-  const [filter, setFilter] = useState<'All' | 'Complete' | 'Active'>('All')
+  const [filter, setFilter] = useState('All' as 'All' | 'Complete' | 'Active')
   const getFilteredTodoList = () => {
     if (filter === 'Active') {
       return tasks.todo.filter((todo: Task) => !todo.complete)
