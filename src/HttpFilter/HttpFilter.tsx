@@ -1,6 +1,6 @@
 import { Div_Styled } from '../HomePage'
 import { Input_Styled } from '../MortgageCalculator/MortgageCalculator'
-import { filterUrl } from '../urls'
+import { filterUrl } from '../utils/urls'
 import React, { useState } from 'react'
 
 type Data = { id: string; name: string }[]

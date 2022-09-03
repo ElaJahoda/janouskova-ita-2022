@@ -1,46 +1,69 @@
-# Getting Started with Create React App
+# ITA 2021 React practice
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Clone this repo to get started.
+## How to
 
-## Available Scripts
+```sh
+git clone https://github.com/n3oAlex/ita2021-react-practice
+```
+### Install
 
-In the project directory, you can run:
+```sh
+npm install
+```
 
-### `npm start`
+### Start
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+```sh
+npm run start
+```
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+## React apps
+### JS History web page
 
-### `npm test`
+[link](https://github.com/ElaJahoda/janouskova-ita-2022/tree/main/src/JShistory)
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+Simple web page about History of JavaScript.
 
-### `npm run build`
+![JS History web page screenshot](./src/images/JsHistoryScreenshot.png)
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+### ToDo in Redux
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+[link](https://github.com/ElaJahoda/janouskova-ita-2022/tree/main/src/ToDo)
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+Simple todo app that allows adding, removing and filtering tasks. Redux is used.
 
-### `npm run eject`
+![ToDo in Redux screenshot](./src/images/ToDoScreenshot.png)
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+### Hacker Typer
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+[link](https://github.com/ElaJahoda/janouskova-ita-2022/tree/main/src/HackerTyper)
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+Inspiration: <https://hackertyper.com/>
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+![Hacker Typer screenshot](./src/images/HackerTyperScreenshot.png)
 
-## Learn More
+### Mortgage Calculator
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+[link](https://github.com/ElaJahoda/janouskova-ita-2022/tree/main/src/MortgageCalculator)
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+Mortgage Calculator calculate Remain, Principal Payment and Interest Payment, and theirs amount with inflation from inputs amounts. 
+
+![Mortgage Calculator](./src/images/MortgageCalculatorScreenshot.png)
+
+### Memory Game
+
+[link](https://github.com/ElaJahoda/janouskova-ita-2022/tree/main/src/MemoryGame)
+
+Memory Game with pictures of nature.
+
+![Memory Game screenshot](./src/images/MemoryGameScreenshot.png)
+
+### Blog Post with Backend CRUD 
+
+[link](https://github.com/ElaJahoda/janouskova-ita-2022/tree/main/src/BlogPost)
+
+A simple blogging system allowing writing/editing articles in markdown and then listing/viewing/filtering/removing them. Private database is used.
+
+![Blog List screenshot](./src/images/BlogPost1Screenshot.png)
+![Blog New Article screenshot](./src/images/BlogPost2Screenshot.png)

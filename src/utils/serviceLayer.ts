@@ -1,6 +1,6 @@
 import { Article } from '../BlogPost/Create/CreateBlogContext'
 import { Articles } from '../BlogPost/List/BlogContextProvider'
-import { apiBlog } from '../urls'
+import { apiBlog } from './urls'
 
 export const serviceLayerFetch = async (...args: Parameters<typeof fetch>) => {
   const response = await fetch(...args)
