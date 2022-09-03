@@ -3,6 +3,7 @@ export const urls = {
   jsHistory: '/jshistory',
   counter: '/counter',
   toDo: '/todo',
+  toDoRedux: '/todo-redux',
   hackertyper: '/hackertyper',
   mortgageCalculator: '/mortgage-calculator',
   memoryGame: '/memory-game',
