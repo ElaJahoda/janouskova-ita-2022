@@ -1,7 +1,7 @@
 import { FaChevronDown, FaChevronUp } from 'react-icons/fa'
 import { NavLink } from 'react-router-dom'
 import { theme } from './theme'
-import { urls } from './urls'
+import { urls } from './utils/urls'
 import React, { MouseEventHandler, useState } from 'react'
 import styled from '@emotion/styled'
 
@@ -21,9 +21,6 @@ export const App = () => {
           <LinkStyledHover to={urls.jsHistory} onClick={handleToggle}>
             JsHistory
           </LinkStyledHover>
-          <LinkStyledHover to={urls.counter} onClick={handleToggle}>
-            Counter
-          </LinkStyledHover>
           <LinkStyledHover to={urls.toDo} onClick={handleToggle}>
             ToDo
           </LinkStyledHover>
@@ -38,9 +35,6 @@ export const App = () => {
           </LinkStyledHover>
           <LinkStyledHover to={urls.memoryGame} onClick={handleToggle}>
             MemoryGame
-          </LinkStyledHover>
-          <LinkStyledHover to={urls.httpFilter} onClick={handleToggle}>
-            HttpFilter
           </LinkStyledHover>
           <LinkStyledHover to={urls.blogPost} onClick={handleToggle}>
             BlogPost

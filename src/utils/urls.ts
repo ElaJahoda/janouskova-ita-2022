@@ -1,13 +1,11 @@
 export const urls = {
   homePage: '/',
   jsHistory: '/jshistory',
-  counter: '/counter',
   toDo: '/todo',
   toDoRedux: '/todo-redux',
   hackertyper: '/hackertyper',
   mortgageCalculator: '/mortgage-calculator',
   memoryGame: '/memory-game',
-  httpFilter: '/http-filter',
   blogPost: '/blog',
   blogNewArticle: '/blog/new-article',
   blogArticles: '/blog/articles/:slug',

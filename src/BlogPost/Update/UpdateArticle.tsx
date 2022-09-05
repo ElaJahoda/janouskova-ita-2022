@@ -9,7 +9,7 @@ import { Div_Styled } from '../../HomePage'
 import { Link, useNavigate } from 'react-router-dom'
 import { css } from '@emotion/css'
 import { theme } from '../../theme'
-import { urls } from '../../urls'
+import { urls } from '../../utils/urls'
 import React, { useContext } from 'react'
 
 export const UpdateArticle = () => {

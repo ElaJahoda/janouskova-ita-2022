@@ -5,7 +5,7 @@ import { Helmet } from 'react-helmet'
 import { Input_Styled } from '../../MortgageCalculator/MortgageCalculator'
 import { Link } from 'react-router-dom'
 import { css } from '@emotion/css'
-import { urls } from '../../urls'
+import { urls } from '../../utils/urls'
 import React, { useContext } from 'react'
 
 export const Blog = () => {
