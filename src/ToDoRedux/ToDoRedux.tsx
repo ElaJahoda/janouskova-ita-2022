@@ -4,7 +4,7 @@ import { Div_Styled } from '../HomePage'
 import { FaTrash } from 'react-icons/fa'
 import { Helmet } from 'react-helmet'
 import { Provider, useDispatch } from 'react-redux'
-import { addTask, deleteTask, toggleCompleted } from './todoSlice'
+import { addTask, deleteTask, reorderTask, toggleCompleted } from './todoSlice'
 import { theme } from '../theme'
 import { themeTodo } from '../ToDo/theme'
 import { useSelector } from 'react-redux'
@@ -26,22 +26,31 @@ export const ToDoRedux = () => {
 }
 
 export const ToDoListRedux = () => {
-  const tasks = useSelector((state: RootState) => state)
+  const tasks = useSelector((state: RootState) => state.todo)
   const dispatch = useDispatch<AppDispatch>()
   const [error, setError] = useState(false)
   const [task, setTask] = useState('')
   const [filter, setFilter] = useState('All' as 'All' | 'Complete' | 'Active')
   const getFilteredTodoList = () => {
     if (filter === 'Active') {
-      return tasks.todo.filter((todo: Task) => !todo.complete)
+      return tasks.filter((todo: Task) => !todo.complete)
     } else if (filter === 'Complete') {
-      return tasks.todo.filter((todo: Task) => todo.complete)
+      return tasks.filter((todo: Task) => todo.complete)
     } else {
-      return tasks.todo
+      return tasks
     }
   }
   const filterValue = getFilteredTodoList()
-  const incompletedTodosCount = tasks.todo.filter(todo => !todo.complete).length
+  const incompletedTodosCount = tasks.filter(todo => !todo.complete).length
+
+  const dragItem = React.useRef(0)
+  const dragOverItem = React.useRef(0)
+
+  const handleSort = () => {
+    const indexItem = tasks.findIndex(task => task.id === filterValue[dragItem.current].id)
+    const indexOverItem = tasks.findIndex(task => task.id === filterValue[dragOverItem.current].id)
+    dispatch(reorderTask({ dragItem: indexItem, dragOverItem: indexOverItem }))
+  }
   return (
     <Div_Styled>
       <Helmet>
@@ -69,11 +78,17 @@ export const ToDoListRedux = () => {
             ></Input_styled>
             <Button_submit type='submit'>Add</Button_submit>
           </Div_header>
-          <table>
+          <Table_styled>
             <tbody>
-              {filterValue.map(task => {
+              {filterValue.map((task, index) => {
                 return (
-                  <tr key={task.id}>
+                  <Tr_styled
+                    key={task.id}
+                    draggable
+                    onDragStart={e => (dragItem.current = index)}
+                    onDragEnter={e => (dragOverItem.current = index)}
+                    onDragEnd={handleSort}
+                  >
                     <Td_styled width='5%'>
                       <input
                         onChange={event => {
@@ -93,11 +108,11 @@ export const ToDoListRedux = () => {
                         <FaTrash />
                       </Button_delete>
                     </Td_styled>
-                  </tr>
+                  </Tr_styled>
                 )
               })}
             </tbody>
-          </table>
+          </Table_styled>
         </form>
         <Div_Footer>
           <Span_Counter>{incompletedTodosCount} items left</Span_Counter>{' '}
@@ -168,6 +183,15 @@ const Div_TodoApp = styled.div`
   @media screen and ${theme.mediaSMax} {
     width: 95%;
   }
+`
+const Table_styled = styled.table`
+  border-spacing: 0px 5px;
+  padding: 0px 5px;
+`
+
+const Tr_styled = styled.tr`
+  background-color: ${theme.opacityPrimaryColor};
+  cursor: grab;
 `
 
 const Td_styled = styled.td<{ width?: string }>`
