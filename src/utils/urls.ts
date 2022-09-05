@@ -2,6 +2,7 @@ export const urls = {
   homePage: '/',
   jsHistory: '/jshistory',
   toDo: '/todo',
+  toDoRedux: '/todo-redux',
   hackertyper: '/hackertyper',
   mortgageCalculator: '/mortgage-calculator',
   memoryGame: '/memory-game',

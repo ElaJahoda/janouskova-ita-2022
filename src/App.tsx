@@ -24,6 +24,9 @@ export const App = () => {
           <LinkStyledHover to={urls.toDo} onClick={handleToggle}>
             ToDo
           </LinkStyledHover>
+          <LinkStyledHover to={urls.toDoRedux} onClick={handleToggle}>
+            ToDoRedux
+          </LinkStyledHover>
           <LinkStyledHover to={urls.hackertyper} onClick={handleToggle}>
             HackerTyper
           </LinkStyledHover>

@@ -25,6 +25,7 @@ root.render(
         <Route path={urls.homePage} element={<Home />} />
         <Route path={urls.jsHistory} element={<JsHistory />} />
         <Route path={urls.toDo} element={<ToDo />} />
+        <Route path={urls.toDoRedux} element={<ToDoRedux />} />
         <Route path={urls.hackertyper} element={<HackerTyper />} />
         <Route path={urls.mortgageCalculator} element={<MortgageCalculator />} />
         <Route path={urls.memoryGame} element={<MemoryGame />} />
