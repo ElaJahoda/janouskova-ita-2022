@@ -49,9 +49,14 @@ const todoSlice = createSlice({
       state[index].complete = action.payload.complete
       saveStateLocalStorage(keyLocalStorage, state)
     },
+    reorderTask: (state, action: PayloadAction<{ dragItem: number; dragOverItem: number }>) => {
+      const [removed] = state.splice(action.payload.dragItem, 1)
+      state.splice(action.payload.dragOverItem, 0, removed)
+      saveStateLocalStorage(keyLocalStorage, state)
+    },
   },
 })
 
-export const { addTask, deleteTask, toggleCompleted } = todoSlice.actions
+export const { addTask, deleteTask, toggleCompleted, reorderTask } = todoSlice.actions
 
 export const todoReducer = todoSlice.reducer
