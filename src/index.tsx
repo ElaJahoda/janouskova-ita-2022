@@ -12,6 +12,7 @@ import { JsHistory } from './JShistory/JsHistory'
 import { MemoryGame } from './MemoryGame/MemoryGame'
 import { MortgageCalculator } from './MortgageCalculator/MortgageCalculator'
 import { ToDo } from './ToDo/ToDo'
+import { ToDoRedux } from './ToDoRedux/ToDoRedux'
 import { urls } from './urls'
 import React from 'react'
 import ReactDOM from 'react-dom/client'
@@ -27,6 +28,7 @@ root.render(
         <Route path={urls.jsHistory} element={<JsHistory />} />
         <Route path={urls.counter} element={<Counter />} />
         <Route path={urls.toDo} element={<ToDo />} />
+        <Route path={urls.toDoRedux} element={<ToDoRedux />} />
         <Route path={urls.hackertyper} element={<HackerTyper />} />
         <Route path={urls.mortgageCalculator} element={<MortgageCalculator />} />
         <Route path={urls.memoryGame} element={<MemoryGame />} />
