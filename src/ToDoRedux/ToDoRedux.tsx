@@ -1,12 +1,12 @@
 import { AppDispatch, RootState, store } from './store'
 import { Button } from '../components/Button'
 import { Div_Styled } from '../HomePage'
-import { FaTrash } from 'react-icons/fa'
+import { FaPlus, FaTrash } from 'react-icons/fa'
 import { Helmet } from 'react-helmet'
 import { Provider, useDispatch } from 'react-redux'
 import { addTask, deleteTask, reorderTask, toggleCompleted } from './todoSlice'
 import { theme } from '../theme'
-import { themeTodo } from '../ToDo/theme'
+import { themeTodo } from './theme'
 import { useSelector } from 'react-redux'
 import React, { useState } from 'react'
 import styled from '@emotion/styled'
@@ -76,7 +76,9 @@ export const ToDoListRedux = () => {
               onChange={e => setTask(e.target.value)}
               value={task}
             ></Input_styled>
-            <Button_submit type='submit'>Add</Button_submit>
+            <Button_submit type='submit'>
+              <FaPlus />
+            </Button_submit>
           </Div_header>
           <Table_styled>
             <tbody>
@@ -158,7 +160,7 @@ const Input_styled = (props: {
         onChange={props.onChange}
         value={props.value}
         type='text'
-        placeholder='What need to be done?'
+        placeholder='What needs to be done?'
       ></input>
       <p
         style={{
@@ -190,7 +192,7 @@ const Table_styled = styled.table`
 `
 
 const Tr_styled = styled.tr`
-  background-color: ${theme.opacityPrimaryColor};
+  background-color: ${theme.opacityLightQuaternaryColor};
   cursor: grab;
 `
 
@@ -217,13 +219,12 @@ const Span_styled = styled.span<{ checked: boolean }>`
 const Div_header = styled.div`
   display: flex;
   background: #fff;
-  border-bottom: solid 1px ${themeTodo.primaryColor};
-  padding: 5px;
-  padding-bottom: px;
+  padding-top: 5px;
 `
 
 const Button_delete = styled(Button)`
-  background-color: ${theme.backgroundColor};
+  background-color: inherit;
+  border: none;
   transition: all 0.15s ease-out;
   &:hover {
     transition: all 0.15s ease-in;
@@ -233,14 +234,13 @@ const Button_delete = styled(Button)`
 `
 
 const Button_footer = styled(Button)`
-  width: 80px;
+  width: 92px;
   transition: inherit:
   &:hover {
-    background-color: ${theme.primaryColor};
     border-radius: 5px;
   }
   &[aria-pressed='true'] {
-    border: 3px dotted ${theme.primaryColor};
+    border: solid 3px ${theme.quaternaryColor};
   }
   @media screen and ${theme.mediaSMax} {
     width: 98%;
@@ -249,8 +249,9 @@ const Button_footer = styled(Button)`
 `
 
 const Button_submit = styled(Button)`
-  padding: 5px 15px 3px 15px;
-  background-color: ${theme.primaryColor};
+  margin: 0px 5px 0px 0px;
+  padding: 5px 17px 3px 17px;
+  background-color: ${theme.opacityQuaternaryColor};
   transition: all 0.15s ease-out;
   &:hover {
     transition: all 0.15s ease-in;
