@@ -3,14 +3,14 @@ import { BlogPost } from './BlogPost/List/BlogContextProvider'
 import { BlogUpdateArticle } from './BlogPost/Update/UpdateArticleContext'
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import { CreateNewArticle } from './BlogPost/Create/CreateBlogContext'
+import { CvPage } from './CvPage'
 import { DetailArticle } from './BlogPost/Detail/DetailArticleContext'
 import { HackerTyper } from './HackerTyper/HackerTyper'
 import { Home } from './HomePage'
-import { HttpFilter } from './HttpFilter/HttpFilter'
 import { JsHistory } from './JShistory/JsHistory'
 import { MemoryGame } from './MemoryGame/MemoryGame'
 import { MortgageCalculator } from './MortgageCalculator/MortgageCalculator'
-import { ToDo } from './ToDo/ToDo'
+import { ProjectsPage } from './ProjectsPage'
 import { ToDoRedux } from './ToDoRedux/ToDoRedux'
 import { urls } from './utils/urls'
 import React from 'react'
@@ -24,8 +24,9 @@ root.render(
       <App />
       <Routes>
         <Route path={urls.homePage} element={<Home />} />
+        <Route path={urls.projectsPage} element={<ProjectsPage />} />
+        <Route path={urls.cvPage} element={<CvPage />} />
         <Route path={urls.jsHistory} element={<JsHistory />} />
-        <Route path={urls.toDo} element={<ToDo />} />
         <Route path={urls.toDoRedux} element={<ToDoRedux />} />
         <Route path={urls.hackertyper} element={<HackerTyper />} />
         <Route path={urls.mortgageCalculator} element={<MortgageCalculator />} />

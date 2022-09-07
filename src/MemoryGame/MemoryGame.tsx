@@ -103,7 +103,7 @@ export const MemoryGame = () => {
 }
 
 const Div_Grid = styled.div`
-  width: 450px;
+  max-width: 450px;
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
   grid-gap: 0.5rem;
@@ -133,6 +133,6 @@ const Img_BackImg = styled(Img_FrontImg)`
   left: 0px;
 `
 const Div_Won = styled.div`
-  padding: 25px;
+  padding: 5px 0px;
   font-size: 25px;
 `

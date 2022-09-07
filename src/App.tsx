@@ -3,6 +3,7 @@ import { NavLink } from 'react-router-dom'
 import { theme } from './theme'
 import { urls } from './utils/urls'
 import React, { MouseEventHandler, useState } from 'react'
+import logo from './images/logo.jpg'
 import styled from '@emotion/styled'
 
 export const App = () => {
@@ -12,32 +13,18 @@ export const App = () => {
   }
   return (
     <Div_styled>
+      <Img_styled src={logo} width='73px'></Img_styled>
       <Div_Nav>
         <Bars onClick={handleToggle}>{toggle ? <FaChevronUp /> : <FaChevronDown />}</Bars>
         <NavMenu prop={toggle}>
           <LinkStyledHover to={urls.homePage} onClick={handleToggle}>
             Home
           </LinkStyledHover>
-          <LinkStyledHover to={urls.jsHistory} onClick={handleToggle}>
-            JsHistory
+          <LinkStyledHover to={urls.projectsPage} onClick={handleToggle}>
+            Projects
           </LinkStyledHover>
-          <LinkStyledHover to={urls.toDo} onClick={handleToggle}>
-            ToDo
-          </LinkStyledHover>
-          <LinkStyledHover to={urls.toDoRedux} onClick={handleToggle}>
-            ToDoRedux
-          </LinkStyledHover>
-          <LinkStyledHover to={urls.hackertyper} onClick={handleToggle}>
-            HackerTyper
-          </LinkStyledHover>
-          <LinkStyledHover to={urls.mortgageCalculator} onClick={handleToggle}>
-            MortgageCalculator
-          </LinkStyledHover>
-          <LinkStyledHover to={urls.memoryGame} onClick={handleToggle}>
-            MemoryGame
-          </LinkStyledHover>
-          <LinkStyledHover to={urls.blogPost} onClick={handleToggle}>
-            BlogPost
+          <LinkStyledHover to={urls.cvPage} onClick={handleToggle}>
+            CV
           </LinkStyledHover>
         </NavMenu>
       </Div_Nav>
@@ -56,31 +43,38 @@ const NavMenu = styled.div<Prop>`
   @media screen and ${theme.mediaMax} {
     display: ${props => (props.prop ? 'block' : 'none')};
     position: absolute;
-    top: 65px;
+    top: 84px;
     left: 0px;
     padding: 1.5rem;
     flex-direction: column;
     width: 100%;
-    background-color: white;
-    border-top: 1px solid black;
+    background-color: ${theme.opacityQuaternaryColor};
     box-shadow: ${theme.boxShadow};
     z-index: 5;
   }
 `
 const Div_Nav = styled.div`
+  background-color: ${theme.opacityQuaternaryColor};
   padding-bottom: 1rem;
   text-decoration: none;
   height: 85px;
   display: flex;
-  justify-content: space-around;
+  justify-content: flex-end;
   flex-wrap: wrap;
   align-items: center;
-  padding: 0.2rem calc((100vw - 1000px) / 2);
+  padding-right: 15px;
   z-index: 14;
+`
+const Img_styled = styled.img`
+  position: absolute;
+  padding-left: 10px;
+  margin: 7px;
+  display: flex;
+  justify-content: flex-start;
 `
 const Bars = styled.div`
   display: none;
-  color: black;
+  color: ${theme.backgroundColor};
   @media screen and ${theme.mediaMax} {
     display: block;
     position: absolute;
@@ -103,16 +97,15 @@ const LinkStyled = (props: {
       className={props.className}
       style={({ isActive }) => ({
         textDecoration: 'none',
-        borderRadius: '5px',
         display: 'flex',
         fontSize: '1.5rem',
         alignItems: 'center',
         marginLeft: '0.5rem',
         marginRight: '0.5rem',
-        padding: '1px 6px',
-        border: 'solid 2px transparent',
-
-        backgroundColor: isActive ? theme.primaryColor : 'transparent',
+        padding: '3px 20px 6px 20px',
+        border: 'solid 3px transparent',
+        borderColor: isActive ? theme.backgroundColor : 'transparent',
+        borderRadius: '5px',
       })}
       to={props.to}
       onClick={props.onClick}
@@ -124,16 +117,16 @@ const LinkStyled = (props: {
 
 const LinkStyledHover = styled(LinkStyled)`
   :link {
-    color: ${theme.secondaryColor};
+    color: ${theme.quaternaryColor};
   }
   :visited {
-    color: ${theme.secondaryColor};
+    color: ${theme.quaternaryColor};
   }
   :hover {
     color: ${theme.basicColor};
   }
   :visit {
-    color: ${theme.secondaryColor};
+    color: ${theme.quaternaryColor};
   }
   :active {
     color: ${theme.quaternaryColor};

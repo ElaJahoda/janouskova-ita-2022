@@ -1,7 +1,8 @@
 export const urls = {
   homePage: '/',
+  projectsPage: '/projects',
   jsHistory: '/jshistory',
-  toDo: '/todo',
+  cvPage: '/cv',
   toDoRedux: '/todo-redux',
   hackertyper: '/hackertyper',
   mortgageCalculator: '/mortgage-calculator',
