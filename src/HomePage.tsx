@@ -25,7 +25,8 @@ export const Home = () => {
           <img src={GitHubImg} width='300px' />
         </a>
         <p>
-          Contact me: <A_Styled href='mailto: 3la.jah0da@gmail.com'> 3la.jah0da@gmail.com</A_Styled>
+          Contact me:
+          <A_Styled href='mailto: e.janouskova123@gmail.com'> e.janouskova123@gmail.com</A_Styled>
         </p>
       </Div_container>
     </Div_Styled>
@@ -50,7 +51,10 @@ export const Div_Styled = styled.div`
   margin: -17px 0px 0px 0px;
   padding-top: 15px;
 `
-const A_Styled = styled.a`
+export const A_Styled = styled.a`
   color: ${theme.quaternaryColor};
   text-decoration: none;
+  :hover {
+    text-decoration: underline;
+  }
 `
