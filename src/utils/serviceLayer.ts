@@ -12,7 +12,7 @@ export const blogServices = {
   delete: async (slug: string) => {
     const response = (await serviceLayerFetch(apiBlog.detail(slug), {
       method: 'DELETE',
-    })) as {}
+    })) as Articles
   },
   update: async (slug: string, body: {}) => {
     const response = (await serviceLayerFetch(apiBlog.update(slug), {
