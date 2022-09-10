@@ -2,6 +2,8 @@ import bodyParser from 'body-parser'
 import cors from 'cors'
 import express from 'express'
 import fs from 'fs'
+import swaggerJsDoc from 'swagger-jsdoc'
+import swaggerUi from 'swagger-ui-express'
 
 const app = express()
 const port = 1234
@@ -9,10 +11,60 @@ const port = 1234
 app.use(cors())
 app.use(bodyParser.json())
 
-type User = {
-  id: string
-  name: string
+const swaggerOptions = {
+  swaggerDefinition: {
+    info: {
+      title: 'Simple Blog API',
+      description: 'My simple Blog API',
+      version: '1.0.0',
+      contact: {
+        name: 'Eva J.',
+        email: '3la.Jah0da@gmail.com',
+        url: 'eva-janouskova.cz',
+      },
+      termsOfService:
+        'https://gitlab.com/ita-2022-react/janouskova-ita-2022/-/blob/main/backend/src/index.ts',
+    },
+    host: 'localhost:1234',
+    basePath: '/',
+    schemes: ['http'],
+    consumes: ['application/json'],
+    produces: ['application/json'],
+    definitions: {
+      Article: {
+        required: ['title', 'content'],
+        properties: {
+          id: {
+            type: 'number',
+            description: 'The Auto-generated id of a post from title and id number',
+          },
+          url: {
+            type: 'sting',
+          },
+          title: {
+            type: 'string',
+            description: 'title of article',
+          },
+
+          content: {
+            type: 'string',
+            descripton: 'content of post',
+          },
+        },
+        example: {
+          id: '123',
+          url: 'ahoj-123',
+          title: 'awesomeness',
+          content: 'The most amazing article in the world...',
+        },
+      },
+    },
+  },
+  apis: ['src/index.ts'],
 }
+
+const swaggerDocs = swaggerJsDoc(swaggerOptions)
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocs))
 
 type Article = { id: number; url: string; title: string; content: string }
 
@@ -43,21 +95,22 @@ const writeData = (dataToJSON: {}) => {
   )
 }
 
-app.get('/users', (req, res, next) => {
-  try {
-    const dataString = fs.readFileSync(`${__dirname}/../data.json`, 'utf-8')
-    const data = JSON.parse(dataString).users as User[]
-
-    res.send(
-      data.filter(item =>
-        formatValue(item.name).includes(formatValue(req.query.search?.toString() ?? ''))
-      )
-    )
-  } catch (err) {
-    next(err)
-  }
-})
-
+/**
+ * @swagger
+ * /blog:
+ *  get:
+ *    tags:
+ *       - Articles
+ *    summary: Returns a list of articles
+ *    description: use to request all blog articles
+ *    responses:
+ *      200:
+ *         description: OK
+ *         schema:
+ *             type: 'array'
+ *             items:
+ *                 $ref: '#/definitions/Article'
+ */
 app.get('/blog', (req, res, next) => {
   try {
     const data = readData()
@@ -67,6 +120,29 @@ app.get('/blog', (req, res, next) => {
   }
 })
 
+/**
+ * @swagger
+ * /blog/filter?search={url}:
+ *  get:
+ *    tags:
+ *       - Articles
+ *    summary: Filter blog articles
+ *    description: use to request filter blog articles
+ *    parameters:
+ *         - in: path
+ *           name: url
+ *           description: value for filter
+ *           required: false
+ *           schema:
+ *                type: 'string'
+ *    responses:
+ *      200:
+ *         description: OK
+ *         schema:
+ *             type: 'array'
+ *             items:
+ *                 $ref: '#/definitions/Article'
+ */
 app.get('/blog/filter', (req, res, next) => {
   try {
     const data = readData()
@@ -80,6 +156,28 @@ app.get('/blog/filter', (req, res, next) => {
   }
 })
 
+/**
+ * @swagger
+ * /blog/articles/{slug}:
+ *  get:
+ *    tags:
+ *       - Article
+ *    summary: Represents an article
+ *    description: use to request blog article by params
+ *    parameters:
+ *         - in: path
+ *           name: slug
+ *           description: slug params of article
+ *           required: true
+ *           schema:
+ *                type: 'string'
+ *    responses:
+ *      200:
+ *         description: OK
+ *         schema:
+ *             items:
+ *                 $ref: '#/definitions/Article'
+ */
 app.get('/blog/articles/:slug', (req, res, next) => {
   try {
     const data = readData()
@@ -90,6 +188,33 @@ app.get('/blog/articles/:slug', (req, res, next) => {
   }
 })
 
+/**
+ * @swagger
+ * /blog:
+ *  post:
+ *    tags:
+ *       - Article
+ *    summary: Create a new article
+ *    description: use to request new article
+ *    parameters:
+ *         - in: body
+ *           name: body
+ *           description: title  and content of the article
+ *           required: true
+ *           schema:
+ *                type: 'object'
+ *                properties:
+ *                   title:
+ *                        type: 'string'
+ *                   content:
+ *                        type: 'string'
+ *    responses:
+ *      200:
+ *         description: OK
+ *         schema:
+ *             items:
+ *                 $ref: '#/definitions/Article'
+ */
 app.post('/blog', (req, res) => {
   const id = generateID()
   const newArticle = {
@@ -104,6 +229,39 @@ app.post('/blog', (req, res) => {
   res.send(newArticle)
 })
 
+/**
+ * @swagger
+ * /blog/articles/update/{slug}:
+ *  post:
+ *    tags:
+ *       - Article
+ *    summary: Update article by params
+ *    description: use to request update article by slug params
+ *    parameters:
+ *         - in: path
+ *           name: slug
+ *           description: slug params of article
+ *           required: true
+ *           schema:
+ *                type: 'string'
+ *         - in: body
+ *           name: body
+ *           description: title  and content of the article
+ *           required: true
+ *           schema:
+ *                type: 'object'
+ *                properties:
+ *                   title:
+ *                        type: 'string'
+ *                   content:
+ *                        type: 'string'
+ *    responses:
+ *      200:
+ *         description: OK
+ *         schema:
+ *             items:
+ *                 $ref: '#/definitions/Article'
+ */
 app.post('/blog/articles/update/:slug', (req, res, next) => {
   try {
     const data = readData()
@@ -123,12 +281,34 @@ app.post('/blog/articles/update/:slug', (req, res, next) => {
   }
 })
 
+/**
+ * @swagger
+ * /blog/articles/{slug}:
+ *  delete:
+ *      tags:
+ *       - Article
+ *      summary: Delete article by params
+ *      description: use to request delete article by slug params
+ *      parameters:
+ *         - in: path
+ *           name: slug
+ *           description: slug params of article
+ *           required: true
+ *           schema:
+ *                type: 'string'
+ *      responses:
+ *        200:
+ *         description: OK
+ *         schema:
+ *             items:
+ *                 $ref: '#/definitions/Article'
+ */
 app.delete('/blog/articles/:slug', (req, res, next) => {
   try {
     const data = readData()
     const articles = data.filter(article => article.url !== req.params.slug)
     writeData({ articles: articles })
-    res.send('Article deleted')
+    res.send(articles)
   } catch (err) {
     next(err)
   }

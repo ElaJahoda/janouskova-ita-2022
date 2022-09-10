@@ -9,10 +9,8 @@ node_modules
 /coverage
 
 # production
-/build
-
 /backend/dataArticles.json
-
+/build
 # misc
 .DS_Store
 .env.local
