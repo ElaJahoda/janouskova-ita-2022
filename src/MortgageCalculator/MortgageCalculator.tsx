@@ -1,3 +1,4 @@
+import { A_Styled, Div_Styled } from '../HomePage'
 import {
   CartesianGrid,
   Legend,
@@ -8,7 +9,6 @@ import {
   XAxis,
   YAxis,
 } from 'recharts'
-import { Div_Styled } from '../HomePage'
 import { Helmet } from 'react-helmet'
 import { theme } from '../theme'
 import React, { useState } from 'react'
@@ -34,6 +34,13 @@ const amountFormat = (item: number) => {
 
 const formatDecimals = (item: number) => {
   return Number(item.toFixed(2))
+}
+
+const formatMonths = (index: number) => {
+  const month = index + 1
+  const quotient = Math.floor(month / 12)
+  const remainder = (month % 12) + 1
+  return `${remainder}/${quotient}`
 }
 
 const getLinearMonthInflation = (yearInflation: number) => {
@@ -79,6 +86,16 @@ const calculateMortgage = (arg: {
     rowsData,
   }
 }
+type DataCalculatePropertyValue = ReturnType<typeof calculatePropertyValue>
+
+const calculatePropertyValue = (arg: { amount: number; inflation: number; years: number }) => {
+  let value = arg.amount
+  const propertyValue = Array.from({ length: arg.years }, (v, i) => i + 1).map(i => {
+    const amountInflation = (value / 100) * arg.inflation
+    return (value += amountInflation)
+  })
+  return propertyValue
+}
 
 export const MortgageCalculator = () => {
   const [amount, setAmount] = useState(1_000_000)
@@ -87,6 +104,7 @@ export const MortgageCalculator = () => {
   const [inflation, setInflation] = useState(3)
 
   const dataCalculateMortgage = calculateMortgage({ amount, rate, years, inflation })
+  const dataCalculatePropertyValue = calculatePropertyValue({ amount, inflation, years })
   return (
     <Div_Styled>
       <Helmet>
@@ -139,6 +157,18 @@ export const MortgageCalculator = () => {
         </Div_Form_Item>
         <Charts calculatedMortgage={dataCalculateMortgage} />
         <Table calculatedMortgage={dataCalculateMortgage} />
+        <p>
+          <q>
+            How Does Inflation Affect Property Value? In terms of the housing market, inflation
+            causes house prices to increase over and above where the average might sit due to simple
+            supply and demand. This often leads to many potential buyers being priced out of buying
+            a property...
+          </q>
+          <A_Styled href='https://www.housebuyerbureau.co.uk/blog/how-does-inflation-affect-property-prices/'>
+            - Source -
+          </A_Styled>
+        </p>
+        <ChartPropertuValue calculatedPropertyValue={dataCalculatePropertyValue} />
       </Div_Container>
     </Div_Styled>
   )
@@ -149,7 +179,7 @@ const Table = (props: { calculatedMortgage: DataCalculateMortgage }) => {
     <Table_Styled>
       <thead>
         <tr>
-          <Th_Styled>Month</Th_Styled>
+          <Th_Styled>Month/Year</Th_Styled>
           <Th_Styled>Payment Amount</Th_Styled>
           <Th_Styled>Interest Paid</Th_Styled>
           <Th_Styled>Principal Paid</Th_Styled>
@@ -162,7 +192,7 @@ const Table = (props: { calculatedMortgage: DataCalculateMortgage }) => {
       <tbody>
         {props.calculatedMortgage.rowsData.map((item, index) => (
           <tr key={index}>
-            <Td_Styled>{index + 1}</Td_Styled>
+            <Td_Styled>{formatMonths(index)}</Td_Styled>
             <Td_Styled>{amountFormat(props.calculatedMortgage.monthlyPayment)}</Td_Styled>
             <Td_Styled>{amountFormat(item.monthlyInterestPayment)}</Td_Styled>
             <Td_Styled>{amountFormat(item.monthlyPrincipalPayment)}</Td_Styled>
@@ -179,7 +209,7 @@ const Table = (props: { calculatedMortgage: DataCalculateMortgage }) => {
 
 const Charts = (props: { calculatedMortgage: DataCalculateMortgage }) => {
   const chartData = props.calculatedMortgage.rowsData.map((item, index) => ({
-    xAxis: `${index + 1}`,
+    xAxis: formatMonths(index),
     'Interest Paid': formatDecimals(item.monthlyInterestPayment),
     'Principal Paid': formatDecimals(item.monthlyPrincipalPayment),
     Remain: formatDecimals(item.remain),
@@ -271,6 +301,42 @@ const Charts = (props: { calculatedMortgage: DataCalculateMortgage }) => {
         </div>
       </Div_Grid>
     </ResponsiveContainer>
+  )
+}
+
+const ChartPropertuValue = (props: { calculatedPropertyValue: DataCalculatePropertyValue }) => {
+  const chartData = props.calculatedPropertyValue.map((item, index) => ({
+    xAxis: `${index + 1}`,
+    'Appreciation per Year': formatDecimals(item),
+  }))
+  return (
+    <div style={{ height: '300px' }}>
+      <ResponsiveContainer width='100%' height='100%'>
+        <LineChart
+          width={690}
+          height={300}
+          data={chartData}
+          margin={{
+            top: 15,
+            right: 30,
+            left: 30,
+            bottom: 15,
+          }}
+        >
+          <CartesianGrid stroke='#eee' strokeDasharray='3 3' />
+          <XAxis dataKey='xAxis' />
+          <YAxis />
+          <Tooltip />
+          <Legend />
+          <Line
+            type='monotone'
+            dataKey='Appreciation per Year'
+            stroke={theme.quaternaryColor}
+            activeDot={{ r: 8 }}
+          />
+        </LineChart>
+      </ResponsiveContainer>
+    </div>
   )
 }
 
