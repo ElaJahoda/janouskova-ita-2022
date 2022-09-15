@@ -10,8 +10,9 @@ import {
   YAxis,
 } from 'recharts'
 import { Helmet } from 'react-helmet'
+import { css } from '@emotion/css'
 import { theme } from '../theme'
-import React, { useState } from 'react'
+import React, { MouseEventHandler, useState } from 'react'
 import styled from '@emotion/styled'
 
 const calculateMonthlyPayment = (amount: number, rate: number, years: number) => {
@@ -36,13 +37,6 @@ const formatDecimals = (item: number) => {
   return Number(item.toFixed(2))
 }
 
-const formatMonths = (index: number) => {
-  const month = index + 1
-  const quotient = Math.floor(month / 12)
-  const remainder = (month % 12) + 1
-  return `${remainder}/${quotient}`
-}
-
 const getLinearMonthInflation = (yearInflation: number) => {
   return Math.pow(1 + -yearInflation / 100, 1 / 12) - 1
 }
@@ -61,6 +55,8 @@ const calculateMortgage = (arg: {
   let inflationCoefficient = 1
 
   const rowsData = Array.from({ length: arg.years * 12 }, (v, i) => i + 1).map(i => {
+    const year = Math.floor((i - 1) / 12) + 1
+    const month = ((i - 1) % 12) + 1
     const monthlyInterestPayment = (arg.rate / 100 / 12) * remain
     const monthlyPrincipalPayment = monthlyPayment - monthlyInterestPayment
     remain -= monthlyPrincipalPayment
@@ -72,6 +68,8 @@ const calculateMortgage = (arg: {
     inflationCoefficient = inflationCoefficient * (1 + monthInflation)
 
     return {
+      year,
+      month,
       monthlyInterestPayment,
       monthlyPrincipalPayment,
       remain,
@@ -156,25 +154,24 @@ export const MortgageCalculator = () => {
           />
         </Div_Form_Item>
         <Charts calculatedMortgage={dataCalculateMortgage} />
-        <Table calculatedMortgage={dataCalculateMortgage} />
-        <p>
-          <q>
-            How Does Inflation Affect Property Value? In terms of the housing market, inflation
-            causes house prices to increase over and above where the average might sit due to simple
-            supply and demand. This often leads to many potential buyers being priced out of buying
-            a property...
-          </q>
+        <blockquote>
+          How Does Inflation Affect Property Value? In terms of the housing market, inflation causes
+          house prices to increase over and above where the average might sit due to simple supply
+          and demand. This often leads to many potential buyers being priced out of buying a
+          property...
           <A_Styled href='https://www.housebuyerbureau.co.uk/blog/how-does-inflation-affect-property-prices/'>
             - Source -
           </A_Styled>
-        </p>
+        </blockquote>
         <ChartPropertuValue calculatedPropertyValue={dataCalculatePropertyValue} />
+        <Table calculatedMortgage={dataCalculateMortgage} />
       </Div_Container>
     </Div_Styled>
   )
 }
 
 const Table = (props: { calculatedMortgage: DataCalculateMortgage }) => {
+  const [visibleYear, setVisibleYear] = useState(1)
   return (
     <Table_Styled>
       <thead>
@@ -191,8 +188,17 @@ const Table = (props: { calculatedMortgage: DataCalculateMortgage }) => {
       </thead>
       <tbody>
         {props.calculatedMortgage.rowsData.map((item, index) => (
-          <tr key={index}>
-            <Td_Styled>{formatMonths(index)}</Td_Styled>
+          <Tr_Styled
+            key={index}
+            visibility={item.month === 1 || visibleYear === item.year}
+            month={item.month}
+            year={item.year}
+            onClick={() => {
+              setVisibleYear(item.year)
+            }}
+            visibleYear={visibleYear}
+          >
+            <Td_Styled>{`${item.month}/${item.year}`}</Td_Styled>
             <Td_Styled>{amountFormat(props.calculatedMortgage.monthlyPayment)}</Td_Styled>
             <Td_Styled>{amountFormat(item.monthlyInterestPayment)}</Td_Styled>
             <Td_Styled>{amountFormat(item.monthlyPrincipalPayment)}</Td_Styled>
@@ -200,7 +206,7 @@ const Table = (props: { calculatedMortgage: DataCalculateMortgage }) => {
             <Td_Styled>{amountFormat(item.inflationInterestPaid)}</Td_Styled>
             <Td_Styled>{amountFormat(item.inflationPrincipalPaid)}</Td_Styled>
             <Td_Styled>{amountFormat(item.inflationRemain)}</Td_Styled>
-          </tr>
+          </Tr_Styled>
         ))}
       </tbody>
     </Table_Styled>
@@ -209,7 +215,7 @@ const Table = (props: { calculatedMortgage: DataCalculateMortgage }) => {
 
 const Charts = (props: { calculatedMortgage: DataCalculateMortgage }) => {
   const chartData = props.calculatedMortgage.rowsData.map((item, index) => ({
-    xAxis: formatMonths(index),
+    xAxis: `${index + 1}`,
     'Interest Paid': formatDecimals(item.monthlyInterestPayment),
     'Principal Paid': formatDecimals(item.monthlyPrincipalPayment),
     Remain: formatDecimals(item.remain),
@@ -219,88 +225,86 @@ const Charts = (props: { calculatedMortgage: DataCalculateMortgage }) => {
   }))
 
   return (
-    <ResponsiveContainer width='100%' height='100%'>
-      <Div_Grid>
-        <div>
-          <LineChart
-            width={390}
-            height={300}
-            data={chartData}
-            margin={{
-              top: 15,
-              right: 30,
-              left: 0,
-              bottom: 15,
-            }}
-          >
-            <CartesianGrid stroke='#eee' strokeDasharray='3 3' />
-            <XAxis dataKey='xAxis' />
-            <YAxis />
-            <Tooltip />
-            <Legend />
-            <Line
-              type='monotone'
-              dataKey='Remain'
-              stroke={theme.quaternaryColor}
-              activeDot={{ r: 8 }}
-            />
-            <Line
-              type='monotone'
-              dataKey='Inflation Remain'
-              stroke={theme.darkQuaternaryColor}
-              activeDot={{ r: 8 }}
-            />
-          </LineChart>
-        </div>
-        <div>
-          <LineChart
-            width={390}
-            height={340}
-            data={chartData}
-            margin={{
-              top: 15,
-              right: 30,
-              left: 0,
-              bottom: 15,
-            }}
-          >
-            <CartesianGrid stroke='#eee' strokeDasharray='3 3' />
-            <XAxis dataKey='xAxis' />
-            <YAxis />
-            <Tooltip />
-            <Legend />
-            <Line
-              type='monotone'
-              dataKey='Interest Paid'
-              stroke={theme.quaternaryColor}
-              strokeWidth={1}
-              activeDot={{ r: 8 }}
-            />
-            <Line
-              type='monotone'
-              dataKey='Principal Paid'
-              stroke={theme.primaryColor}
-              strokeWidth={1}
-              activeDot={{ r: 8 }}
-            />
-            <Line
-              type='monotone'
-              dataKey='Inflation Interest Paid'
-              stroke={theme.darkQuaternaryColor}
-              strokeWidth={1}
-              activeDot={{ r: 8 }}
-            />
-            <Line
-              type='monotone'
-              dataKey='Inflation Principal Paid'
-              stroke={theme.darkPrimaryColor}
-              strokeWidth={1}
-              activeDot={{ r: 8 }}
-            />
-          </LineChart>
-        </div>
-      </Div_Grid>
-    </ResponsiveContainer>
+    <div style={{ height: '600px' }}>
+      <ResponsiveContainer width='100%' height='50%'>
+        <LineChart
+          width={390}
+          height={300}
+          data={chartData}
+          margin={{
+            top: 15,
+            right: 30,
+            left: 30,
+            bottom: 15,
+          }}
+        >
+          <CartesianGrid stroke='#eee' strokeDasharray='3 3' />
+          <XAxis dataKey='xAxis' />
+          <YAxis />
+          <Tooltip />
+          <Legend />
+          <Line
+            type='monotone'
+            dataKey='Remain'
+            stroke={theme.quaternaryColor}
+            activeDot={{ r: 8 }}
+          />
+          <Line
+            type='monotone'
+            dataKey='Inflation Remain'
+            stroke={theme.darkQuaternaryColor}
+            activeDot={{ r: 8 }}
+          />
+        </LineChart>
+      </ResponsiveContainer>
+      <ResponsiveContainer width='100%' height='50%'>
+        <LineChart
+          width={390}
+          height={300}
+          data={chartData}
+          margin={{
+            top: 15,
+            right: 30,
+            left: 30,
+            bottom: 15,
+          }}
+        >
+          <CartesianGrid stroke='#eee' strokeDasharray='3 3' />
+          <XAxis dataKey='xAxis' />
+          <YAxis />
+          <Tooltip />
+          <Legend />
+          <Line
+            type='monotone'
+            dataKey='Interest Paid'
+            stroke={theme.quaternaryColor}
+            strokeWidth={1}
+            activeDot={{ r: 8 }}
+          />
+          <Line
+            type='monotone'
+            dataKey='Principal Paid'
+            stroke={theme.primaryColor}
+            strokeWidth={1}
+            activeDot={{ r: 8 }}
+          />
+          <Line
+            type='monotone'
+            dataKey='Inflation Interest Paid'
+            stroke={theme.darkQuaternaryColor}
+            strokeWidth={1}
+            activeDot={{ r: 8 }}
+          />
+          <Line
+            type='monotone'
+            dataKey='Inflation Principal Paid'
+            stroke={theme.darkPrimaryColor}
+            strokeWidth={1}
+            activeDot={{ r: 8 }}
+          />
+        </LineChart>
+      </ResponsiveContainer>
+    </div>
   )
 }
 
@@ -399,3 +403,29 @@ export const Input_Styled = styled.input`
     outline-color: ${theme.primaryColor};
   }
 `
+const Tr_Styled = (props: {
+  visibility: boolean
+  month: number
+  year: number
+  visibleYear: number
+  children: React.ReactNode
+  onClick: MouseEventHandler<HTMLTableRowElement>
+}) => {
+  return (
+    <tr
+      onClick={props.onClick}
+      style={{
+        cursor: 'pointer',
+        backgroundColor:
+          props.month === 1
+            ? props.visibleYear === props.year
+              ? theme.opacityQuaternaryColor
+              : theme.opacityLightQuaternaryColor
+            : 'transparent',
+        display: props.visibility ? '' : 'none',
+      }}
+    >
+      {props.children}
+    </tr>
+  )
+}
