@@ -58,6 +58,12 @@ export const ProjectsPage = () => {
           routeLink={urls.blogPost}
           screenshot={BlogImg}
         />
+        <Cell_Div
+          name='Coin Hunter'
+          linkToGitHub='https://github.com/ElaJahoda/janouskova-ita-2022/'
+          routeLink={urls.coinHunter}
+          screenshot={BlogImg}
+        />
       </Div_Grid>
     </Div_Styled>
   )

@@ -1,5 +1,6 @@
 export const urls = {
   homePage: '/',
+  coinHunter: '/coin-hunter',
   projectsPage: '/projects',
   jsHistory: '/jshistory',
   cvPage: '/cv',

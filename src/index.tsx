@@ -2,6 +2,7 @@ import { App } from './App'
 import { BlogPost } from './BlogPost/List/BlogContextProvider'
 import { BlogUpdateArticle } from './BlogPost/Update/UpdateArticleContext'
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
+import { CoinHunter } from './CoinHunter/CoinHunter'
 import { CreateNewArticle } from './BlogPost/Create/CreateBlogContext'
 import { CvPage } from './CvPage'
 import { DetailArticle } from './BlogPost/Detail/DetailArticleContext'
@@ -31,6 +32,7 @@ root.render(
         <Route path={urls.hackertyper} element={<HackerTyper />} />
         <Route path={urls.mortgageCalculator} element={<MortgageCalculator />} />
         <Route path={urls.memoryGame} element={<MemoryGame />} />
+        <Route path={urls.coinHunter} element={<CoinHunter />} />
         <Route path={urls.blogPost} element={<BlogPost />} />
         <Route path={urls.blogNewArticle} element={<CreateNewArticle />} />
         <Route path={urls.blogArticles} element={<DetailArticle />} />
