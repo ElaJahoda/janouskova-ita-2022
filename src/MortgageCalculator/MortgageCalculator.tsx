@@ -53,6 +53,7 @@ const calculateMortgage = (arg: {
   const monthInflation = getLinearMonthInflation(arg.inflation)
   let remain = arg.amount
   let inflationCoefficient = 1
+  const allYears = arg.years
 
   const rowsData = Array.from({ length: arg.years * 12 }, (v, i) => i + 1).map(i => {
     const year = Math.floor((i - 1) / 12) + 1
@@ -82,6 +83,7 @@ const calculateMortgage = (arg: {
   return {
     monthlyPayment,
     rowsData,
+    allYears,
   }
 }
 type DataCalculatePropertyValue = ReturnType<typeof calculatePropertyValue>
@@ -172,6 +174,10 @@ export const MortgageCalculator = () => {
 
 const Table = (props: { calculatedMortgage: DataCalculateMortgage }) => {
   const [visibleYear, setVisibleYear] = useState(1)
+  const changeVisibleYear = () => {
+    setVisibleYear(1)
+    return visibleYear
+  }
   return (
     <Table_Styled>
       <thead>
@@ -196,7 +202,9 @@ const Table = (props: { calculatedMortgage: DataCalculateMortgage }) => {
             onClick={() => {
               setVisibleYear(item.year)
             }}
-            visibleYear={visibleYear}
+            visibleYear={
+              visibleYear <= props.calculatedMortgage.allYears ? visibleYear : changeVisibleYear()
+            }
           >
             <Td_Styled>{`${item.month}/${item.year}`}</Td_Styled>
             <Td_Styled>{amountFormat(props.calculatedMortgage.monthlyPayment)}</Td_Styled>
@@ -344,14 +352,6 @@ const ChartPropertuValue = (props: { calculatedPropertyValue: DataCalculatePrope
   )
 }
 
-const Div_Grid = styled.div`
-  display: flex;
-  flex-flow: row wrap;
-  @media screen and ${theme.mediaSMax} {
-    flex-flow: column wrap;
-  }
-`
-
 export const Div_Form_Item = styled.div`
   display: flex;
   align-items: center;
@@ -422,6 +422,7 @@ const Tr_Styled = (props: {
               ? theme.opacityQuaternaryColor
               : theme.opacityLightQuaternaryColor
             : 'transparent',
+        border: props.month !== 1 ? `solid 2px ${theme.backgroundColor}` : 'transparent',
         display: props.visibility ? '' : 'none',
       }}
     >
