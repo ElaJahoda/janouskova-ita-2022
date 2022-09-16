@@ -194,7 +194,7 @@ const Table = (props: { calculatedMortgage: DataCalculateMortgage }) => {
       </thead>
       <tbody>
         {props.calculatedMortgage.rowsData.map((item, index) => (
-          <Tr_Styled
+          <Tr
             key={index}
             visibility={item.month === 1 || visibleYear === item.year}
             month={item.month}
@@ -214,7 +214,7 @@ const Table = (props: { calculatedMortgage: DataCalculateMortgage }) => {
             <Td_Styled>{amountFormat(item.inflationInterestPaid)}</Td_Styled>
             <Td_Styled>{amountFormat(item.inflationPrincipalPaid)}</Td_Styled>
             <Td_Styled>{amountFormat(item.inflationRemain)}</Td_Styled>
-          </Tr_Styled>
+          </Tr>
         ))}
       </tbody>
     </Table_Styled>
@@ -403,7 +403,7 @@ export const Input_Styled = styled.input`
     outline-color: ${theme.primaryColor};
   }
 `
-const Tr_Styled = (props: {
+const Tr = (props: {
   visibility: boolean
   month: number
   year: number
@@ -415,7 +415,6 @@ const Tr_Styled = (props: {
     <tr
       onClick={props.onClick}
       style={{
-        cursor: 'pointer',
         backgroundColor:
           props.month === 1
             ? props.visibleYear === props.year
@@ -423,6 +422,7 @@ const Tr_Styled = (props: {
               : theme.opacityLightQuaternaryColor
             : 'transparent',
         border: props.month !== 1 ? `solid 2px ${theme.backgroundColor}` : 'transparent',
+        cursor: props.month === 1 ? 'pointer' : 'default',
         display: props.visibility ? '' : 'none',
       }}
     >
