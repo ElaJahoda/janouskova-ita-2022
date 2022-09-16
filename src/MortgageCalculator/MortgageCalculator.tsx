@@ -53,7 +53,6 @@ const calculateMortgage = (arg: {
   const monthInflation = getLinearMonthInflation(arg.inflation)
   let remain = arg.amount
   let inflationCoefficient = 1
-  const allYears = arg.years
 
   const rowsData = Array.from({ length: arg.years * 12 }, (v, i) => i + 1).map(i => {
     const year = Math.floor((i - 1) / 12) + 1
@@ -83,7 +82,6 @@ const calculateMortgage = (arg: {
   return {
     monthlyPayment,
     rowsData,
-    allYears,
   }
 }
 type DataCalculatePropertyValue = ReturnType<typeof calculatePropertyValue>
@@ -102,6 +100,7 @@ export const MortgageCalculator = () => {
   const [rate, setRate] = useState(5)
   const [years, setYears] = useState(30)
   const [inflation, setInflation] = useState(3)
+  const [visibleYear, setVisibleYear] = useState(1)
 
   const dataCalculateMortgage = calculateMortgage({ amount, rate, years, inflation })
   const dataCalculatePropertyValue = calculatePropertyValue({ amount, inflation, years })
@@ -140,7 +139,10 @@ export const MortgageCalculator = () => {
             type='number'
             placeholder='0'
             required
-            onChange={e => setYears(parseFloat(e.target.value))}
+            onChange={e => {
+              setYears(parseFloat(e.target.value))
+              setVisibleYear(1)
+            }}
             value={years || 0}
           />
         </Div_Form_Item>
@@ -166,18 +168,21 @@ export const MortgageCalculator = () => {
           </A_Styled>
         </blockquote>
         <ChartPropertuValue calculatedPropertyValue={dataCalculatePropertyValue} />
-        <Table calculatedMortgage={dataCalculateMortgage} />
+        <Table
+          calculatedMortgage={dataCalculateMortgage}
+          visibleYear={visibleYear}
+          setVisibleYear={setVisibleYear}
+        />
       </Div_Container>
     </Div_Styled>
   )
 }
 
-const Table = (props: { calculatedMortgage: DataCalculateMortgage }) => {
-  const [visibleYear, setVisibleYear] = useState(1)
-  const changeVisibleYear = () => {
-    setVisibleYear(1)
-    return visibleYear
-  }
+const Table = (props: {
+  calculatedMortgage: DataCalculateMortgage
+  visibleYear: number
+  setVisibleYear: React.Dispatch<React.SetStateAction<number>>
+}) => {
   return (
     <Table_Styled>
       <thead>
@@ -196,15 +201,11 @@ const Table = (props: { calculatedMortgage: DataCalculateMortgage }) => {
         {props.calculatedMortgage.rowsData.map((item, index) => (
           <Tr
             key={index}
-            visibility={item.month === 1 || visibleYear === item.year}
+            visibility={item.month === 1 || props.visibleYear === item.year}
+            visibleYear={props.visibleYear}
             month={item.month}
             year={item.year}
-            onClick={() => {
-              setVisibleYear(item.year)
-            }}
-            visibleYear={
-              visibleYear <= props.calculatedMortgage.allYears ? visibleYear : changeVisibleYear()
-            }
+            onClick={() => props.setVisibleYear(item.year)}
           >
             <Td_Styled>{`${item.month}/${item.year}`}</Td_Styled>
             <Td_Styled>{amountFormat(props.calculatedMortgage.monthlyPayment)}</Td_Styled>
