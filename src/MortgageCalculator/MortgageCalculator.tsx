@@ -10,7 +10,6 @@ import {
   YAxis,
 } from 'recharts'
 import { Helmet } from 'react-helmet'
-import { css } from '@emotion/css'
 import { theme } from '../theme'
 import React, { MouseEventHandler, useState } from 'react'
 import styled from '@emotion/styled'
@@ -199,9 +198,9 @@ const Table = (props: {
       </thead>
       <tbody>
         {props.calculatedMortgage.rowsData.map((item, index) => (
-          <Tr
+          <Tr_Styled
             key={index}
-            visibility={item.month === 1 || props.visibleYear === item.year}
+            visibility={item.month === 1 || props.visibleYear === item.year ? 1 : 0}
             visibleYear={props.visibleYear}
             month={item.month}
             year={item.year}
@@ -215,7 +214,7 @@ const Table = (props: {
             <Td_Styled>{amountFormat(item.inflationInterestPaid)}</Td_Styled>
             <Td_Styled>{amountFormat(item.inflationPrincipalPaid)}</Td_Styled>
             <Td_Styled>{amountFormat(item.inflationRemain)}</Td_Styled>
-          </Tr>
+          </Tr_Styled>
         ))}
       </tbody>
     </Table_Styled>
@@ -404,30 +403,20 @@ export const Input_Styled = styled.input`
     outline-color: ${theme.primaryColor};
   }
 `
-const Tr = (props: {
-  visibility: boolean
+type TrProps = {
+  visibility: number
   month: number
   year: number
   visibleYear: number
-  children: React.ReactNode
-  onClick: MouseEventHandler<HTMLTableRowElement>
-}) => {
-  return (
-    <tr
-      onClick={props.onClick}
-      style={{
-        backgroundColor:
-          props.month === 1
-            ? props.visibleYear === props.year
-              ? theme.opacityQuaternaryColor
-              : theme.opacityLightQuaternaryColor
-            : 'transparent',
-        border: props.month !== 1 ? `solid 2px ${theme.backgroundColor}` : 'transparent',
-        cursor: props.month === 1 ? 'pointer' : 'default',
-        display: props.visibility ? '' : 'none',
-      }}
-    >
-      {props.children}
-    </tr>
-  )
 }
+const Tr_Styled = styled.tr<TrProps>`
+  background-color: ${props =>
+    props.month === 1
+      ? props.visibleYear === props.year
+        ? theme.opacityQuaternaryColor
+        : theme.opacityLightQuaternaryColor
+      : 'transparent'};
+  border: ${props => (props.month !== 1 ? `solid 2px ${theme.backgroundColor}` : 'transparent')};
+  cursor: ${props => (props.month === 1 ? 'pointer' : 'default')};
+  display: ${props => (props.visibility === 1 ? '' : 'none')};
+`
