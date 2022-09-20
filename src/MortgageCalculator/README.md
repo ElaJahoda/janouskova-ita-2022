@@ -1,7 +1,7 @@
 # Mortgage Calculator
 
-[link](https://github.com/ElaJahoda/janouskova-ita-2022/tree/main/src/MortgageCalculator)
+[link](http://eva-janouskova.cz/mortgage-calculator)
 
 Mortgage Calculator calculate Remain, Principal Payment and Interest Payment, and theirs amount with inflation from inputs amounts. 
 
-![Mortgage Calculator](./src/images/MortgageCalculatorScreenshot.png)
+![Mortgage Calculator](./../images/MortgageCalculatorScreenshot.png)

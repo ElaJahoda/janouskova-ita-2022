@@ -29,7 +29,7 @@ Simple web page about History of JavaScript.
 
 ### ToDo in Redux
 
-[link](https://github.com/ElaJahoda/janouskova-ita-2022/tree/main/src/ToDo)
+[link](https://github.com/ElaJahoda/janouskova-ita-2022/tree/main/src/ToDoRedux)
 
 Simple todo app that allows adding, removing and filtering tasks. Redux is used.
 

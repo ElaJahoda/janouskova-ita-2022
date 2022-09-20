@@ -1,7 +1,7 @@
 # ToDo in Redux
 
-[link](https://github.com/ElaJahoda/janouskova-ita-2022/tree/main/src/ToDo)
+[link](http://eva-janouskova.cz/todo-redux)
 
 Simple todo app that allows adding, removing and filtering tasks. Redux is used.
 
-![ToDo in Redux screenshot](./src/images/ToDoScreenshot.png)
+![ToDo in Redux screenshot](./../images/ToDoScreenshot.png)

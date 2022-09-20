@@ -58,6 +58,12 @@ export const ProjectsPage = () => {
           routeLink={urls.blogPost}
           screenshot={BlogImg}
         />
+        <Cell_Div
+          name='Tic-Tac-Toe'
+          linkToGitHub='https://github.com/ElaJahoda/janouskova-ita-2022/tree/main/src/BlogPost'
+          routeLink={urls.ticTacToe}
+          screenshot={BlogImg}
+        />
       </Div_Grid>
     </Div_Styled>
   )

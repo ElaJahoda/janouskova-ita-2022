@@ -1,6 +1,7 @@
 export const urls = {
   homePage: '/',
   projectsPage: '/projects',
+  ticTacToe: '/tac-tac-toe',
   jsHistory: '/jshistory',
   cvPage: '/cv',
   toDoRedux: '/todo-redux',

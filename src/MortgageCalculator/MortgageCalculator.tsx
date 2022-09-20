@@ -11,7 +11,7 @@ import {
 } from 'recharts'
 import { Helmet } from 'react-helmet'
 import { theme } from '../theme'
-import React, { MouseEventHandler, useState } from 'react'
+import React, { useState } from 'react'
 import styled from '@emotion/styled'
 
 const calculateMonthlyPayment = (amount: number, rate: number, years: number) => {
