@@ -1,10 +1,26 @@
-import { BoardState, Value, useGameState } from './GameState'
+import { BOARD_SIZE, BoardState, Value, useGameState } from './GameState'
 import { Button } from '../components/Button'
 import { Div_Styled } from '../HomePage'
 import { Helmet } from 'react-helmet'
 import { theme } from '../theme'
 import React from 'react'
 import styled from '@emotion/styled'
+
+type BoardProps = {
+  board: BoardState
+  onClick: (square: number) => void
+}
+type LogProps = {
+  history: BoardState[]
+  jumpTo: (step: number) => void
+}
+type SquareProps = {
+  value: Value
+  onClick: () => void
+}
+type LayoutProps = {
+  gap: number
+}
 
 export const TicTacToe = () => {
   const { gameState, current, xIsNext, winner, handleClick, jumpTo } = useGameState()
@@ -14,21 +30,23 @@ export const TicTacToe = () => {
         <title>Eva Janouskova - Tic-Tac-Toe</title>
       </Helmet>
       <h1>Tic-Tac-Toe App</h1>
-      <Row gap={20}>
+      <P_Styled>
+        The first player to get 5 of her marks in a row (up, down, across, or diagonally) is the
+        winner.
+      </P_Styled>
+      <Row_Styled gap={20}>
+        <Player_Styled>
+          {winner ? `Winner ${winner}` : `Next Player: ${xIsNext ? 'X' : 'O'}`}
+        </Player_Styled>
         <Column gap={20}>
-          <div>{winner ? `Winner ${winner}` : `Next Player: ${xIsNext ? 'X' : 'O'}`}</div>
           <Board board={current} onClick={handleClick} />
         </Column>
         <Log history={gameState.history} jumpTo={jumpTo} />
-      </Row>
+      </Row_Styled>
     </Div_Styled>
   )
 }
 
-type BoardProps = {
-  board: BoardState
-  onClick: (square: number) => void
-}
 const Board = ({ board, onClick }: BoardProps) => {
   return (
     <ColumnBoard gap={0}>
@@ -39,16 +57,10 @@ const Board = ({ board, onClick }: BoardProps) => {
   )
 }
 
-type LogProps = {
-  history: BoardState[]
-  jumpTo: (step: number) => void
-}
-
 const Log = (props: LogProps) => {
   return (
     <Ul_Styled>
-      {' '}
-      Log:
+      Log history:
       {props.history.map((_, index) => {
         return (
           <li key={index}>
@@ -60,11 +72,6 @@ const Log = (props: LogProps) => {
       })}
     </Ul_Styled>
   )
-}
-
-type SquareProps = {
-  value: Value
-  onClick: () => void
 }
 
 const Square = (props: SquareProps) => {
@@ -89,17 +96,14 @@ const Button_Styled = styled(Button)`
   font-size: 14px;
   width: 120px;
 `
-type LayoutProps = {
-  gap: number
-}
-const Row = styled.div<LayoutProps>`
+const Row_Styled = styled.div<LayoutProps>`
   display: flex;
   flex-direction: row;
   gap: ${props => props.gap}px;
-  width: 520px;
-  height: 395px;
+  width: ${BOARD_SIZE * 34 + 380}px;
+  height: ${BOARD_SIZE * 34}px;
   margin: auto;
-  @media ${theme.mediaSMax} {
+  @media ${theme.mediaLMax} {
     width: 95%;
     height: auto;
     flex-direction: column;
@@ -115,19 +119,29 @@ const ColumnBoard = styled.div<LayoutProps>`
   padding: 2px;
   border: solid 2px ${theme.quaternaryColor};
   border-radius: 5px;
-  max-width: 340px;
+  max-width: ${BOARD_SIZE * 34}px;
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(34px, 1fr));
   gap: ${props => props.gap}px;
 `
 const Ul_Styled = styled.ul`
   list-style-type: none;
+  width: 160px;
   margin: 0;
   padding: 0;
   overflow: auto;
-  @media ${theme.mediaSMax} {
+  @media ${theme.mediaLMax} {
     width: 95%;
-    height: 300px;
+    height: 350px;
     overflow: auto;
   }
+`
+const Player_Styled = styled.div`
+  width: 160px;
+  @media ${theme.mediaLMax} {
+    width: 95%;
+  }
+`
+const P_Styled = styled.p`
+  font-size: 14px;
 `
