@@ -1,6 +1,7 @@
 import { AppDispatch, RootState, store } from './store'
 import { Button } from '../components/Button'
 import { Div_Styled } from '../HomePage'
+import { DragDropContext, Draggable, DropResult, Droppable } from 'react-beautiful-dnd'
 import { FaPlus, FaTrash } from 'react-icons/fa'
 import { Helmet } from 'react-helmet'
 import { Provider, useDispatch } from 'react-redux'
@@ -51,6 +52,17 @@ export const ToDoListRedux = () => {
     const indexOverItem = tasks.findIndex(task => task.id === filterValue[dragOverItem.current].id)
     dispatch(reorderTask({ dragItem: indexItem, dragOverItem: indexOverItem }))
   }
+
+  const handleOnDragEnd = (result: DropResult) => {
+    if (!result.destination) return
+    dispatch(
+      reorderTask({
+        dragItem: result.source.index,
+        dragOverItem: result.destination.index,
+      })
+    )
+  }
+
   return (
     <Div_Styled>
       <Helmet>
@@ -80,41 +92,50 @@ export const ToDoListRedux = () => {
               <FaPlus />
             </Button_submit>
           </Div_header>
-          <Table_styled>
-            <tbody>
-              {filterValue.map((task, index) => {
-                return (
-                  <Tr_styled
-                    key={task.id}
-                    draggable
-                    onDragStart={e => (dragItem.current = index)}
-                    onDragEnter={e => (dragOverItem.current = index)}
-                    onDragEnd={handleSort}
-                  >
-                    <Td_styled width='5%'>
-                      <input
-                        onChange={event => {
-                          let checked = event.target.checked
-                          dispatch(toggleCompleted({ id: task.id, complete: checked }))
-                        }}
-                        value={task.taskName}
-                        type='checkbox'
-                        checked={task.complete}
-                      />
-                    </Td_styled>
-                    <Td_styled width='100%'>
-                      <Span_styled checked={task.complete}>{task.taskName}</Span_styled>
-                    </Td_styled>
-                    <Td_styled width='10%'>
-                      <Button_delete onClick={() => dispatch(deleteTask(task.id))}>
-                        <FaTrash />
-                      </Button_delete>
-                    </Td_styled>
-                  </Tr_styled>
-                )
-              })}
-            </tbody>
-          </Table_styled>
+          <DragDropContext onDragEnd={handleOnDragEnd}>
+            <Droppable droppableId='toDoListRedux'>
+              {provided => (
+                <Table_styled {...provided.droppableProps} ref={provided.innerRef}>
+                  {filterValue.map((task, index) => {
+                    return (
+                      <Draggable key={task.id} draggableId={task.id.toString()} index={index}>
+                        {provided => (
+                          <Tr_styled
+                            ref={provided.innerRef}
+                            {...provided.draggableProps}
+                            {...provided.dragHandleProps}
+                          >
+                            <>
+                              <Td_styled width='5%'>
+                                <input
+                                  onChange={event => {
+                                    let checked = event.target.checked
+                                    dispatch(toggleCompleted({ id: task.id, complete: checked }))
+                                  }}
+                                  value={task.taskName}
+                                  type='checkbox'
+                                  checked={task.complete}
+                                />
+                              </Td_styled>
+                              <Td_styled width='100%'>
+                                <Span_styled checked={task.complete}>{task.taskName}</Span_styled>
+                              </Td_styled>
+                              <Td_styled width='10%'>
+                                <Button_delete onClick={() => dispatch(deleteTask(task.id))}>
+                                  <FaTrash />
+                                </Button_delete>
+                              </Td_styled>
+                            </>
+                          </Tr_styled>
+                        )}
+                      </Draggable>
+                    )
+                  })}
+                  {provided.placeholder}
+                </Table_styled>
+              )}
+            </Droppable>
+          </DragDropContext>
         </form>
         <Div_Footer>
           <Span_Counter>{incompletedTodosCount} items left</Span_Counter>{' '}
