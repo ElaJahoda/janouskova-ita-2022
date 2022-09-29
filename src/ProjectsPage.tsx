@@ -10,6 +10,7 @@ import JsHistoryImg from './images/JsHistoryScreenshot.png'
 import MemoryGameImg from './images/MemoryGameScreenshot.png'
 import MortgageCalculatorImg from './images/MortgageCalculatorScreenshot.png'
 import React from 'react'
+import TicTacToeImg from './images/TicTacToeScreenshot.png'
 import ToDoImg from './images/ToDoScreenshot.png'
 import styled from '@emotion/styled'
 
@@ -60,9 +61,9 @@ export const ProjectsPage = () => {
         />
         <Cell_Div
           name='Tic-Tac-Toe'
-          linkToGitHub='https://github.com/ElaJahoda/janouskova-ita-2022/tree/main/src/BlogPost'
+          linkToGitHub='https://github.com/ElaJahoda/janouskova-ita-2022/tree/main/src/TicTacToe'
           routeLink={urls.ticTacToe}
-          screenshot={BlogImg}
+          screenshot={TicTacToeImg}
         />
       </Div_Grid>
     </Div_Styled>
