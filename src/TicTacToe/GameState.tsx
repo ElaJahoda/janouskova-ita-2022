@@ -1,5 +1,6 @@
 import { useState } from 'react'
 
+export const SQUARE_SIZE = 34
 export const BOARD_SIZE = 10
 const SQUARE_COUNT = BOARD_SIZE ** 2
 const COUNT_TO_WIN = 5
@@ -8,7 +9,7 @@ export type Value = 'X' | 'O' | null
 export type BoardState = Value[]
 type CheckProps = { i: number; square: string }
 export type GameState = {
-  history: BoardState[]
+  log: BoardState[]
   step: number
 }
 
@@ -90,36 +91,40 @@ const calculateWinner = (board: BoardState, player: Value) => {
   }
 }
 
-const createBoardState = () => Array<Value>(SQUARE_COUNT).fill(null)
+const createBoardState = () => Array.from({ length: SQUARE_COUNT }, () => null as Value)
 
 export const useGameState = () => {
-  const [gameState, setGameState] = useState<GameState>({ history: [createBoardState()], step: 0 })
+  const [gameState, setGameState] = useState<GameState>({ log: [createBoardState()], step: 0 })
   const [turn, setTurn] = useState<'X' | 'O' | null>('X')
 
-  const current = gameState.history[gameState.step]
+  const current = gameState.log[gameState.step]
   const xIsNext = gameState.step % 2 === 0
 
   const handleClick = (square: number) => {
-    const history = gameState.history.slice(0, gameState.step + 1)
-    const boardState = history[history.length - 1]
+    const log = gameState.log.slice(0, gameState.step + 1)
+    const boardState = log[log.length - 1]
     const newBoardState = boardState.slice()
     newBoardState[square] = xIsNext ? 'X' : 'O'
     if (calculateWinner(boardState, turn) || boardState[square]) {
       return
     }
-    history.push(newBoardState)
+    log.push(newBoardState)
     setGameState({
-      history: history,
-      step: history.length - 1,
+      log: log,
+      step: log.length - 1,
     })
     setTurn(newBoardState[square])
   }
   const winner = calculateWinner(current, turn)
   const jumpTo = (step: number) => {
     setGameState({
-      history: gameState.history,
+      log: gameState.log,
       step,
     })
+  }
+
+  const handleResetClick = () => {
+    setGameState({ log: [createBoardState()], step: 0 })
   }
 
   return {
@@ -128,6 +133,7 @@ export const useGameState = () => {
     xIsNext,
     winner,
     handleClick,
+    handleResetClick,
     jumpTo,
   }
 }

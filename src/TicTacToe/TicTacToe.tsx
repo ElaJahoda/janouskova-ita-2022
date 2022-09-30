@@ -1,4 +1,4 @@
-import { BOARD_SIZE, BoardState, Value, useGameState } from './GameState'
+import { BOARD_SIZE, BoardState, SQUARE_SIZE, Value, useGameState } from './GameState'
 import { Button } from '../components/Button'
 import { Div_Styled } from '../HomePage'
 import { Helmet } from 'react-helmet'
@@ -6,62 +6,62 @@ import { theme } from '../theme'
 import React from 'react'
 import styled from '@emotion/styled'
 
-type BoardProps = {
-  board: BoardState
-  onClick: (square: number) => void
-}
-type LogProps = {
-  history: BoardState[]
-  jumpTo: (step: number) => void
-}
-type SquareProps = {
-  value: Value
-  onClick: () => void
-}
-type LayoutProps = {
-  gap: number
-}
-
 export const TicTacToe = () => {
-  const { gameState, current, xIsNext, winner, handleClick, jumpTo } = useGameState()
+  const useGameStateResult = useGameState()
   return (
     <Div_Styled>
       <Helmet>
         <title>Eva Janouskova - Tic-Tac-Toe</title>
       </Helmet>
-      <h1>Tic-Tac-Toe App</h1>
+      <h1>Tic-Tac-Toe</h1>
       <P_Styled>
         The first player to get 5 of her marks in a row (up, down, across, or diagonally) is the
         winner.
       </P_Styled>
+      {useGameStateResult.winner ? <Winner_Div winner={useGameStateResult.winner} /> : ''}
       <Row_Styled gap={20}>
         <Player_Styled>
-          {winner ? `Winner ${winner}` : `Next Player: ${xIsNext ? 'X' : 'O'}`}
+          {useGameStateResult.winner ? (
+            <>
+              Next Player:
+              <Reset onClick={useGameStateResult.handleResetClick} />
+            </>
+          ) : (
+            `Next Player: ${useGameStateResult.xIsNext ? 'X' : 'O'}`
+          )}
         </Player_Styled>
         <Column gap={20}>
-          <Board board={current} onClick={handleClick} />
+          <Board board={useGameStateResult.current} onClick={useGameStateResult.handleClick} />
         </Column>
-        <Log history={gameState.history} jumpTo={jumpTo} />
+        <Log log={useGameStateResult.gameState.log} jumpTo={useGameStateResult.jumpTo} />
       </Row_Styled>
     </Div_Styled>
   )
 }
 
-const Board = ({ board, onClick }: BoardProps) => {
+type BoardProps = {
+  board: BoardState
+  onClick: (square: number) => void
+}
+const Board = (props: BoardProps) => {
   return (
     <ColumnBoard gap={0}>
-      {board.map((square, index) => (
-        <Square key={index} value={square} onClick={() => onClick(index)} />
+      {props.board.map((square, index) => (
+        <Square key={index} value={square} onClick={() => props.onClick(index)} />
       ))}
     </ColumnBoard>
   )
 }
 
+type LogProps = {
+  log: BoardState[]
+  jumpTo: (step: number) => void
+}
 const Log = (props: LogProps) => {
   return (
     <Ul_Styled>
       Log history:
-      {props.history.map((_, index) => {
+      {props.log.map((_, index) => {
         return (
           <li key={index}>
             <Button_Styled onClick={() => props.jumpTo(index)}>
@@ -74,13 +74,17 @@ const Log = (props: LogProps) => {
   )
 }
 
+type SquareProps = {
+  value: Value
+  onClick: () => void
+}
 const Square = (props: SquareProps) => {
-  return <Square_Styled onClick={props.onClick}>{props.value}</Square_Styled>
+  return <Square_Styled onClick={() => props.onClick()}>{props.value}</Square_Styled>
 }
 
 const Square_Styled = styled.button`
-  width: 34px;
-  height: 34px;
+  width: ${SQUARE_SIZE}px;
+  height: ${SQUARE_SIZE}px;
   background: ${theme.opacityLightQuaternaryColor};
   border: 1px solid #999;
   padding: 0px;
@@ -96,12 +100,28 @@ const Button_Styled = styled(Button)`
   font-size: 14px;
   width: 120px;
 `
+
+type ResetProps = {
+  onClick: () => void
+}
+
+const Reset = (props: ResetProps) => {
+  return <Reset_Button onClick={props.onClick}>Reset Game</Reset_Button>
+}
+const Reset_Button = styled(Button_Styled)`
+  background-color: ${theme.primaryColor};
+`
+
+type LayoutProps = {
+  gap?: number
+  count?: number
+}
 const Row_Styled = styled.div<LayoutProps>`
   display: flex;
   flex-direction: row;
   gap: ${props => props.gap}px;
-  width: ${BOARD_SIZE * 34 + 380}px;
-  height: ${BOARD_SIZE * 34}px;
+  width: ${BOARD_SIZE * SQUARE_SIZE + 380}px;
+  height: ${BOARD_SIZE * SQUARE_SIZE}px;
   margin: auto;
   @media ${theme.mediaLMax} {
     width: 95%;
@@ -119,9 +139,9 @@ const ColumnBoard = styled.div<LayoutProps>`
   padding: 2px;
   border: solid 2px ${theme.quaternaryColor};
   border-radius: 5px;
-  max-width: ${BOARD_SIZE * 34}px;
+  max-width: ${BOARD_SIZE * SQUARE_SIZE}px;
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(34px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(${SQUARE_SIZE}px, 1fr));
   gap: ${props => props.gap}px;
 `
 const Ul_Styled = styled.ul`
@@ -144,4 +164,47 @@ const Player_Styled = styled.div`
 `
 const P_Styled = styled.p`
   font-size: 14px;
+`
+
+const Winner_Div = (props: { winner: Value }) => {
+  return (
+    <Wavy_Div>
+      <Wavy_Span count={1}>W</Wavy_Span>
+      <Wavy_Span count={2}>i</Wavy_Span>
+      <Wavy_Span count={3}>n</Wavy_Span>
+      <Wavy_Span count={4}>n</Wavy_Span>
+      <Wavy_Span count={5}>e</Wavy_Span>
+      <Wavy_Span count={6}>r</Wavy_Span>
+      <Wavy_Span count={7}>:</Wavy_Span>
+      <Wavy_Span count={8}></Wavy_Span>
+      <Wavy_Span count={9}>{props.winner}</Wavy_Span>
+    </Wavy_Div>
+  )
+}
+
+const Wavy_Div = styled.div`
+  margin: 40px 60px 60px 60px;
+  position: relative;
+  -webkit-box-reflect: below -12px linear-gradient(transparent, rgba(0, 0, 0, 0.2));
+`
+const Wavy_Span = styled.span<LayoutProps>`
+  font-weight: bold;
+  padding: 10px;
+  position: relative;
+  display: inline-block;
+  font-size: 2rem;
+  animation: animate 1s ease-in-out infinite;
+  animation-delay: calc(0.1s * ${props => props.count});
+  @keyframes animate {
+    0% {
+      transform: translateY(0px);
+    }
+    20% {
+      transform: translateY(-20px);
+    }
+    40%,
+    100% {
+      transform: translateY(0px);
+    }
+  }
 `
