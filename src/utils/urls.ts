@@ -37,3 +37,14 @@ export const apiBlog = {
   detail: (url: String) => `${apiUrlBlog}/articles/${url}`,
   blog: `${apiUrlBlog}`,
 }
+
+export const urlsGH = {
+  jsHistory: 'https://github.com/ElaJahoda/janouskova-ita-2022/tree/main/src/JShistory',
+  toDoRedux: 'https://github.com/ElaJahoda/janouskova-ita-2022/tree/main/src/ToDoRedux',
+  mortgageCalculator:
+    'https://github.com/ElaJahoda/janouskova-ita-2022/tree/main/src/MortgageCalculator',
+  hackertyper: 'https://github.com/ElaJahoda/janouskova-ita-2022/tree/main/src/HackerTyper',
+  memoryGame: 'https://github.com/ElaJahoda/janouskova-ita-2022/tree/main/src/MemoryGame',
+  blogPost: 'https://github.com/ElaJahoda/janouskova-ita-2022/tree/main/src/BlogPost',
+  ticTacToe: 'https://github.com/ElaJahoda/janouskova-ita-2022/tree/main/src/TicTacToe',
+}

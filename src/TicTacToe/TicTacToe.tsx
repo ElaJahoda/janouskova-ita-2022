@@ -86,7 +86,7 @@ const Square_Styled = styled.button`
   width: ${SQUARE_SIZE}px;
   height: ${SQUARE_SIZE}px;
   background: ${theme.opacityLightQuaternaryColor};
-  border: 1px solid #999;
+  border: 1px solid ${theme.basicColor};
   padding: 0px;
   font-size: 24px;
   font-weight: bold;
@@ -167,17 +167,14 @@ const P_Styled = styled.p`
 `
 
 const Winner_Div = (props: { winner: Value }) => {
+  const text = `Winner: ${props.winner}`
   return (
     <Wavy_Div>
-      <Wavy_Span count={1}>W</Wavy_Span>
-      <Wavy_Span count={2}>i</Wavy_Span>
-      <Wavy_Span count={3}>n</Wavy_Span>
-      <Wavy_Span count={4}>n</Wavy_Span>
-      <Wavy_Span count={5}>e</Wavy_Span>
-      <Wavy_Span count={6}>r</Wavy_Span>
-      <Wavy_Span count={7}>:</Wavy_Span>
-      <Wavy_Span count={8}></Wavy_Span>
-      <Wavy_Span count={9}>{props.winner}</Wavy_Span>
+      {Array.from(text).map((char, index) => (
+        <Wavy_Span key={index} count={index + 1}>
+          {char}
+        </Wavy_Span>
+      ))}
     </Wavy_Div>
   )
 }
@@ -185,7 +182,7 @@ const Winner_Div = (props: { winner: Value }) => {
 const Wavy_Div = styled.div`
   margin: 40px 60px 60px 60px;
   position: relative;
-  -webkit-box-reflect: below -12px linear-gradient(transparent, rgba(0, 0, 0, 0.2));
+  -webkit-box-reflect: below -12px linear-gradient(transparent, ${theme.opacity});
 `
 const Wavy_Span = styled.span<LayoutProps>`
   font-weight: bold;

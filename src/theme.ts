@@ -7,6 +7,7 @@ export const theme = {
   quaternaryColor: '#40adec',
   opacityQuaternaryColor: '#cfeafa',
   opacityLightQuaternaryColor: '#f2fafe',
+  opacity: 'rgba(0, 0, 0, 0.2)',
   basicColor: 'black',
   backgroundColor: 'white',
   fontFamily: 'Segoe UI, Tahoma, Geneva, Verdana, sans-serif',

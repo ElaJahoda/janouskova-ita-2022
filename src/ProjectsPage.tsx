@@ -2,7 +2,7 @@ import { Div_Styled } from './HomePage'
 import { Helmet } from 'react-helmet'
 import { NavLink } from 'react-router-dom'
 import { theme } from './theme'
-import { urls } from './utils/urls'
+import { urls, urlsGH } from './utils/urls'
 import BlogImg from './images/BlogPost1Screenshot.png'
 import GitHubImg from './images/GitHub.png'
 import HackerTyperImg from './images/HackerTyperScreenshot.png'
@@ -25,43 +25,43 @@ export const ProjectsPage = () => {
       <Div_Grid>
         <Cell_Div
           name='JS History'
-          linkToGitHub='https://github.com/ElaJahoda/janouskova-ita-2022/tree/main/src/JShistory'
+          linkToGitHub={urlsGH.jsHistory}
           routeLink={urls.jsHistory}
           screenshot={JsHistoryImg}
         />
         <Cell_Div
           name='Todo Redux'
-          linkToGitHub='https://github.com/ElaJahoda/janouskova-ita-2022/tree/main/src/ToDoRedux'
+          linkToGitHub={urlsGH.toDoRedux}
           routeLink={urls.toDoRedux}
           screenshot={ToDoImg}
         />
         <Cell_Div
           name='Mortgage Calculator'
-          linkToGitHub='https://github.com/ElaJahoda/janouskova-ita-2022/tree/main/src/MortgageCalculator'
+          linkToGitHub={urlsGH.mortgageCalculator}
           routeLink={urls.mortgageCalculator}
           screenshot={MortgageCalculatorImg}
         />
         <Cell_Div
           name='HackerTyper'
-          linkToGitHub='https://github.com/ElaJahoda/janouskova-ita-2022/tree/main/src/HackerTyper'
+          linkToGitHub={urlsGH.hackertyper}
           routeLink={urls.hackertyper}
           screenshot={HackerTyperImg}
         />
         <Cell_Div
           name='Memory Game'
-          linkToGitHub='https://github.com/ElaJahoda/janouskova-ita-2022/tree/main/src/MemoryGame'
+          linkToGitHub={urlsGH.memoryGame}
           routeLink={urls.memoryGame}
           screenshot={MemoryGameImg}
         />
         <Cell_Div
           name='Blog'
-          linkToGitHub='https://github.com/ElaJahoda/janouskova-ita-2022/tree/main/src/BlogPost'
+          linkToGitHub={urlsGH.blogPost}
           routeLink={urls.blogPost}
           screenshot={BlogImg}
         />
         <Cell_Div
           name='Tic-Tac-Toe'
-          linkToGitHub='https://github.com/ElaJahoda/janouskova-ita-2022/tree/main/src/TicTacToe'
+          linkToGitHub={urlsGH.ticTacToe}
           routeLink={urls.ticTacToe}
           screenshot={TicTacToeImg}
         />
