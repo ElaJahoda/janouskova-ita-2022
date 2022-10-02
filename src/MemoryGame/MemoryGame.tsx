@@ -55,8 +55,7 @@ export const MemoryGame = () => {
     if (!clickedCardImg) {
       setClickedCardImg(currentlyClickedCard.frontImage)
       return
-    }
-    if (clickedCardImg === currentlyClickedCard.frontImage) {
+    } else if (clickedCardImg === currentlyClickedCard.frontImage) {
       setMatchedPairs(prev => prev + 1)
       setCards(prev =>
         prev.map(card =>
@@ -67,13 +66,20 @@ export const MemoryGame = () => {
       )
       setClickedCardImg(undefined)
       return
+    } else if (clickedCardImg !== currentlyClickedCard.frontImage) {
+      setCards(prev =>
+        prev.map(card => {
+          return { ...card, frozen: false }
+        })
+      )
+      setClickedCardImg(undefined)
     }
-    await delay(500)
+    await delay(600)
     setCards(prev =>
       prev.map(card =>
         card.frontImage === clickedCardImg || card.id === currentlyClickedCard.id
           ? { ...card, flipped: false, frozen: true }
-          : card
+          : { ...card, frozen: true }
       )
     )
     setClickedCardImg(undefined)
