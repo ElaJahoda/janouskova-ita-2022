@@ -1,4 +1,4 @@
-# Mortgage Calculator
+# Tic-Tac-Toe
 
 [link](http://eva-janouskova.cz/tic-tac-toe)
 

@@ -33,6 +33,7 @@ root.render(
       <Route path={urls.hackertyper} element={<HackerTyper />} />
       <Route path={urls.mortgageCalculator} element={<MortgageCalculator />} />
       <Route path={urls.memoryGame} element={<MemoryGame />} />
+      <Route path={urls.ticTacToe} element={<TicTacToe />} />
       <Route path={urls.blogPost} element={<BlogPost />} />
       <Route path={urls.blogNewArticle} element={<CreateNewArticle />} />
       <Route path={urls.blogArticles} element={<DetailArticle />} />
