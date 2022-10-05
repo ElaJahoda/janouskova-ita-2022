@@ -5,8 +5,8 @@ import { Helmet } from 'react-helmet'
 import { Input_Styled } from '../../MortgageCalculator/MortgageCalculator'
 import { Link } from 'react-router-dom'
 import { css } from '@emotion/css'
-import { githubUrlTodo, urls } from '../../utils/urls'
 import { theme } from '../../theme'
+import { urls, urlsGH } from '../../utils/urls'
 import React, { useContext } from 'react'
 
 export const Blog = () => {
@@ -38,7 +38,7 @@ export const Blog = () => {
             <div>{logic.error}</div>
             <div className={styles.errorMessage}>
               To make the app work download repository from{' '}
-              <A_Styled href={githubUrlTodo} target='_blank'>
+              <A_Styled href={urlsGH.blogPost} target='_blank'>
                 GitHub
               </A_Styled>{' '}
               and run it on localhost.
