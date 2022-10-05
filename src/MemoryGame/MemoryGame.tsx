@@ -67,11 +67,8 @@ export const MemoryGame = () => {
       setClickedCardImg(undefined)
       return
     } else if (clickedCardImg !== currentlyClickedCard.frontImage) {
-      setCards(prev =>
-        prev.map(card => {
-          return { ...card, frozen: false }
-        })
-      )
+      setCards(prev => prev.map(card => ({ ...card, frozen: false })))
+
       setClickedCardImg(undefined)
     }
     await delay(600)

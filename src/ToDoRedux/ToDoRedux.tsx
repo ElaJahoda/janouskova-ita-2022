@@ -96,41 +96,39 @@ export const ToDoListRedux = () => {
             <Droppable droppableId='toDoListRedux'>
               {provided => (
                 <Table_styled {...provided.droppableProps} ref={provided.innerRef}>
-                  {filterValue.map((task, index) => {
-                    return (
-                      <Draggable key={task.id} draggableId={task.id.toString()} index={index}>
-                        {provided => (
-                          <Tr_styled
-                            ref={provided.innerRef}
-                            {...provided.draggableProps}
-                            {...provided.dragHandleProps}
-                          >
-                            <>
-                              <Td_styled width='5%'>
-                                <input
-                                  onChange={event => {
-                                    let checked = event.target.checked
-                                    dispatch(toggleCompleted({ id: task.id, complete: checked }))
-                                  }}
-                                  value={task.taskName}
-                                  type='checkbox'
-                                  checked={task.complete}
-                                />
-                              </Td_styled>
-                              <Td_styled width='100%'>
-                                <Span_styled checked={task.complete}>{task.taskName}</Span_styled>
-                              </Td_styled>
-                              <Td_styled width='10%'>
-                                <Button_delete onClick={() => dispatch(deleteTask(task.id))}>
-                                  <FaTrash />
-                                </Button_delete>
-                              </Td_styled>
-                            </>
-                          </Tr_styled>
-                        )}
-                      </Draggable>
-                    )
-                  })}
+                  {filterValue.map((task, index) => (
+                    <Draggable key={task.id} draggableId={task.id.toString()} index={index}>
+                      {provided => (
+                        <Tr_styled
+                          ref={provided.innerRef}
+                          {...provided.draggableProps}
+                          {...provided.dragHandleProps}
+                        >
+                          <>
+                            <Td_styled width='5%'>
+                              <input
+                                onChange={event => {
+                                  const checked = event.target.checked
+                                  dispatch(toggleCompleted({ id: task.id, complete: checked }))
+                                }}
+                                value={task.taskName}
+                                type='checkbox'
+                                checked={task.complete}
+                              />
+                            </Td_styled>
+                            <Td_styled width='100%'>
+                              <Span_styled checked={task.complete}>{task.taskName}</Span_styled>
+                            </Td_styled>
+                            <Td_styled width='10%'>
+                              <Button_delete onClick={() => dispatch(deleteTask(task.id))}>
+                                <FaTrash />
+                              </Button_delete>
+                            </Td_styled>
+                          </>
+                        </Tr_styled>
+                      )}
+                    </Draggable>
+                  ))}
                   {provided.placeholder}
                 </Table_styled>
               )}

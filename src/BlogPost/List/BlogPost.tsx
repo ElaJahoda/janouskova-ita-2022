@@ -19,10 +19,7 @@ export const Blog = () => {
       <h1>Blog Post</h1>
       <nav>
         <Link to={urls.blogNewArticle}>
-          <Button
-            className={styles.styledButton}
-            disabled={logic.loading ? true : logic.error ? true : false}
-          >
+          <Button className={styles.styledButton} disabled={logic.loading || Boolean(logic.error)}>
             Create New Article
           </Button>
         </Link>
@@ -30,7 +27,7 @@ export const Blog = () => {
       <div>
         <h2>List of Articles:</h2>
         <Input_Styled
-          disabled={logic.loading ? true : logic.error ? true : false}
+          disabled={logic.loading || Boolean(logic.error)}
           type='text'
           value={logic.valueInput}
           onChange={logic.handleChange}
