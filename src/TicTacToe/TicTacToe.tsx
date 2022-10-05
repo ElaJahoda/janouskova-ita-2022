@@ -185,7 +185,7 @@ const Wavy_Div = styled.div`
   position: relative;
   -webkit-box-reflect: below -12px linear-gradient(transparent, ${theme.opacity});
 `
-const Animate = keyframes`
+const animate = keyframes`
 0% {
   transform: translateY(0px);
 }
@@ -203,6 +203,6 @@ const Wavy_Span = styled.span<LayoutProps>`
   position: relative;
   display: inline-block;
   font-size: 2rem;
-  animation: ${Animate} 1s ease-in-out infinite;
+  animation: ${animate} 1s ease-in-out infinite;
   animation-delay: calc(0.1s * ${props => props.count});
 `
