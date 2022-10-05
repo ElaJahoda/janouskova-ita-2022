@@ -20,24 +20,23 @@ import ReactDOM from 'react-dom/client'
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement)
 
 root.render(
-  <React.StrictMode>
-    <BrowserRouter>
-      <App />
-      <Routes>
-        <Route path={urls.homePage} element={<Home />} />
-        <Route path={urls.projectsPage} element={<ProjectsPage />} />
-        <Route path={urls.cvPage} element={<CvPage />} />
-        <Route path={urls.jsHistory} element={<JsHistory />} />
-        <Route path={urls.toDoRedux} element={<ToDoRedux />} />
-        <Route path={urls.hackertyper} element={<HackerTyper />} />
-        <Route path={urls.mortgageCalculator} element={<MortgageCalculator />} />
-        <Route path={urls.memoryGame} element={<MemoryGame />} />
-        <Route path={urls.ticTacToe} element={<TicTacToe />} />
-        <Route path={urls.blogPost} element={<BlogPost />} />
-        <Route path={urls.blogNewArticle} element={<CreateNewArticle />} />
-        <Route path={urls.blogArticles} element={<DetailArticle />} />
-        <Route path={urls.blogUpdateArticle} element={<BlogUpdateArticle />} />
-      </Routes>
-    </BrowserRouter>
-  </React.StrictMode>
+  //NOTE: React.StrictMode breaks the ability to use react-beautiful-dnd. Link: https://github.com/atlassian/react-beautiful-dnd/issues/2350
+  // <React.StrictMode>
+  <BrowserRouter>
+    <App />
+    <Routes>
+      <Route path={urls.homePage} element={<Home />} />
+      <Route path={urls.projectsPage} element={<ProjectsPage />} />
+      <Route path={urls.cvPage} element={<CvPage />} />
+      <Route path={urls.jsHistory} element={<JsHistory />} />
+      <Route path={urls.toDoRedux} element={<ToDoRedux />} />
+      <Route path={urls.hackertyper} element={<HackerTyper />} />
+      <Route path={urls.mortgageCalculator} element={<MortgageCalculator />} />
+      <Route path={urls.memoryGame} element={<MemoryGame />} />
+      <Route path={urls.blogPost} element={<BlogPost />} />
+      <Route path={urls.blogNewArticle} element={<CreateNewArticle />} />
+      <Route path={urls.blogArticles} element={<DetailArticle />} />
+      <Route path={urls.blogUpdateArticle} element={<BlogUpdateArticle />} />
+    </Routes>
+  </BrowserRouter>
 )
