@@ -1,11 +1,12 @@
+import { A_Styled, Div_Styled } from '../../HomePage'
 import { BlogPageContext } from './BlogContextProvider'
 import { Button } from '../../components/Button'
-import { Div_Styled } from '../../HomePage'
 import { Helmet } from 'react-helmet'
 import { Input_Styled } from '../../MortgageCalculator/MortgageCalculator'
 import { Link } from 'react-router-dom'
 import { css } from '@emotion/css'
-import { urls } from '../../utils/urls'
+import { githubUrlTodo, urls } from '../../utils/urls'
+import { theme } from '../../theme'
 import React, { useContext } from 'react'
 
 export const Blog = () => {
@@ -18,19 +19,31 @@ export const Blog = () => {
       <h1>Blog Post</h1>
       <nav>
         <Link to={urls.blogNewArticle}>
-          <Button className={styles.styledButton}>Create New Article</Button>
+          <Button className={styles.styledButton} disabled={logic.loading || Boolean(logic.error)}>
+            Create New Article
+          </Button>
         </Link>
       </nav>
       <div>
         <h2>List of Articles:</h2>
         <Input_Styled
+          disabled={logic.loading || Boolean(logic.error)}
           type='text'
           value={logic.valueInput}
           onChange={logic.handleChange}
           placeholder='Search...'
         />
         {logic.error.length > 0 ? (
-          <div>{logic.error}</div>
+          <div>
+            <div>{logic.error}</div>
+            <div className={styles.errorMessage}>
+              To make the app work download repository from{' '}
+              <A_Styled href={githubUrlTodo} target='_blank'>
+                GitHub
+              </A_Styled>{' '}
+              and run it on localhost.
+            </div>
+          </div>
         ) : logic.loading ? (
           <p>Loading...</p>
         ) : logic.articles.length < 1 ? (
@@ -59,5 +72,12 @@ export const Blog = () => {
 const styles = {
   styledButton: css`
     width: 210px;
+  `,
+  errorMessage: css`
+    margin: auto;
+    margin-top: 20px;
+    padding: 10px;
+    border: solid 3px ${theme.primaryColor};
+    max-width: 650px;
   `,
 }

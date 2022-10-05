@@ -36,3 +36,6 @@ export const apiBlog = {
   detail: (url: String) => `${apiUrlBlog}/articles/${url}`,
   blog: `${apiUrlBlog}`,
 }
+
+export const githubUrlTodo =
+  'https://github.com/ElaJahoda/janouskova-ita-2022/tree/main/src/ToDoRedux'
