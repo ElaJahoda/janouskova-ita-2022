@@ -95,7 +95,7 @@ const createBoardState = () => Array.from({ length: SQUARE_COUNT }, () => null a
 
 export const useGameState = () => {
   const [gameState, setGameState] = useState<GameState>({ log: [createBoardState()], step: 0 })
-  const [turn, setTurn] = useState<'X' | 'O' | null>('X')
+  const [turn, setTurn] = useState('X' as Value)
 
   const current = gameState.log[gameState.step]
   const xIsNext = gameState.step % 2 === 0

@@ -2,6 +2,7 @@ import { BOARD_SIZE, BoardState, SQUARE_SIZE, Value, useGameState } from './Game
 import { Button } from '../components/Button'
 import { Div_Styled } from '../HomePage'
 import { Helmet } from 'react-helmet'
+import { keyframes } from '@emotion/react'
 import { theme } from '../theme'
 import React from 'react'
 import styled from '@emotion/styled'
@@ -184,24 +185,24 @@ const Wavy_Div = styled.div`
   position: relative;
   -webkit-box-reflect: below -12px linear-gradient(transparent, ${theme.opacity});
 `
+const Animate = keyframes`
+0% {
+  transform: translateY(0px);
+}
+20% {
+  transform: translateY(-20px);
+}
+40%,
+100% {
+  transform: translateY(0px);
+}
+`
 const Wavy_Span = styled.span<LayoutProps>`
   font-weight: bold;
   padding: 10px;
   position: relative;
   display: inline-block;
   font-size: 2rem;
-  animation: animate 1s ease-in-out infinite;
+  animation: ${Animate} 1s ease-in-out infinite;
   animation-delay: calc(0.1s * ${props => props.count});
-  @keyframes animate {
-    0% {
-      transform: translateY(0px);
-    }
-    20% {
-      transform: translateY(-20px);
-    }
-    40%,
-    100% {
-      transform: translateY(0px);
-    }
-  }
 `
