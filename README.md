@@ -29,7 +29,7 @@ Simple web page about History of JavaScript.
 
 ### ToDo in Redux
 
-[link](https://github.com/ElaJahoda/janouskova-ita-2022/tree/main/src/ToDo)
+[link](https://github.com/ElaJahoda/janouskova-ita-2022/tree/main/src/ToDoRedux)
 
 Simple todo app that allows adding, removing and filtering tasks. Redux is used.
 
@@ -67,3 +67,11 @@ A simple blogging system allowing writing/editing articles in markdown and then 
 
 ![Blog List screenshot](./src/images/BlogPost1Screenshot.png)
 ![Blog New Article screenshot](./src/images/BlogPost2Screenshot.png)
+
+### Tic-Tac-Toe
+
+[link](https://github.com/ElaJahoda/janouskova-ita-2022/tree/main/src/TicTacToe)
+
+Tic-Tac-Toe game is for two players. The first player to get 5 of her marks in a row (up, down, across, or diagonally) is the winner. 
+
+![Tic-Tac-Toe screenshot](./src/images/TicTacToeScreenshot.png)

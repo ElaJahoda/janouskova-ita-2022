@@ -1,7 +1,7 @@
 # Hacker Typer
 
-[link](https://github.com/ElaJahoda/janouskova-ita-2022/tree/main/src/HackerTyper)
+[link](http://eva-janouskova.cz/hackertyper)
 
 Inspiration: <https://hackertyper.com/>
 
-![Hacker Typer screenshot](./src/images/HackerTyperScreenshot.png)
+![Hacker Typer screenshot](./../images/HackerTyperScreenshot.png)

@@ -1,7 +1,7 @@
 # Memory Game
 
-[link](https://github.com/ElaJahoda/janouskova-ita-2022/tree/main/src/MemoryGame)
+[link](http://eva-janouskova.cz/memory-game)
 
 Memory Game with pictures of nature.
 
-![Memory Game screenshot](./src/images/MemoryGameScreenshot.png)
+![Memory Game screenshot](./../images/MemoryGameScreenshot.png)
